@@ -1,0 +1,4282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="
+    width=device-width,
+    initial-scale=1,
+    maximum-scale=1,
+    user-scalable=no,
+    viewport-fit=cover
+  "
+>
+
+<meta
+  name="theme-color"
+  content="#06130e"
+  id="themeColor"
+>
+
+<meta
+  name="mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="black-translucent"
+>
+
+<meta
+  name="application-name"
+  content="MIS-NEXUS™"
+>
+
+<meta
+  name="apple-mobile-web-app-title"
+  content="MIS-NEXUS™"
+>
+
+<meta
+  name="description"
+  content="
+    MIS-NEXUS™ — MISBAHUL 'ILM SCHOOLS ABUJA
+    Institutional Digital Ecosystem
+  "
+>
+
+<title>
+  MIS-NEXUS™ — MISBAHUL 'ILM SCHOOLS ABUJA
+</title>
+
+<link
+  rel="icon"
+  type="image/png"
+  href="logo.png"
+>
+
+<link
+  rel="apple-touch-icon"
+  href="logo.png"
+>
+
+<style>
+
+/* ============================================================
+   MIS-NEXUS™
+   PREMIUM INSTITUTIONAL INTERFACE
+   REDESIGNED APPLICATION CORE
+   ============================================================ */
+
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+
+:root {
+
+  --bg:
+    #06130e;
+
+  --bg-deep:
+    #020806;
+
+  --surface:
+    rgba(10, 29, 21, .72);
+
+  --surface-solid:
+    #0b2017;
+
+  --surface-soft:
+    rgba(255,255,255,.045);
+
+  --surface-hover:
+    rgba(255,255,255,.075);
+
+  --text:
+    #f7fffb;
+
+  --text-soft:
+    #dcebe4;
+
+  --muted:
+    #91a99e;
+
+  --muted-soft:
+    #62776c;
+
+  --line:
+    rgba(255,255,255,.105);
+
+  --line-strong:
+    rgba(255,255,255,.17);
+
+
+  /* CLEAN INSTITUTIONAL EMERALD */
+
+  --emerald:
+    #16a36f;
+
+  --emerald-clean:
+    #18b77d;
+
+  --emerald-light:
+    #58e0ae;
+
+  --emerald-dark:
+    #08724c;
+
+  --emerald-glow:
+    rgba(24,183,125,.30);
+
+
+  /* VIBE SILVER */
+
+  --silver:
+    #d7dee5;
+
+  --silver-light:
+    #f7fafc;
+
+  --silver-mid:
+    #aeb8c3;
+
+  --silver-dark:
+    #687582;
+
+  --silver-glow:
+    rgba(215,222,229,.26);
+
+
+  --accent:
+    var(--emerald-clean);
+
+  --accent-light:
+    var(--emerald-light);
+
+  --accent-dark:
+    var(--emerald-dark);
+
+  --accent-glow:
+    var(--emerald-glow);
+
+
+  --danger:
+    #ff647c;
+
+  --warning:
+    #ffc15c;
+
+  --success:
+    #35d69a;
+
+
+  --radius-xl:
+    36px;
+
+  --radius-lg:
+    28px;
+
+  --radius-md:
+    20px;
+
+  --radius-sm:
+    14px;
+
+
+  --shadow-xl:
+    0 45px 120px
+    rgba(0,0,0,.56);
+
+  --shadow-lg:
+    0 28px 70px
+    rgba(0,0,0,.42);
+
+  --shadow-md:
+    0 16px 40px
+    rgba(0,0,0,.30);
+
+
+  --transition:
+    280ms
+    cubic-bezier(.2,.8,.2,1);
+
+}
+
+
+/* ============================================================
+   SILVER THEME
+   ============================================================ */
+
+html[data-theme="silver"] {
+
+  --bg:
+    #171b20;
+
+  --bg-deep:
+    #090c10;
+
+  --surface:
+    rgba(31,36,43,.76);
+
+  --surface-solid:
+    #20252b;
+
+  --surface-soft:
+    rgba(255,255,255,.055);
+
+  --surface-hover:
+    rgba(255,255,255,.095);
+
+  --text:
+    #fbfdff;
+
+  --text-soft:
+    #e3e8ed;
+
+  --muted:
+    #a5afb9;
+
+  --muted-soft:
+    #727d88;
+
+  --line:
+    rgba(255,255,255,.12);
+
+  --line-strong:
+    rgba(255,255,255,.20);
+
+  --accent:
+    #d7dee5;
+
+  --accent-light:
+    #ffffff;
+
+  --accent-dark:
+    #7d8995;
+
+  --accent-glow:
+    rgba(215,222,229,.25);
+
+}
+
+
+/* ============================================================
+   EMERALD THEME
+   ============================================================ */
+
+html[data-theme="emerald"] {
+
+  --bg:
+    #061a12;
+
+  --bg-deep:
+    #020b07;
+
+  --surface:
+    rgba(8,35,24,.78);
+
+  --surface-solid:
+    #0a2419;
+
+  --surface-soft:
+    rgba(24,183,125,.055);
+
+  --surface-hover:
+    rgba(24,183,125,.095);
+
+  --accent:
+    #18b77d;
+
+  --accent-light:
+    #64e5b4;
+
+  --accent-dark:
+    #08724c;
+
+  --accent-glow:
+    rgba(24,183,125,.32);
+
+}
+
+
+/* ============================================================
+   MIDNIGHT
+   ============================================================ */
+
+html[data-theme="midnight"] {
+
+  --bg:
+    #07111f;
+
+  --bg-deep:
+    #020712;
+
+  --surface:
+    rgba(12,24,40,.78);
+
+  --surface-solid:
+    #0c1828;
+
+  --accent:
+    #4d8dff;
+
+  --accent-light:
+    #82b9ff;
+
+  --accent-dark:
+    #235dc2;
+
+  --accent-glow:
+    rgba(77,141,255,.30);
+
+}
+
+
+/* ============================================================
+   ROYAL
+   ============================================================ */
+
+html[data-theme="royal"] {
+
+  --bg:
+    #11091d;
+
+  --bg-deep:
+    #06030b;
+
+  --surface:
+    rgba(25,16,39,.78);
+
+  --surface-solid:
+    #191027;
+
+  --accent:
+    #a97bff;
+
+  --accent-light:
+    #d4b8ff;
+
+  --accent-dark:
+    #7041c7;
+
+  --accent-glow:
+    rgba(169,123,255,.30);
+
+}
+
+
+/* ============================================================
+   SAPPHIRE
+   ============================================================ */
+
+html[data-theme="sapphire"] {
+
+  --bg:
+    #06141f;
+
+  --bg-deep:
+    #020a11;
+
+  --surface:
+    rgba(10,30,45,.78);
+
+  --surface-solid:
+    #0a1e2d;
+
+  --accent:
+    #42c2ff;
+
+  --accent-light:
+    #8bddff;
+
+  --accent-dark:
+    #1676ad;
+
+  --accent-glow:
+    rgba(66,194,255,.30);
+
+}
+
+
+/* ============================================================
+   LIGHT
+   ============================================================ */
+
+html[data-theme="light"] {
+
+  --bg:
+    #f3f6fa;
+
+  --bg-deep:
+    #e8edf3;
+
+  --surface:
+    rgba(255,255,255,.84);
+
+  --surface-solid:
+    #ffffff;
+
+  --surface-soft:
+    rgba(20,35,50,.045);
+
+  --surface-hover:
+    rgba(20,35,50,.075);
+
+  --text:
+    #15202b;
+
+  --text-soft:
+    #354555;
+
+  --muted:
+    #667687;
+
+  --muted-soft:
+    #8794a2;
+
+  --line:
+    rgba(20,35,50,.10);
+
+  --line-strong:
+    rgba(20,35,50,.16);
+
+  --accent:
+    #15966a;
+
+  --accent-light:
+    #36bf8b;
+
+  --accent-dark:
+    #08724c;
+
+  --accent-glow:
+    rgba(21,150,106,.18);
+
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+* {
+
+  box-sizing:
+    border-box;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+}
+
+
+html {
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  background:
+    transparent;
+
+  overscroll-behavior:
+    none;
+
+}
+
+
+body {
+
+  width:
+    100%;
+
+  min-height:
+    100%;
+
+  margin:
+    0;
+
+  overflow:
+    hidden;
+
+  background:
+    transparent;
+
+  color:
+    var(--text);
+
+  font-family:
+    Inter,
+    "SF Pro Display",
+    "SF Pro Text",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  text-rendering:
+    optimizeLegibility;
+
+  touch-action:
+    manipulation;
+
+}
+
+
+/* ============================================================
+   APPLICATION
+   ============================================================ */
+
+#app {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100dvh;
+
+  overflow:
+    hidden;
+
+  background:
+    transparent;
+
+}
+
+
+.application {
+
+  position:
+    relative;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  overflow:
+    hidden;
+
+  isolation:
+    isolate;
+
+  background:
+
+    radial-gradient(
+      850px 600px
+      at 50% -10%,
+      var(--accent-glow),
+      transparent 70%
+    ),
+
+    radial-gradient(
+      650px 500px
+      at -15% 90%,
+      color-mix(
+        in srgb,
+        var(--accent-light) 8%,
+        transparent
+      ),
+      transparent 70%
+    ),
+
+    linear-gradient(
+      145deg,
+      var(--bg),
+      var(--bg-deep)
+    );
+
+  transition:
+    background 700ms ease;
+
+}
+
+
+/* ============================================================
+   AMBIENT LIGHT
+   ============================================================ */
+
+.ambient {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  overflow:
+    hidden;
+
+  pointer-events:
+    none;
+
+  z-index:
+    0;
+
+}
+
+
+.ambient::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    55vw;
+
+  height:
+    55vw;
+
+  min-width:
+    300px;
+
+  min-height:
+    300px;
+
+  left:
+    50%;
+
+  top:
+    30%;
+
+  transform:
+    translate(-50%,-50%);
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      var(--accent-glow),
+      transparent 68%
+    );
+
+  filter:
+    blur(55px);
+
+  animation:
+    ambientPulse
+    8s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes ambientPulse {
+
+  0%,
+  100% {
+
+    transform:
+      translate(-50%,-50%)
+      scale(.82);
+
+    opacity:
+      .65;
+
+  }
+
+  50% {
+
+    transform:
+      translate(-50%,-50%)
+      scale(1.08);
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* ============================================================
+   AMBIENT GRID
+   ============================================================ */
+
+.ambient::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    -50%;
+
+  background:
+
+    linear-gradient(
+      rgba(255,255,255,.025)
+      1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025)
+      1px,
+      transparent 1px
+    );
+
+  background-size:
+    70px 70px;
+
+  transform:
+    perspective(700px)
+    rotateX(58deg)
+    translateY(25%);
+
+  transform-origin:
+    center;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black 35%,
+      transparent 85%
+    );
+
+  opacity:
+    .35;
+
+}
+
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+
+.appbar {
+
+  position:
+    absolute;
+
+  z-index:
+    80;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  min-height:
+    calc(76px + env(safe-area-inset-top));
+
+  padding:
+    calc(12px + env(safe-area-inset-top))
+    clamp(15px,4vw,42px)
+    10px;
+
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      color-mix(
+        in srgb,
+        var(--bg-deep) 96%,
+        transparent
+      ),
+      transparent
+    );
+
+  pointer-events:
+    none;
+
+}
+
+
+.identity {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  min-width:
+    0;
+
+  pointer-events:
+    auto;
+
+}
+
+
+.identity-logo {
+
+  width:
+    50px;
+
+  height:
+    50px;
+
+  object-fit:
+    contain;
+
+  padding:
+    4px;
+
+  border-radius:
+    16px;
+
+  background:
+    rgba(255,255,255,.96);
+
+  box-shadow:
+
+    0 14px 32px
+    rgba(0,0,0,.30),
+
+    inset
+    0 1px 0
+    rgba(255,255,255,.9);
+
+}
+
+
+.identity-copy {
+
+  min-width:
+    0;
+
+}
+
+
+.identity-name {
+
+  font-size:
+    15px;
+
+  line-height:
+    1;
+
+  font-weight:
+    1000;
+
+  letter-spacing:
+    -.055em;
+
+}
+
+
+.identity-name sup {
+
+  color:
+    var(--accent-light);
+
+  font-size:
+    7px;
+
+}
+
+
+.identity-school {
+
+  margin-top:
+    5px;
+
+  max-width:
+    min(65vw,360px);
+
+  overflow:
+    hidden;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
+
+  color:
+    var(--muted);
+
+  font-size:
+    7px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.25px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.header-actions {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  pointer-events:
+    auto;
+
+}
+
+
+.header-button {
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:
+    14px;
+
+  background:
+    var(--surface-soft);
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    var(--shadow-md);
+
+  transition:
+    transform var(--transition),
+    background var(--transition);
+
+}
+
+
+.header-button:active {
+
+  transform:
+    scale(.90);
+
+}
+
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+
+.main {
+
+  position:
+    relative;
+
+  z-index:
+    10;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  padding:
+    calc(84px + env(safe-area-inset-top))
+    clamp(14px,4vw,42px)
+    calc(14px + env(safe-area-inset-bottom));
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  overflow:
+    hidden;
+
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+
+  position:
+    relative;
+
+  flex:
+    1;
+
+  min-height:
+    0;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+}
+
+
+.hero-stage {
+
+  position:
+    relative;
+
+  width:
+    min(72vw,520px);
+
+  height:
+    min(72vw,520px);
+
+  max-height:
+    52vh;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  perspective:
+    1800px;
+
+}
+
+
+.hero-stage::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    86%;
+
+  height:
+    86%;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      var(--accent-glow),
+      transparent 67%
+    );
+
+  filter:
+    blur(35px);
+
+  animation:
+    logoAura
+    6s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes logoAura {
+
+  0%,
+  100% {
+
+    transform:
+      scale(.84);
+
+    opacity:
+      .60;
+
+  }
+
+  50% {
+
+    transform:
+      scale(1.12);
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* ============================================================
+   ORBIT SYSTEM
+   ============================================================ */
+
+.orbit {
+
+  position:
+    absolute;
+
+  width:
+    88%;
+
+  height:
+    88%;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--accent) 32%,
+      transparent
+    );
+
+  border-radius:
+    50%;
+
+  transform:
+    rotateX(68deg)
+    rotateZ(-15deg);
+
+  box-shadow:
+    0 0 65px
+    var(--accent-glow);
+
+  animation:
+    orbitSpin
+    15s
+    linear
+    infinite;
+
+}
+
+
+@keyframes orbitSpin {
+
+  to {
+
+    transform:
+      rotateX(68deg)
+      rotateZ(345deg);
+
+  }
+
+}
+
+
+.orbit::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    9%;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:
+    50%;
+
+}
+
+
+.orbit::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    12px;
+
+  height:
+    12px;
+
+  left:
+    8%;
+
+  top:
+    50%;
+
+  transform:
+    translateY(-50%);
+
+  border-radius:
+    50%;
+
+  background:
+    var(--accent-light);
+
+  box-shadow:
+    0 0 25px
+    var(--accent-light);
+
+}
+
+
+/* ============================================================
+   LOGO CONTAINER
+   ============================================================ */
+
+.logo-depth {
+
+  position:
+    relative;
+
+  width:
+    min(58vw,390px);
+
+  height:
+    min(58vw,390px);
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  transform-style:
+    preserve-3d;
+
+  animation:
+    logoFloat
+    7s
+    cubic-bezier(.2,.75,.18,1)
+    infinite;
+
+}
+
+
+@keyframes logoFloat {
+
+  0%,
+  100% {
+
+    transform:
+      rotateX(0deg)
+      rotateY(-12deg)
+      rotateZ(-2deg)
+      translateY(5px)
+      scale(.97);
+
+  }
+
+  22% {
+
+    transform:
+      rotateX(11deg)
+      rotateY(42deg)
+      rotateZ(1deg)
+      translateY(-8px)
+      scale(1);
+
+  }
+
+  48% {
+
+    transform:
+      rotateX(-7deg)
+      rotateY(125deg)
+      rotateZ(-2deg)
+      translateY(2px)
+      scale(1.04);
+
+  }
+
+  70% {
+
+    transform:
+      rotateX(8deg)
+      rotateY(225deg)
+      rotateZ(2deg)
+      translateY(-7px)
+      scale(1.02);
+
+  }
+
+  88% {
+
+    transform:
+      rotateX(-5deg)
+      rotateY(320deg)
+      rotateZ(-1deg)
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+.logo-depth::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    7%;
+
+  border-radius:
+    30%;
+
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--accent) 45%,
+        transparent
+      ),
+      transparent 65%
+    );
+
+  transform:
+    translateZ(-45px)
+    scale(.96);
+
+  filter:
+    blur(14px);
+
+  opacity:
+    .65;
+
+}
+
+
+.logo-depth::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    14%;
+
+  right:
+    14%;
+
+  bottom:
+    -7%;
+
+  height:
+    15%;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--accent);
+
+  filter:
+    blur(18px);
+
+  opacity:
+    .22;
+
+  transform:
+    rotateX(76deg);
+
+}
+
+
+.hero-logo {
+
+  position:
+    relative;
+
+  z-index:
+    5;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    contain;
+
+  padding:
+    17px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
+  border-radius:
+    clamp(36px,8vw,64px);
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.13),
+      rgba(255,255,255,.025)
+    );
+
+  box-shadow:
+
+    0 48px 110px
+    rgba(0,0,0,.55),
+
+    0 18px 38px
+    rgba(0,0,0,.28),
+
+    inset
+    0 1px 0
+    rgba(255,255,255,.20);
+
+  transform:
+    translateZ(35px);
+
+}
+
+
+/* ============================================================
+   AUDIO CONTROL
+   ============================================================ */
+
+.audio-control {
+
+  position:
+    absolute;
+
+  z-index:
+    30;
+
+  left:
+    50%;
+
+  bottom:
+    -16px;
+
+  transform:
+    translateX(-50%);
+
+  min-width:
+    126px;
+
+  height:
+    31px;
+
+  padding:
+    0 11px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    7px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--accent) 30%,
+      var(--line)
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--surface-solid) 88%,
+      transparent
+    );
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  color:
+    var(--text-soft);
+
+  font-size:
+    7px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    1px;
+
+  text-transform:
+    uppercase;
+
+  box-shadow:
+    0 10px 28px
+    rgba(0,0,0,.25);
+
+}
+
+
+.audio-dot {
+
+  width:
+    7px;
+
+  height:
+    7px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--accent);
+
+  box-shadow:
+    0 0 13px
+    var(--accent);
+
+}
+
+
+.audio-control.playing
+.audio-dot {
+
+  animation:
+    audioPulse
+    1.1s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes audioPulse {
+
+  0%,
+  100% {
+
+    transform:
+      scale(.75);
+
+    opacity:
+      .55;
+
+  }
+
+  50% {
+
+    transform:
+      scale(1.25);
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* ============================================================
+   ACCESS GRID
+   ============================================================ */
+
+.access {
+
+  width:
+    100%;
+
+  max-width:
+    1180px;
+
+  margin:
+    0 auto;
+
+}
+
+
+.access-header {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    0 4px 10px;
+
+}
+
+
+.access-title {
+
+  font-size:
+    12px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    -.025em;
+
+}
+
+
+.access-meta {
+
+  color:
+    var(--muted-soft);
+
+  font-size:
+    7px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.app-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:
+    clamp(8px,2vw,14px);
+
+}
+
+
+.app-card {
+
+  position:
+    relative;
+
+  min-width:
+    0;
+
+  height:
+    clamp(108px,17vw,148px);
+
+  padding:
+    clamp(12px,2.5vw,17px);
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    space-between;
+
+  overflow:
+    hidden;
+
+  text-align:
+    left;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    clamp(22px,4vw,30px);
+
+  background:
+
+    linear-gradient(
+      150deg,
+      color-mix(
+        in srgb,
+        var(--icon-color) 9%,
+        var(--surface-solid)
+      ),
+      var(--surface)
+    );
+
+  box-shadow:
+    var(--shadow-lg);
+
+  transform:
+    translateZ(0);
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+
+}
+
+
+.app-card:hover {
+
+  transform:
+    translateY(-5px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--icon-color) 38%,
+      var(--line)
+    );
+
+  box-shadow:
+    0 35px 75px
+    rgba(0,0,0,.42);
+
+}
+
+
+.app-card:active {
+
+  transform:
+    translateY(3px)
+    scale(.965);
+
+}
+
+
+/* ============================================================
+   3D ICON
+   ============================================================ */
+
+.app-icon {
+
+  position:
+    relative;
+
+  width:
+    clamp(55px,12vw,74px);
+
+  height:
+    clamp(55px,12vw,74px);
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--icon-color) 34%,
+      var(--line)
+    );
+
+  border-radius:
+    clamp(17px,3.5vw,23px);
+
+  background:
+
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--icon-color) 20%,
+        var(--surface-solid)
+      ),
+      var(--surface-solid)
+    );
+
+  box-shadow:
+
+    0 14px 25px
+    rgba(0,0,0,.32),
+
+    inset
+    0 1px 0
+    rgba(255,255,255,.15),
+
+    inset
+    0 -8px 18px
+    rgba(0,0,0,.12);
+
+  transform:
+    perspective(700px)
+    rotateX(5deg)
+    rotateY(-7deg);
+
+  transition:
+    transform var(--transition);
+
+}
+
+
+.app-card:hover
+.app-icon {
+
+  transform:
+    perspective(700px)
+    rotateX(0)
+    rotateY(0)
+    translateZ(12px)
+    scale(1.04);
+
+}
+
+
+.app-icon::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  border-radius:
+    inherit;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.17),
+      transparent 35%
+    );
+
+  pointer-events:
+    none;
+
+}
+
+
+.app-icon::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    15%;
+
+  right:
+    15%;
+
+  bottom:
+    -10px;
+
+  height:
+    13px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--icon-color);
+
+  opacity:
+    .20;
+
+  filter:
+    blur(8px);
+
+}
+
+
+.app-icon svg {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    clamp(29px,7vw,41px);
+
+  height:
+    clamp(29px,7vw,41px);
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    1.55;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+
+  color:
+    var(--icon-color);
+
+  filter:
+    drop-shadow(
+      0 5px 8px
+      color-mix(
+        in srgb,
+        var(--icon-color) 45%,
+        transparent
+      )
+    );
+
+}
+
+
+.app-name {
+
+  display:
+    block;
+
+  overflow:
+    hidden;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
+
+  font-size:
+    clamp(9px,2.1vw,12px);
+
+  font-weight:
+    950;
+
+}
+
+
+.app-desc {
+
+  display:
+    block;
+
+  margin-top:
+    4px;
+
+  overflow:
+    hidden;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
+
+  color:
+    var(--muted);
+
+  font-size:
+    clamp(6px,1.55vw,8px);
+
+}
+
+
+/* ============================================================
+   LOADING OVERLAY
+   ============================================================ */
+
+.loading {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    300;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--bg-deep) 92%,
+      transparent
+    );
+
+  backdrop-filter:
+    blur(20px);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  transition:
+    opacity .3s ease,
+    visibility .3s ease;
+
+}
+
+
+.loading.active {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+}
+
+
+.loading-card {
+
+  width:
+    min(86vw,370px);
+
+  padding:
+    32px 24px;
+
+  text-align:
+    center;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    32px;
+
+  background:
+    var(--surface-solid);
+
+  box-shadow:
+    var(--shadow-xl);
+
+}
+
+
+.loading-logo {
+
+  width:
+    100px;
+
+  height:
+    100px;
+
+  margin:
+    0 auto 22px;
+
+  padding:
+    10px;
+
+  object-fit:
+    contain;
+
+  border-radius:
+    28px;
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 22px 55px
+    rgba(0,0,0,.38);
+
+  animation:
+    loadingLogo
+    1.8s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes loadingLogo {
+
+  0%,
+  100% {
+
+    transform:
+      rotateY(0)
+      scale(.94);
+
+  }
+
+  50% {
+
+    transform:
+      rotateY(180deg)
+      scale(1.04);
+
+  }
+
+}
+
+
+/* ============================================================
+   INTRO
+   ============================================================ */
+
+.intro {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    500;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  overflow:
+    hidden;
+
+  background:
+    var(--bg-deep);
+
+  transition:
+    opacity .8s ease,
+    visibility .8s ease;
+
+}
+
+
+.intro.finished {
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+}
+
+
+.intro-content {
+
+  position:
+    relative;
+
+  z-index:
+    3;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+}
+
+
+.intro-logo {
+
+  width:
+    min(64vw,340px);
+
+  height:
+    min(64vw,340px);
+
+  object-fit:
+    contain;
+
+  padding:
+    17px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.15);
+
+  border-radius:
+    38px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.12),
+      rgba(255,255,255,.025)
+    );
+
+  box-shadow:
+    0 50px 120px
+    rgba(0,0,0,.58);
+
+  animation:
+    introLogo
+    5s
+    cubic-bezier(.18,.78,.16,1)
+    infinite;
+
+}
+
+
+@keyframes introLogo {
+
+  0% {
+
+    transform:
+      rotateX(-8deg)
+      rotateY(-20deg)
+      rotateZ(-2deg)
+      scale(.90);
+
+  }
+
+  25% {
+
+    transform:
+      rotateX(14deg)
+      rotateY(70deg)
+      rotateZ(3deg)
+      scale(1);
+
+  }
+
+  50% {
+
+    transform:
+      rotateX(-10deg)
+      rotateY(180deg)
+      rotateZ(-2deg)
+      scale(1.05);
+
+  }
+
+  75% {
+
+    transform:
+      rotateX(12deg)
+      rotateY(285deg)
+      rotateZ(2deg)
+      scale(1);
+
+  }
+
+  100% {
+
+    transform:
+      rotateX(-8deg)
+      rotateY(342deg)
+      rotateZ(-2deg)
+      scale(.90);
+
+  }
+
+}
+
+
+.intro-title {
+
+  margin-top:
+    20px;
+
+  font-size:
+    clamp(30px,8vw,58px);
+
+  font-weight:
+    1000;
+
+  letter-spacing:
+    -.09em;
+
+}
+
+
+.intro-title sup {
+
+  color:
+    var(--accent-light);
+
+  font-size:
+    8px;
+
+}
+
+
+.intro-label {
+
+  margin-top:
+    9px;
+
+  color:
+    var(--accent-light);
+
+  font-size:
+    7px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    2px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+/* ============================================================
+   THEME DRAWER
+   ============================================================ */
+
+.theme-drawer {
+
+  position:
+    fixed;
+
+  z-index:
+    250;
+
+  top:
+    calc(76px + env(safe-area-inset-top));
+
+  right:
+    12px;
+
+  width:
+    min(340px,calc(100vw - 24px));
+
+  padding:
+    15px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    25px;
+
+  background:
+    var(--surface-solid);
+
+  backdrop-filter:
+    blur(24px);
+
+  -webkit-backdrop-filter:
+    blur(24px);
+
+  box-shadow:
+    var(--shadow-xl);
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+  transform:
+    translateY(-12px)
+    scale(.97);
+
+  transition:
+    opacity var(--transition),
+    visibility var(--transition),
+    transform var(--transition);
+
+}
+
+
+.theme-drawer.open {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  pointer-events:
+    auto;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+}
+
+
+.theme-heading {
+
+  margin-bottom:
+    12px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    8px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    1.4px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.theme-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:
+    8px;
+
+}
+
+
+.theme {
+
+  position:
+    relative;
+
+  height:
+    68px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    17px;
+
+  background:
+    var(--surface-soft);
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition);
+
+}
+
+
+.theme:active {
+
+  transform:
+    scale(.94);
+
+}
+
+
+.theme.active {
+
+  border-color:
+    var(--theme-color);
+
+  box-shadow:
+    0 0 24px
+    color-mix(
+      in srgb,
+      var(--theme-color) 22%,
+      transparent
+    );
+
+}
+
+
+.theme-color {
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  top:
+    39%;
+
+  width:
+    27px;
+
+  height:
+    27px;
+
+  transform:
+    translate(-50%,-50%);
+
+  border-radius:
+    50%;
+
+  background:
+    var(--theme-color);
+
+  box-shadow:
+    0 0 20px
+    color-mix(
+      in srgb,
+      var(--theme-color) 50%,
+      transparent
+    );
+
+}
+
+
+.theme-label {
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  bottom:
+    7px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    6px;
+
+  font-weight:
+    900;
+
+  text-align:
+    center;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (min-width:600px) {
+
+  .app-grid {
+
+    grid-template-columns:
+      repeat(6,minmax(0,1fr));
+
+  }
+
+  .hero-stage {
+
+    width:
+      min(52vw,520px);
+
+    height:
+      min(52vw,520px);
+
+  }
+
+}
+
+
+@media (min-width:1000px) {
+
+  .main {
+
+    max-width:
+      1280px;
+
+    margin:
+      0 auto;
+
+  }
+
+  .hero-stage {
+
+    width:
+      520px;
+
+    height:
+      520px;
+
+  }
+
+  .app-card {
+
+    height:
+      148px;
+
+  }
+
+}
+
+
+@media (max-height:700px) {
+
+  .hero-stage {
+
+    width:
+      min(48vw,330px);
+
+    height:
+      min(48vw,330px);
+
+  }
+
+  .hero-logo {
+
+    padding:
+      11px;
+
+  }
+
+  .app-card {
+
+    height:
+      94px;
+
+  }
+
+  .app-icon {
+
+    width:
+      47px;
+
+    height:
+      47px;
+
+  }
+
+}
+
+
+@media (prefers-reduced-motion:reduce) {
+
+  *,
+  *::before,
+  *::after {
+
+    animation-duration:
+      .01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      .01ms !important;
+
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+  <div
+    class="application"
+    id="application"
+  >
+
+    <div
+      class="ambient"
+      aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="appbar">
+
+      <div class="identity">
+
+        <img
+          class="identity-logo"
+          src="logo.png"
+          alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+        >
+
+        <div class="identity-copy">
+
+          <div class="identity-name">
+            MIS-NEXUS<sup>™</sup>
+          </div>
+
+          <div class="identity-school">
+            MISBAHUL 'ILM SCHOOLS ABUJA • MIS_ABUJA
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <button
+          class="header-button"
+          id="themeButton"
+          type="button"
+          aria-label="Change theme"
+          title="Change theme"
+        >
+
+          ◐
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="main">
+
+      <section class="hero">
+
+        <div class="hero-stage">
+
+          <div
+            class="orbit"
+            aria-hidden="true"
+          ></div>
+
+
+          <div class="logo-depth">
+
+            <img
+              class="hero-logo"
+              id="heroImage"
+              src="logo.png"
+              alt="MIS-NEXUS™"
+            >
+
+
+            <!-- AUDIO CONTROL UNDER LOGO -->
+
+            <button
+              class="audio-control"
+              id="audioControl"
+              type="button"
+              aria-label="Toggle welcome audio"
+            >
+
+              <span
+                class="audio-dot"
+                id="audioDot"
+              ></span>
+
+              <span id="audioLabel">
+                AUDIO PLAYING
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           ACCESS
+           =================================================== -->
+
+      <section class="access">
+
+        <div class="access-header">
+
+          <div class="access-title">
+            Institutional Access
+          </div>
+
+          <div class="access-meta">
+            SECURE • MIS_ABUJA
+          </div>
+
+        </div>
+
+
+        <div class="app-grid">
+
+
+          <!-- TEACHERS -->
+
+          <button
+            class="app-card"
+            data-route="teachers.html"
+            style="--icon-color:#4d8dff"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="10"
+                  cy="8"
+                  r="3.3"
+                />
+
+                <path
+                  d="
+                    M4 20v-1.4
+                    A4.6 4.6 0 0 1
+                    8.6 14h2.8
+                    A4.6 4.6 0 0 1
+                    16 18.6V20
+                  "
+                />
+
+                <path
+                  d="
+                    M16 5.2
+                    a3.1 3.1 0 0 1 0 5.9
+                  "
+                />
+
+                <path
+                  d="
+                    M17 14.2
+                    a4.4 4.4 0 0 1 3 4.2V20
+                  "
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Teachers
+              </span>
+
+              <span class="app-desc">
+                Attendance & classes
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- STUDENTS -->
+
+          <button
+            class="app-card"
+            data-route="students.html"
+            style="--icon-color:#18b77d"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="12"
+                  cy="8"
+                  r="3.4"
+                />
+
+                <path
+                  d="
+                    M5 20
+                    a7 7 0 0 1 14 0
+                  "
+                />
+
+                <path
+                  d="M8.5 13.2h7"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Students
+              </span>
+
+              <span class="app-desc">
+                Student records
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- PARENTS -->
+
+          <button
+            class="app-card"
+            data-route="parents.html"
+            style="--icon-color:#a97bff"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <path
+                  d="
+                    M3.5 10.5
+                    12 4
+                    20.5 10.5
+                  "
+                />
+
+                <path
+                  d="
+                    M5.5 10
+                    v9.5
+                    h13V10
+                  "
+                />
+
+                <path
+                  d="
+                    M9 19.5v-6h6v6
+                  "
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Parents
+              </span>
+
+              <span class="app-desc">
+                Family connection
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- BOARDERS -->
+
+          <button
+            class="app-card"
+            data-route="boarders.html"
+            style="--icon-color:#ffc15c"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <path
+                  d="
+                    M4 20
+                    V9.5
+                    L12 4
+                    L20 9.5
+                    V20
+                  "
+                />
+
+                <path
+                  d="
+                    M7 20
+                    v-5.5
+                    h10
+                    V20
+                  "
+                />
+
+                <path
+                  d="M8.5 10.5h7"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Boarders
+              </span>
+
+              <span class="app-desc">
+                Boarding records
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- STAFF -->
+
+          <button
+            class="app-card"
+            data-route="staff.html"
+            style="--icon-color:#ff6684"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <rect
+                  x="5"
+                  y="3.5"
+                  width="14"
+                  height="17"
+                  rx="2.5"
+                />
+
+                <path
+                  d="M9 8h6"
+                />
+
+                <path
+                  d="M9 12h6"
+                />
+
+                <path
+                  d="M9 16h3.5"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Staff
+              </span>
+
+              <span class="app-desc">
+                Staff records
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- CLASSES -->
+
+          <button
+            class="app-card"
+            data-route="classes.html"
+            style="--icon-color:#4eb9ff"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <rect
+                  x="4"
+                  y="4"
+                  width="6"
+                  height="6"
+                  rx="1.5"
+                />
+
+                <rect
+                  x="14"
+                  y="4"
+                  width="6"
+                  height="6"
+                  rx="1.5"
+                />
+
+                <rect
+                  x="4"
+                  y="14"
+                  width="6"
+                  height="6"
+                  rx="1.5"
+                />
+
+                <rect
+                  x="14"
+                  y="14"
+                  width="6"
+                  height="6"
+                  rx="1.5"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Classes
+              </span>
+
+              <span class="app-desc">
+                Class records
+              </span>
+
+            </span>
+
+          </button>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         THEME DRAWER
+         ===================================================== -->
+
+    <aside
+      class="theme-drawer"
+      id="themeDrawer"
+      aria-hidden="true"
+    >
+
+      <div class="theme-heading">
+        MIS-NEXUS™ Appearance
+      </div>
+
+      <div class="theme-grid">
+
+
+        <button
+          class="theme active"
+          data-theme="midnight"
+          style="--theme-color:#4d8dff"
+          type="button"
+        >
+
+          <span class="theme-color"></span>
+
+          <span class="theme-label">
+            Midnight
+          </span>
+
+        </button>
+
+
+        <button
+          class="theme"
+          data-theme="silver"
+          style="--theme-color:#d7dee5"
+          type="button"
+        >
+
+          <span class="theme-color"></span>
+
+          <span class="theme-label">
+            Vibe Silver
+          </span>
+
+        </button>
+
+
+        <button
+          class="theme"
+          data-theme="emerald"
+          style="--theme-color:#18b77d"
+          type="button"
+        >
+
+          <span class="theme-color"></span>
+
+          <span class="theme-label">
+            Emerald
+          </span>
+
+        </button>
+
+
+        <button
+          class="theme"
+          data-theme="royal"
+          style="--theme-color:#a97bff"
+          type="button"
+        >
+
+          <span class="theme-color"></span>
+
+          <span class="theme-label">
+            Royal
+          </span>
+
+        </button>
+
+
+        <button
+          class="theme"
+          data-theme="sapphire"
+          style="--theme-color:#42c2ff"
+          type="button"
+        >
+
+          <span class="theme-color"></span>
+
+          <span class="theme-label">
+            Sapphire
+          </span>
+
+        </button>
+
+
+        <button
+          class="theme"
+          data-theme="light"
+          style="--theme-color:#15966a"
+          type="button"
+        >
+
+          <span class="theme-color"></span>
+
+          <span class="theme-label">
+            Light
+          </span>
+
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         LOADING
+         ===================================================== -->
+
+    <div
+      class="loading"
+      id="loading"
+      aria-hidden="true"
+    >
+
+      <div class="loading-card">
+
+        <img
+          class="loading-logo"
+          src="logo.png"
+          alt="MIS-NEXUS™"
+        >
+
+        <div class="loading-title">
+          Opening MIS-NEXUS™
+        </div>
+
+        <div class="loading-subtitle">
+          Preparing secure institutional access…
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INTRO
+         ===================================================== -->
+
+    <section
+      class="intro"
+      id="intro"
+      aria-label="MIS-NEXUS introduction"
+    >
+
+      <div class="intro-content">
+
+        <img
+          class="intro-logo"
+          src="logo.png"
+          alt="MIS-NEXUS™"
+        >
+
+        <div class="intro-title">
+          MIS-NEXUS<sup>™</sup>
+        </div>
+
+        <div class="intro-label">
+          INSTITUTIONAL DIGITAL ECOSYSTEM
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+
+<!-- ==========================================================
+     WELCOME AUDIO
+     ========================================================== -->
+
+<audio
+  id="welcomeAudio"
+  src="welcome.mp3"
+  preload="auto"
+  autoplay
+  playsinline
+  loop
+>
+</audio>
+
+
+<script>
+
+"use strict";
+
+
+/* ============================================================
+   APPLICATION CONFIGURATION
+   ============================================================ */
+
+const CONFIG = {
+
+  storageTheme:
+    "mis-nexus-theme",
+
+  storageAudio:
+    "mis-nexus-audio",
+
+  defaultTheme:
+    "emerald",
+
+  introDuration:
+    15000,
+
+  loadingDelay:
+    850,
+
+  routes: {
+
+    teachers:
+      "teachers.html",
+
+    students:
+      "students.html",
+
+    parents:
+      "parents.html",
+
+    boarders:
+      "boarders.html",
+
+    staff:
+      "staff.html",
+
+    classes:
+      "classes.html"
+
+  }
+
+};
+
+
+/* ============================================================
+   DOM
+   ============================================================ */
+
+const DOM = {
+
+  html:
+    document.documentElement,
+
+  body:
+    document.body,
+
+  application:
+    document.getElementById(
+      "application"
+    ),
+
+  themeButton:
+    document.getElementById(
+      "themeButton"
+    ),
+
+  themeDrawer:
+    document.getElementById(
+      "themeDrawer"
+    ),
+
+  themes:
+    [
+      ...document.querySelectorAll(
+        ".theme"
+      )
+    ],
+
+  audio:
+    document.getElementById(
+      "welcomeAudio"
+    ),
+
+  audioControl:
+    document.getElementById(
+      "audioControl"
+    ),
+
+  audioLabel:
+    document.getElementById(
+      "audioLabel"
+    ),
+
+  audioDot:
+    document.getElementById(
+      "audioDot"
+    ),
+
+  intro:
+    document.getElementById(
+      "intro"
+    ),
+
+  loading:
+    document.getElementById(
+      "loading"
+    ),
+
+  accessCards:
+    [
+      ...document.querySelectorAll(
+        ".app-card"
+      )
+    ],
+
+  themeColor:
+    document.getElementById(
+      "themeColor"
+    )
+
+};
+
+
+/* ============================================================
+   STATE
+   ============================================================ */
+
+const state = {
+
+  theme:
+    localStorage.getItem(
+      CONFIG.storageTheme
+    ) ||
+    CONFIG.defaultTheme,
+
+  audioEnabled:
+    localStorage.getItem(
+      CONFIG.storageAudio
+    ) !== "off",
+
+  themeOpen:
+    false,
+
+  introFinished:
+    false,
+
+  navigating:
+    false
+
+};
+
+
+/* ============================================================
+   THEME ENGINE
+   ============================================================ */
+
+function applyTheme(
+  themeName
+) {
+
+  const theme =
+    CONFIG.themes?.[themeName];
+
+  DOM.html.dataset.theme =
+    themeName;
+
+  state.theme =
+    themeName;
+
+  localStorage.setItem(
+    CONFIG.storageTheme,
+    themeName
+  );
+
+  DOM.themes.forEach(
+    button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.theme ===
+        themeName
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   THEME DRAWER
+   ============================================================ */
+
+function toggleThemeDrawer(
+  force
+) {
+
+  state.themeOpen =
+    typeof force ===
+    "boolean"
+      ? force
+      : !state.themeOpen;
+
+  DOM.themeDrawer.classList.toggle(
+    "open",
+    state.themeOpen
+  );
+
+  DOM.themeDrawer.setAttribute(
+    "aria-hidden",
+    String(
+      !state.themeOpen
+    )
+  );
+
+}
+
+
+/* ============================================================
+   AUDIO UI
+   ============================================================ */
+
+function updateAudioUI(
+  playing
+) {
+
+  DOM.audioControl.classList.toggle(
+    "playing",
+    playing
+  );
+
+  DOM.audioLabel.textContent =
+    playing
+      ? "AUDIO PLAYING"
+      : "AUDIO OFF";
+
+}
+
+
+/* ============================================================
+   AUDIO PLAYBACK
+   ============================================================ */
+
+async function startAudio() {
+
+  if (
+    !state.audioEnabled ||
+    !DOM.audio
+  ) {
+
+    updateAudioUI(
+      false
+    );
+
+    return false;
+
+  }
+
+
+  try {
+
+    DOM.audio.muted =
+      false;
+
+    await DOM.audio.play();
+
+    updateAudioUI(
+      true
+    );
+
+    return true;
+
+  } catch (
+    error
+  ) {
+
+    /*
+      Browser autoplay policy may reject
+      unmuted playback before interaction.
+
+      We do not pretend this can be bypassed.
+      Playback is retried automatically after
+      legitimate user interaction.
+    */
+
+    updateAudioUI(
+      false
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* ============================================================
+   AUDIO RETRY
+   ============================================================ */
+
+function installAudioRetry() {
+
+  const retry =
+    () => {
+
+      if (
+        state.audioEnabled &&
+        DOM.audio.paused
+      ) {
+
+        void startAudio();
+
+      }
+
+    };
+
+
+  [
+    "pointerdown",
+    "touchstart",
+    "keydown",
+    "click"
+  ].forEach(
+    eventName => {
+
+      document.addEventListener(
+        eventName,
+        retry,
+        {
+          passive:
+            true
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   AUDIO CONTROL
+   ============================================================ */
+
+function initializeAudio() {
+
+  DOM.audioControl.addEventListener(
+    "click",
+    async event => {
+
+      event.stopPropagation();
+
+      if (
+        DOM.audio.paused
+      ) {
+
+        state.audioEnabled =
+          true;
+
+        localStorage.setItem(
+          CONFIG.storageAudio,
+          "on"
+        );
+
+        await startAudio();
+
+        return;
+
+      }
+
+
+      DOM.audio.pause();
+
+      state.audioEnabled =
+        false;
+
+      localStorage.setItem(
+        CONFIG.storageAudio,
+        "off"
+      );
+
+      updateAudioUI(
+        false
+      );
+
+    }
+  );
+
+
+  DOM.audio.addEventListener(
+    "play",
+    () => {
+
+      updateAudioUI(
+        true
+      );
+
+    }
+  );
+
+
+  DOM.audio.addEventListener(
+    "pause",
+    () => {
+
+      updateAudioUI(
+        false
+      );
+
+    }
+  );
+
+
+  DOM.audio.addEventListener(
+    "error",
+    () => {
+
+      updateAudioUI(
+        false
+      );
+
+    }
+  );
+
+
+  installAudioRetry();
+
+  void startAudio();
+
+}
+
+
+/* ============================================================
+   ACCESS NAVIGATION
+   ============================================================ */
+
+async function navigateTo(
+  route
+) {
+
+  if (
+    state.navigating
+  ) {
+
+    return;
+
+  }
+
+  if (
+    !route
+  ) {
+
+    return;
+
+  }
+
+  state.navigating =
+    true;
+
+
+  DOM.loading.classList.add(
+    "active"
+  );
+
+  DOM.loading.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  await new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        CONFIG.loadingDelay
+      )
+  );
+
+
+  window.location.href =
+    route;
+
+}
+
+
+/* ============================================================
+   ACCESS INITIALIZATION
+   ============================================================ */
+
+function initializeAccess() {
+
+  DOM.accessCards.forEach(
+    card => {
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          const route =
+            card.dataset.route;
+
+          void navigateTo(
+            route
+          );
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   THEME INITIALIZATION
+   ============================================================ */
+
+function initializeThemes() {
+
+  applyTheme(
+    state.theme
+  );
+
+
+  DOM.themeButton.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      toggleThemeDrawer();
+
+    }
+  );
+
+
+  DOM.themes.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          applyTheme(
+            button.dataset.theme
+          );
+
+          toggleThemeDrawer(
+            false
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  document.addEventListener(
+    "pointerdown",
+    event => {
+
+      if (
+        state.themeOpen &&
+        !DOM.themeDrawer.contains(
+          event.target
+        ) &&
+        !DOM.themeButton.contains(
+          event.target
+        )
+      ) {
+
+        toggleThemeDrawer(
+          false
+        );
+
+      }
+
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+}
+
+
+/* ============================================================
+   INTRO
+   ============================================================ */
+
+function initializeIntro() {
+
+  window.setTimeout(
+    () => {
+
+      state.introFinished =
+        true;
+
+      DOM.intro.classList.add(
+        "finished"
+      );
+
+      DOM.intro.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    },
+    CONFIG.introDuration
+  );
+
+}
+
+
+/* ============================================================
+   KEYBOARD
+   ============================================================ */
+
+function initializeKeyboard() {
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key ===
+        "Escape"
+      ) {
+
+        toggleThemeDrawer(
+          false
+        );
+
+      }
+
+
+      if (
+        event.key.toLowerCase() ===
+        "t"
+      ) {
+
+        toggleThemeDrawer();
+
+      }
+
+
+      if (
+        event.key.toLowerCase() ===
+        "m"
+      ) {
+
+        if (
+          DOM.audio.paused
+        ) {
+
+          state.audioEnabled =
+            true;
+
+          void startAudio();
+
+        } else {
+
+          DOM.audio.pause();
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   PERFORMANCE
+   ============================================================ */
+
+function initializePerformance() {
+
+  const images =
+    [
+      "logo.png",
+      "institution.png",
+      "secure.png"
+    ];
+
+
+  images.forEach(
+    source => {
+
+      const image =
+        new Image();
+
+      image.decoding =
+        "async";
+
+      image.src =
+        source;
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   SERVICE WORKER
+   ============================================================ */
+
+function initializeServiceWorker() {
+
+  if (
+    !("serviceWorker" in navigator)
+  ) {
+
+    return;
+
+  }
+
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      navigator.serviceWorker
+        .register(
+          "./sw.js",
+          {
+            scope:
+              "./"
+          }
+        )
+        .catch(
+          () => {
+
+            /*
+              Application remains functional
+              when SW is not deployed.
+            */
+
+          }
+        );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   APPLICATION BOOT
+   ============================================================ */
+
+function bootstrap() {
+
+  initializeThemes();
+
+  initializeAudio();
+
+  initializeAccess();
+
+  initializeIntro();
+
+  initializeKeyboard();
+
+  initializePerformance();
+
+  initializeServiceWorker();
+
+}
+
+
+/* ============================================================
+   START
+   ============================================================ */
+
+if (
+  document.readyState ===
+  "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    bootstrap,
+    {
+      once:
+        true
+    }
+  );
+
+} else {
+
+  bootstrap();
+
+}
+
+</script>
+
+</body>
+</html>
