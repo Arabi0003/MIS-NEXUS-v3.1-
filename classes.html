@@ -1,0 +1,3590 @@
+<!DOCTYPE html>
+<html lang="en-NG">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,
+           initial-scale=1,
+           maximum-scale=1,
+           user-scalable=no,
+           viewport-fit=cover"
+>
+
+<meta name="theme-color" content="transparent">
+<meta name="color-scheme" content="dark">
+
+<title>MIS-NEXUS™ — Class Access</title>
+
+<!-- =========================================================
+     SUPABASE
+     Loaded independently so the visual interface can render
+     immediately. Login waits only when the user presses Login.
+========================================================= -->
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  defer>
+</script>
+
+<style>
+
+/* =========================================================
+   MIS-NEXUS™
+   TRANSPARENT 3D SILVER INTERFACE
+========================================================= */
+
+:root{
+  --silver-0:#ffffff;
+  --silver-1:#f2f4f6;
+  --silver-2:#d8dde2;
+  --silver-3:#b8c0c8;
+  --silver-4:#8b949d;
+  --silver-5:#606970;
+
+  --text:#f4f6f8;
+  --muted:#858e97;
+
+  --line:rgba(255,255,255,.16);
+  --line-soft:rgba(255,255,255,.09);
+
+  --glass:rgba(255,255,255,.055);
+  --glass-deep:rgba(0,0,0,.22);
+
+  --danger:#ff9d9d;
+  --success:#bfe9cc;
+
+  --shadow:
+    0 28px 75px rgba(0,0,0,.58);
+
+  --silver-gradient:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f0f2f4 18%,
+      #cfd5da 43%,
+      #9aa3ab 67%,
+      #e7eaed 82%,
+      #7f8891 100%
+    );
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  width:100%;
+  min-width:100%;
+  height:100%;
+  min-height:100%;
+  margin:0;
+  padding:0;
+
+  background:transparent !important;
+
+  color:var(--text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  overflow:hidden;
+}
+
+body{
+  isolation:isolate;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+input,
+select{
+  user-select:text;
+  -webkit-user-select:text;
+}
+
+/* =========================================================
+   APPLICATION CANVAS
+   ABSOLUTELY TRANSPARENT
+========================================================= */
+
+#app{
+  position:relative;
+
+  width:100%;
+  height:100dvh;
+  min-height:560px;
+
+  overflow:hidden;
+
+  background:transparent !important;
+}
+
+/*
+  Background IMAGE ONLY.
+  No background colour.
+  If institution.png exists beside this HTML it is preserved
+  as the visual watermark.
+*/
+.background-image{
+  position:absolute;
+  inset:0;
+
+  z-index:-10;
+
+  pointer-events:none;
+
+  background-image:url("institution.png");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:min(78vw,720px);
+
+  opacity:.035;
+
+  filter:
+    grayscale(1)
+    contrast(1.15)
+    brightness(1.8);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+  position:absolute;
+
+  top:0;
+  left:0;
+  right:0;
+
+  height:76px;
+
+  padding:
+    max(12px,env(safe-area-inset-top))
+    max(16px,env(safe-area-inset-right))
+    10px
+    max(16px,env(safe-area-inset-left));
+
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+
+  z-index:50;
+
+  background:transparent !important;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.brand-logo{
+  width:34px;
+  height:34px;
+
+  object-fit:contain;
+
+  filter:
+    grayscale(1)
+    drop-shadow(0 7px 13px rgba(0,0,0,.65));
+}
+
+.brand-name{
+  display:block;
+
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+
+.brand-subtitle{
+  display:block;
+
+  margin-top:3px;
+
+  color:#737c84;
+
+  font-size:7px;
+  letter-spacing:.13em;
+
+  text-transform:uppercase;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.secure{
+  display:flex;
+  align-items:center;
+  gap:5px;
+
+  color:#737c84;
+
+  font-size:7px;
+  letter-spacing:.1em;
+
+  text-transform:uppercase;
+}
+
+.secure-dot{
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:#dce1e5;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,.55);
+}
+
+/* =========================================================
+   THEME BUTTON
+========================================================= */
+
+.theme-button{
+  width:34px;
+  height:34px;
+
+  padding:0;
+
+  border:
+    1px solid rgba(255,255,255,.24);
+
+  border-radius:50%;
+
+  color:#171a1e;
+
+  background:var(--silver-gradient);
+
+  display:grid;
+  place-items:center;
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.45),
+    inset 0 1px 1px rgba(255,255,255,.95),
+    inset 0 -2px 5px rgba(0,0,0,.25);
+
+  transition:
+    transform .16s ease,
+    filter .16s ease;
+}
+
+.theme-button:active{
+  transform:scale(.94);
+}
+
+.theme-symbol{
+  font-size:15px;
+  line-height:1;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+  position:relative;
+
+  width:100%;
+  height:100%;
+
+  padding:
+    78px
+    15px
+    max(15px,env(safe-area-inset-bottom));
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:auto;
+
+  background:transparent !important;
+}
+
+.shell{
+  width:min(100%,430px);
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =========================================================
+   THICK 3D SILVER LOGO / LOGIN CAT
+========================================================= */
+
+.logo-stage{
+  position:relative;
+
+  width:
+    clamp(
+      105px,
+      25vw,
+      145px
+    );
+
+  aspect-ratio:1;
+
+  margin-bottom:10px;
+
+  display:grid;
+  place-items:center;
+
+  perspective:1100px;
+}
+
+/* outer 3D ring */
+.logo-stage::before{
+  content:"";
+
+  position:absolute;
+  inset:-2px;
+
+  border-radius:50%;
+
+  background:
+    conic-gradient(
+      from 15deg,
+      #646d75,
+      #ffffff,
+      #aab2ba,
+      #ffffff,
+      #69727a,
+      #e9edf0,
+      #646d75
+    );
+
+  padding:4px;
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+
+  -webkit-mask-composite:xor;
+
+  mask-composite:exclude;
+
+  box-shadow:
+    0 18px 35px rgba(0,0,0,.55),
+    0 0 30px rgba(255,255,255,.06);
+
+  animation:
+    silverSpin 8s linear infinite;
+}
+
+/* 3D orbital ring */
+.logo-stage::after{
+  content:"";
+
+  position:absolute;
+
+  width:112%;
+  height:38%;
+
+  border-radius:50%;
+
+  border:
+    2px solid rgba(230,235,239,.35);
+
+  transform:
+    rotateX(70deg)
+    rotateZ(-12deg);
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,.06);
+
+  animation:
+    orbit3D 7s linear infinite;
+}
+
+.logo-ring{
+  position:absolute;
+
+  width:88%;
+  height:88%;
+
+  border-radius:50%;
+
+  border:
+    3px solid transparent;
+
+  background:
+    linear-gradient(
+      transparent,
+      transparent
+    ) padding-box,
+    conic-gradient(
+      #737c84,
+      #ffffff,
+      #d9dee2,
+      #707982,
+      #ffffff,
+      #737c84
+    ) border-box;
+
+  box-shadow:
+    inset 0 0 20px rgba(255,255,255,.08),
+    0 13px 28px rgba(0,0,0,.55);
+
+  animation:
+    orbitReverse 5s linear infinite;
+}
+
+/* actual preserved logo image */
+.main-logo{
+  position:relative;
+  z-index:5;
+
+  width:70%;
+  height:70%;
+
+  object-fit:contain;
+
+  border-radius:50%;
+
+  /*
+    Silver / metallic / thick 3D treatment
+  */
+  filter:
+    grayscale(1)
+    contrast(1.12)
+    brightness(1.13)
+    drop-shadow(0 5px 0 #555e66)
+    drop-shadow(0 9px 0 #3f474e)
+    drop-shadow(0 17px 18px rgba(0,0,0,.72));
+
+  transform:
+    translateZ(25px);
+
+  animation:
+    logoFloat 4.8s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+  0%,100%{
+    transform:
+      translateY(0)
+      translateZ(25px)
+      rotateY(-3deg);
+  }
+
+  50%{
+    transform:
+      translateY(-5px)
+      translateZ(25px)
+      rotateY(5deg);
+  }
+}
+
+@keyframes silverSpin{
+  to{
+    transform:rotateZ(360deg);
+  }
+}
+
+@keyframes orbit3D{
+  to{
+    transform:
+      rotateX(70deg)
+      rotateZ(348deg);
+  }
+}
+
+@keyframes orbitReverse{
+  to{
+    transform:rotateZ(-360deg);
+  }
+}
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.title{
+  text-align:center;
+
+  margin-bottom:12px;
+}
+
+.title h1{
+  margin:0;
+
+  font-size:
+    clamp(
+      15px,
+      4vw,
+      21px
+    );
+
+  line-height:1.2;
+
+  font-weight:900;
+
+  letter-spacing:.035em;
+
+  text-shadow:
+    0 3px 15px rgba(0,0,0,.55);
+}
+
+.title p{
+  margin:5px 0 0;
+
+  color:#737c85;
+
+  font-size:7px;
+
+  letter-spacing:.16em;
+
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   LIVE INFORMATION
+========================================================= */
+
+.live-grid{
+  width:100%;
+
+  display:grid;
+  grid-template-columns:1fr 1fr;
+
+  gap:7px;
+
+  margin-bottom:9px;
+}
+
+.live-card{
+  min-width:0;
+
+  padding:9px 11px;
+
+  border:
+    1px solid rgba(255,255,255,.12);
+
+  border-radius:14px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 10px 28px rgba(0,0,0,.22);
+}
+
+.live-label{
+  color:#707982;
+
+  font-size:6px;
+
+  letter-spacing:.14em;
+
+  text-transform:uppercase;
+}
+
+.live-value{
+  margin-top:4px;
+
+  overflow:hidden;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+
+  color:#e4e8eb;
+
+  font-size:9px;
+
+  font-weight:850;
+}
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card{
+  position:relative;
+
+  width:100%;
+
+  padding:18px;
+
+  border:
+    1px solid rgba(255,255,255,.17);
+
+  border-radius:25px;
+
+  background:
+    rgba(255,255,255,.045);
+
+  backdrop-filter:
+    blur(25px)
+    saturate(125%);
+
+  -webkit-backdrop-filter:
+    blur(25px)
+    saturate(125%);
+
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 rgba(255,255,255,.1),
+    inset 0 -1px 0 rgba(0,0,0,.55);
+
+  overflow:hidden;
+}
+
+.login-card::before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:13%;
+  right:13%;
+
+  height:2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #ffffff,
+      #aeb6bd,
+      #ffffff,
+      transparent
+    );
+
+  opacity:.7;
+}
+
+.card-head{
+  text-align:center;
+
+  margin-bottom:14px;
+}
+
+.card-head strong{
+  display:block;
+
+  font-size:14px;
+
+  font-weight:900;
+}
+
+.card-head span{
+  display:block;
+
+  margin-top:4px;
+
+  color:#737c84;
+
+  font-size:7px;
+}
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+.field{
+  margin-bottom:11px;
+}
+
+.label{
+  display:block;
+
+  margin:
+    0
+    0
+    6px
+    3px;
+
+  color:#8b949c;
+
+  font-size:7px;
+
+  font-weight:850;
+
+  letter-spacing:.1em;
+
+  text-transform:uppercase;
+}
+
+.select-wrap,
+.password-wrap{
+  position:relative;
+}
+
+.select,
+.input{
+  width:100%;
+  height:47px;
+
+  border:
+    1px solid rgba(255,255,255,.12);
+
+  border-radius:13px;
+
+  outline:none;
+
+  color:#edf0f3;
+
+  background:
+    rgba(0,0,0,.30);
+
+  box-shadow:
+    inset 0 2px 9px rgba(0,0,0,.20);
+
+  transition:
+    border-color .16s ease,
+    box-shadow .16s ease;
+}
+
+.select{
+  padding:
+    0
+    42px
+    0
+    13px;
+
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+.input{
+  padding:
+    0
+    46px
+    0
+    13px;
+}
+
+.select:focus,
+.input:focus{
+  border-color:
+    rgba(255,255,255,.38);
+
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.035),
+    inset 0 2px 9px rgba(0,0,0,.25);
+}
+
+.select-arrow{
+  position:absolute;
+
+  right:14px;
+  top:50%;
+
+  transform:translateY(-50%);
+
+  color:#aab1b8;
+
+  pointer-events:none;
+
+  font-size:16px;
+}
+
+/* =========================================================
+   ACCOUNT PREVIEW
+========================================================= */
+
+.selected-account{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin:
+    -5px
+    0
+    11px;
+
+  padding:8px 10px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+.selected-account small{
+  color:#666f78;
+
+  font-size:6px;
+
+  letter-spacing:.1em;
+
+  text-transform:uppercase;
+}
+
+.selected-account strong{
+  color:#cbd1d6;
+
+  font-size:8px;
+}
+
+/* =========================================================
+   PASSWORD EYE
+========================================================= */
+
+.eye{
+  position:absolute;
+
+  right:5px;
+  top:5px;
+
+  width:37px;
+  height:37px;
+
+  padding:0;
+
+  border:0;
+
+  border-radius:10px;
+
+  color:#a0a8af;
+
+  background:transparent;
+
+  display:grid;
+  place-items:center;
+
+  font-size:15px;
+}
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.options{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:8px;
+
+  margin:
+    2px
+    2px
+    13px;
+}
+
+.remember{
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  color:#8b949c;
+
+  font-size:7px;
+}
+
+.remember input{
+  width:15px;
+  height:15px;
+
+  margin:0;
+
+  appearance:none;
+
+  border:
+    1px solid #626b73;
+
+  border-radius:5px;
+
+  background:
+    rgba(0,0,0,.25);
+
+  position:relative;
+}
+
+.remember input:checked{
+  border-color:#e1e5e8;
+
+  background:
+    var(--silver-gradient);
+}
+
+.remember input:checked::after{
+  content:"";
+
+  position:absolute;
+
+  width:4px;
+  height:8px;
+
+  left:4px;
+  top:1px;
+
+  border:
+    solid #15191d;
+
+  border-width:
+    0
+    2px
+    2px
+    0;
+
+  transform:rotate(45deg);
+}
+
+.location{
+  color:#707982;
+
+  font-size:6px;
+
+  white-space:nowrap;
+}
+
+/* =========================================================
+   SILVER LOGIN BUTTON
+========================================================= */
+
+.login-button{
+  width:100%;
+  height:50px;
+
+  border:
+    1px solid rgba(255,255,255,.6);
+
+  border-radius:14px;
+
+  color:#111519;
+
+  background:
+    var(--silver-gradient);
+
+  font-size:9px;
+
+  font-weight:950;
+
+  letter-spacing:.12em;
+
+  text-transform:uppercase;
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.48),
+    inset 0 2px 0 rgba(255,255,255,.98),
+    inset 0 -3px 7px rgba(0,0,0,.25);
+
+  transition:
+    transform .15s ease,
+    filter .15s ease,
+    opacity .15s ease;
+}
+
+.login-button:hover{
+  filter:brightness(1.05);
+}
+
+.login-button:active{
+  transform:
+    translateY(2px)
+    scale(.99);
+}
+
+.login-button:disabled{
+  cursor:not-allowed;
+  opacity:.45;
+}
+
+.login-button.loading{
+  pointer-events:none;
+  opacity:.75;
+}
+
+.button-content{
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:9px;
+}
+
+.loader{
+  display:none;
+
+  width:17px;
+  height:17px;
+
+  border:
+    2px solid rgba(0,0,0,.16);
+
+  border-top-color:#111519;
+
+  border-radius:50%;
+
+  animation:
+    spin .65s linear infinite;
+}
+
+.login-button.loading .loader{
+  display:block;
+}
+
+.login-button.loading .button-text{
+  display:none;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status{
+  min-height:21px;
+
+  margin:
+    8px
+    2px
+    0;
+
+  text-align:center;
+
+  color:#7b848c;
+
+  font-size:7px;
+
+  line-height:1.5;
+}
+
+.status.error{
+  color:var(--danger);
+}
+
+.status.success{
+  color:var(--success);
+}
+
+/* =========================================================
+   ERROR SHAKE
+========================================================= */
+
+.login-error{
+  animation:
+    shake .65s ease-in-out;
+}
+
+.password-error{
+  border-color:
+    rgba(255,110,110,.55)
+    !important;
+
+  box-shadow:
+    0 0 0 3px rgba(255,90,90,.04),
+    0 0 24px rgba(255,80,80,.07),
+    inset 0 2px 8px rgba(0,0,0,.3)
+    !important;
+}
+
+@keyframes shake{
+  0%,100%{
+    transform:translateX(0);
+  }
+
+  15%{
+    transform:translateX(-9px);
+  }
+
+  30%{
+    transform:translateX(9px);
+  }
+
+  45%{
+    transform:translateX(-7px);
+  }
+
+  60%{
+    transform:translateX(7px);
+  }
+
+  75%{
+    transform:translateX(-4px);
+  }
+
+  90%{
+    transform:translateX(4px);
+  }
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  margin-top:9px;
+
+  text-align:center;
+}
+
+.footer p{
+  margin:0;
+
+  color:#555e66;
+
+  font-size:6px;
+
+  letter-spacing:.12em;
+
+  text-transform:uppercase;
+}
+
+.footer strong{
+  color:#7b848c;
+}
+
+.footer-line{
+  display:flex;
+
+  justify-content:center;
+  align-items:center;
+
+  gap:6px;
+
+  margin-top:5px;
+
+  color:#505960;
+
+  font-size:6px;
+}
+
+.prayer-pulse{
+  width:5px;
+  height:5px;
+
+  border-radius:50%;
+
+  background:#d8dde1;
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,.55);
+
+  animation:
+    pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse{
+  0%,100%{
+    opacity:.4;
+  }
+
+  50%{
+    opacity:1;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-height:720px){
+
+  .header{
+    height:68px;
+  }
+
+  .main{
+    padding-top:65px;
+  }
+
+  .logo-stage{
+    width:92px;
+    margin-bottom:5px;
+  }
+
+  .title{
+    margin-bottom:7px;
+  }
+
+  .title h1{
+    font-size:15px;
+  }
+
+  .live-grid{
+    margin-bottom:6px;
+  }
+
+  .live-card{
+    padding:7px 9px;
+  }
+
+  .login-card{
+    padding:14px 15px;
+    border-radius:21px;
+  }
+
+  .card-head{
+    margin-bottom:9px;
+  }
+
+  .field{
+    margin-bottom:7px;
+  }
+
+  .select,
+  .input{
+    height:42px;
+  }
+
+  .eye{
+    height:32px;
+    top:5px;
+  }
+
+  .options{
+    margin-bottom:8px;
+  }
+
+  .login-button{
+    height:44px;
+  }
+}
+
+@media(min-width:700px){
+
+  .shell{
+    width:430px;
+  }
+
+  .logo-stage{
+    width:140px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+  <!-- Transparent image layer -->
+  <div
+    class="background-image"
+    aria-hidden="true">
+  </div>
+
+  <!-- =======================================================
+       HEADER
+  ======================================================== -->
+
+  <header class="header">
+
+    <div class="brand">
+
+      <img
+        class="brand-logo"
+        src="logo.png"
+        alt="MISBAHUL 'ILM SCHOOLS"
+      >
+
+      <div>
+        <span class="brand-name">
+          MIS-NEXUS™
+        </span>
+
+        <span class="brand-subtitle">
+          Class Attendance Gateway
+        </span>
+      </div>
+
+    </div>
+
+    <div class="header-right">
+
+      <button
+        id="themeButton"
+        class="theme-button"
+        type="button"
+        aria-label="Change theme"
+        title="Change theme"
+      >
+        <span class="theme-symbol">◐</span>
+      </button>
+
+      <div class="secure">
+        <span class="secure-dot"></span>
+        Secure Access
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- =======================================================
+       MAIN
+  ======================================================== -->
+
+  <main class="main">
+
+    <section class="shell">
+
+      <!-- ===================================================
+           3D SILVER LOGO
+      ==================================================== -->
+
+      <div class="logo-stage">
+
+        <div class="logo-ring"></div>
+
+        <img
+          class="main-logo"
+          src="logo.png"
+          alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+        >
+
+      </div>
+
+      <!-- ===================================================
+           TITLE
+      ==================================================== -->
+
+      <div class="title">
+
+        <h1>
+          MISBAHUL 'ILM SCHOOLS ABUJA
+        </h1>
+
+        <p>
+          Connected Attendance • Connected School • Connected Classes
+        </p>
+
+      </div>
+
+      <!-- ===================================================
+           LIVE DATA
+      ==================================================== -->
+
+      <div class="live-grid">
+
+        <div class="live-card">
+
+          <div class="live-label">
+            Nigeria • WAT
+          </div>
+
+          <div
+            class="live-value"
+            id="liveClock"
+          >
+            Loading clock…
+          </div>
+
+        </div>
+
+        <div class="live-card">
+
+          <div class="live-label">
+            Prayer
+          </div>
+
+          <div
+            class="live-value"
+            id="prayerStatus"
+          >
+            Loading prayer…
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ===================================================
+           LOGIN
+      ==================================================== -->
+
+      <form
+        class="login-card"
+        id="loginCard"
+        autocomplete="on"
+        novalidate
+      >
+
+        <div class="card-head">
+
+          <strong>
+            Class Login
+          </strong>
+
+          <span>
+            Select your class to continue to its authorized dashboard
+          </span>
+
+        </div>
+
+        <!-- CLASS -->
+
+        <div class="field">
+
+          <label
+            class="label"
+            for="classSelect"
+          >
+            Select Class
+          </label>
+
+          <div class="select-wrap">
+
+            <select
+              id="classSelect"
+              class="select"
+              autocomplete="organization"
+              required
+            >
+
+              <option value="">
+                Select your class
+              </option>
+
+              <option value="pre_nursery">
+                Pre-Nursery
+              </option>
+
+              <option value="nursery_one">
+                Nursery One
+              </option>
+
+              <option value="nursery_two">
+                Nursery Two
+              </option>
+
+              <option value="nursery_three">
+                Nursery Three
+              </option>
+
+              <option value="primary_one">
+                Primary One
+              </option>
+
+              <option value="primary_two">
+                Primary Two
+              </option>
+
+              <option value="primary_three">
+                Primary Three
+              </option>
+
+              <option value="primary_four">
+                Primary Four
+              </option>
+
+              <option value="primary_five">
+                Primary Five
+              </option>
+
+              <option value="jss1">
+                JSS 1
+              </option>
+
+              <option value="jss2">
+                JSS 2
+              </option>
+
+              <option value="jss3">
+                JSS 3
+              </option>
+
+              <option value="ss1">
+                SS 1
+              </option>
+
+              <option value="ss2">
+                SS 2
+              </option>
+
+              <option value="ss3">
+                SS 3
+              </option>
+
+              <option value="darul_quran">
+                Darul Quran
+              </option>
+
+              <option value="special_ict">
+                Special ICT Class
+              </option>
+
+              <option value="arabic_studies">
+                Arabic Studies
+              </option>
+
+              <option value="quran_memorization">
+                Quran Memorization
+              </option>
+
+              <option value="learning_support">
+                Learning Support
+              </option>
+
+            </select>
+
+            <span class="select-arrow">
+              ⌄
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- AUTHORIZED ACCOUNT -->
+
+        <div
+          id="selectedAccount"
+          class="selected-account"
+          hidden
+        >
+
+          <small>
+            Authorized account
+          </small>
+
+          <strong id="selectedEmail">
+            —
+          </strong>
+
+        </div>
+
+        <!-- PASSWORD -->
+
+        <div class="field">
+
+          <label
+            class="label"
+            for="password"
+          >
+            Password
+          </label>
+
+          <div class="password-wrap">
+
+            <input
+              id="password"
+              class="input"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Enter class password"
+              minlength="6"
+              required
+              disabled
+            >
+
+            <button
+              id="togglePassword"
+              class="eye"
+              type="button"
+              aria-label="Show password"
+              title="Show password"
+            >
+              ◉
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- OPTIONS -->
+
+        <div class="options">
+
+          <label class="remember">
+
+            <input
+              id="rememberMe"
+              type="checkbox"
+            >
+
+            <span>
+              Remember this class
+            </span>
+
+          </label>
+
+          <span
+            id="locationState"
+            class="location"
+          >
+            Location: loading…
+          </span>
+
+        </div>
+
+        <!-- LOGIN BUTTON -->
+
+        <button
+          id="loginButton"
+          class="login-button"
+          type="submit"
+          disabled
+        >
+
+          <span class="button-content">
+
+            <span class="button-text">
+              ENTER CLASS DASHBOARD
+            </span>
+
+            <span class="loader"></span>
+
+          </span>
+
+        </button>
+
+        <!-- STATUS -->
+
+        <div
+          id="status"
+          class="status"
+          aria-live="polite"
+        ></div>
+
+      </form>
+
+      <!-- ===================================================
+           FOOTER
+      ==================================================== -->
+
+      <footer class="footer">
+
+        <p>
+          Protected Institutional Access •
+          <strong>MIS-NEXUS™</strong>
+        </p>
+
+        <div class="footer-line">
+
+          <span class="prayer-pulse"></span>
+
+          MISBAHUL 'ILM SCHOOLS ABUJA
+
+        </div>
+
+      </footer>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+
+/* =========================================================
+   MIS-NEXUS™ APPLICATION
+========================================================= */
+
+"use strict";
+
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
+
+const SUPABASE_URL =
+  "https://uehieffepkjyijmipasf.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_8rUPwI0Q-HPsLndJYmIEgQ_XBsFA6yw";
+
+let supabaseClient = null;
+
+/* =========================================================
+   EXACT 20 CLASS ACCOUNTS
+========================================================= */
+
+const CLASS_ACCOUNTS = Object.freeze({
+
+  pre_nursery:{
+    name:"Pre-Nursery",
+    email:"nexus001@gmail.com"
+  },
+
+  nursery_one:{
+    name:"Nursery One",
+    email:"nexus002@gmail.com"
+  },
+
+  nursery_two:{
+    name:"Nursery Two",
+    email:"nexus003@gmail.com"
+  },
+
+  nursery_three:{
+    name:"Nursery Three",
+    email:"nexus004@gmail.com"
+  },
+
+  primary_one:{
+    name:"Primary One",
+    email:"nexus005@gmail.com"
+  },
+
+  primary_two:{
+    name:"Primary Two",
+    email:"nexus006@gmail.com"
+  },
+
+  primary_three:{
+    name:"Primary Three",
+    email:"nexus007@gmail.com"
+  },
+
+  primary_four:{
+    name:"Primary Four",
+    email:"nexus008@gmail.com"
+  },
+
+  primary_five:{
+    name:"Primary Five",
+    email:"nexus009@gmail.com"
+  },
+
+  jss1:{
+    name:"JSS 1",
+    email:"nexus010@gmail.com"
+  },
+
+  jss2:{
+    name:"JSS 2",
+    email:"nexus011@gmail.com"
+  },
+
+  jss3:{
+    name:"JSS 3",
+    email:"nexus012@gmail.com"
+  },
+
+  ss1:{
+    name:"SS 1",
+    email:"nexus013@gmail.com"
+  },
+
+  ss2:{
+    name:"SS 2",
+    email:"nexus014@gmail.com"
+  },
+
+  ss3:{
+    name:"SS 3",
+    email:"nexus015@gmail.com"
+  },
+
+  darul_quran:{
+    name:"Darul Quran",
+    email:"nexus016@gmail.com"
+  },
+
+  special_ict:{
+    name:"Special ICT Class",
+    email:"nexus017@gmail.com"
+  },
+
+  arabic_studies:{
+    name:"Arabic Studies",
+    email:"nexus018@gmail.com"
+  },
+
+  quran_memorization:{
+    name:"Quran Memorization",
+    email:"nexus019@gmail.com"
+  },
+
+  learning_support:{
+    name:"Learning Support",
+    email:"nexus020@gmail.com"
+  }
+
+});
+
+/* =========================================================
+   STATE
+========================================================= */
+
+const state = {
+
+  selectedClass:null,
+
+  authenticating:false,
+
+  supabaseReady:false,
+
+  prayerTimes:null,
+
+  prayerDate:null,
+
+  prayerAudio:null,
+
+  prayerAlarmed:{},
+
+  location:null
+
+};
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const DOM = {
+
+  loginCard:
+    document.getElementById("loginCard"),
+
+  classSelect:
+    document.getElementById("classSelect"),
+
+  selectedAccount:
+    document.getElementById("selectedAccount"),
+
+  selectedEmail:
+    document.getElementById("selectedEmail"),
+
+  password:
+    document.getElementById("password"),
+
+  togglePassword:
+    document.getElementById("togglePassword"),
+
+  remember:
+    document.getElementById("rememberMe"),
+
+  loginButton:
+    document.getElementById("loginButton"),
+
+  status:
+    document.getElementById("status"),
+
+  liveClock:
+    document.getElementById("liveClock"),
+
+  prayerStatus:
+    document.getElementById("prayerStatus"),
+
+  locationState:
+    document.getElementById("locationState"),
+
+  themeButton:
+    document.getElementById("themeButton")
+
+};
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(message,type=""){
+
+  DOM.status.textContent =
+    message || "";
+
+  DOM.status.className =
+    "status " + type;
+
+}
+
+function clearStatus(){
+
+  setStatus("");
+
+}
+
+/* =========================================================
+   SUPABASE INITIALIZATION
+   IMPORTANT:
+   Nothing calls this during visual startup.
+========================================================= */
+
+function initializeSupabase(){
+
+  if(supabaseClient){
+
+    return supabaseClient;
+
+  }
+
+  if(
+    !window.supabase ||
+    typeof window.supabase.createClient !== "function"
+  ){
+
+    throw new Error(
+      "The secure authentication library has not loaded yet. Please check your internet connection and try again."
+    );
+
+  }
+
+  supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY,
+      {
+        auth:{
+          persistSession:true,
+          autoRefreshToken:true,
+          detectSessionInUrl:true
+        }
+      }
+    );
+
+  state.supabaseReady = true;
+
+  return supabaseClient;
+
+}
+
+/* =========================================================
+   TIMEOUT HELPER
+========================================================= */
+
+function withTimeout(promise,ms,message){
+
+  let timer;
+
+  const timeout =
+    new Promise((_,reject)=>{
+
+      timer =
+        setTimeout(
+          ()=>{
+            reject(
+              new Error(message)
+            );
+          },
+          ms
+        );
+
+    });
+
+  return Promise.race([
+    promise,
+    timeout
+  ]).finally(()=>{
+    clearTimeout(timer);
+  });
+
+}
+
+/* =========================================================
+   CLASS SELECTION
+========================================================= */
+
+const REMEMBER_KEY =
+  "MIS_NEXUS_CLASS_SELECTION";
+
+function updateSelectedClass(){
+
+  const key =
+    DOM.classSelect.value;
+
+  const account =
+    CLASS_ACCOUNTS[key];
+
+  clearStatus();
+
+  if(!account){
+
+    state.selectedClass = null;
+
+    DOM.selectedAccount.hidden =
+      true;
+
+    DOM.password.value =
+      "";
+
+    DOM.password.disabled =
+      true;
+
+    DOM.loginButton.disabled =
+      true;
+
+    return;
+
+  }
+
+  state.selectedClass = key;
+
+  DOM.selectedEmail.textContent =
+    account.email;
+
+  DOM.selectedAccount.hidden =
+    false;
+
+  DOM.password.disabled =
+    false;
+
+  DOM.loginButton.disabled =
+    false;
+
+}
+
+DOM.classSelect.addEventListener(
+  "change",
+  updateSelectedClass
+);
+
+/* =========================================================
+   REMEMBER CLASS
+========================================================= */
+
+function saveRememberedClass(){
+
+  try{
+
+    if(
+      DOM.remember.checked &&
+      state.selectedClass
+    ){
+
+      localStorage.setItem(
+        REMEMBER_KEY,
+        state.selectedClass
+      );
+
+    }else{
+
+      localStorage.removeItem(
+        REMEMBER_KEY
+      );
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Remember class storage unavailable:",
+      error
+    );
+
+  }
+
+}
+
+function loadRememberedClass(){
+
+  try{
+
+    const saved =
+      localStorage.getItem(
+        REMEMBER_KEY
+      );
+
+    if(
+      saved &&
+      CLASS_ACCOUNTS[saved]
+    ){
+
+      DOM.classSelect.value =
+        saved;
+
+      DOM.remember.checked =
+        true;
+
+      updateSelectedClass();
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Remember class load:",
+      error
+    );
+
+  }
+
+}
+
+/* =========================================================
+   PASSWORD VISIBILITY
+========================================================= */
+
+DOM.togglePassword.addEventListener(
+  "click",
+  ()=>{
+
+    const visible =
+      DOM.password.type === "text";
+
+    DOM.password.type =
+      visible
+        ? "password"
+        : "text";
+
+    DOM.togglePassword.textContent =
+      visible
+        ? "◉"
+        : "◌";
+
+    DOM.togglePassword.setAttribute(
+      "aria-label",
+      visible
+        ? "Show password"
+        : "Hide password"
+    );
+
+    DOM.password.focus();
+
+  }
+);
+
+/* =========================================================
+   LOADING STATE
+========================================================= */
+
+function setLoading(loading){
+
+  state.authenticating =
+    loading;
+
+  DOM.loginButton.classList.toggle(
+    "loading",
+    loading
+  );
+
+  DOM.classSelect.disabled =
+    loading;
+
+  DOM.password.disabled =
+    loading;
+
+}
+
+/* =========================================================
+   ERROR ANIMATION
+========================================================= */
+
+function authenticationFailure(){
+
+  DOM.loginCard.classList.remove(
+    "login-error"
+  );
+
+  DOM.password.classList.remove(
+    "password-error"
+  );
+
+  void DOM.loginCard.offsetWidth;
+
+  DOM.loginCard.classList.add(
+    "login-error"
+  );
+
+  DOM.password.classList.add(
+    "password-error"
+  );
+
+  if(
+    "vibrate" in navigator
+  ){
+
+    try{
+
+      navigator.vibrate(
+        [80,60,80]
+      );
+
+    }catch{}
+
+  }
+
+  setTimeout(
+    ()=>{
+      DOM.loginCard.classList.remove(
+        "login-error"
+      );
+    },
+    700
+  );
+
+}
+
+/* =========================================================
+   SECURE CLASS VERIFICATION
+========================================================= */
+
+async function verifyClassAccount(
+  client,
+  authenticatedUser,
+  selectedAccount,
+  selectedKey
+){
+
+  const result =
+    await withTimeout(
+
+      client.rpc(
+        "mis_nexus_get_my_class"
+      ),
+
+      10000,
+
+      "Class verification timed out. Please try again."
+
+    );
+
+  const profile =
+    result.data;
+
+  const error =
+    result.error;
+
+  if(error){
+
+    console.error(
+      "MIS-NEXUS RPC error:",
+      error
+    );
+
+    throw new Error(
+      "Unable to verify the class account. Please try again."
+    );
+
+  }
+
+  const row =
+    Array.isArray(profile)
+      ? profile[0]
+      : profile;
+
+  if(!row){
+
+    throw new Error(
+      "This Supabase account is not registered to a class."
+    );
+
+  }
+
+  if(
+    row.status !== "active"
+  ){
+
+    throw new Error(
+      "This class account is inactive."
+    );
+
+  }
+
+  const authEmail =
+    String(
+      authenticatedUser.email || ""
+    )
+    .trim()
+    .toLowerCase();
+
+  const rowEmail =
+    String(
+      row.email || ""
+    )
+    .trim()
+    .toLowerCase();
+
+  const selectedEmail =
+    selectedAccount.email
+      .trim()
+      .toLowerCase();
+
+  if(
+    authEmail !== selectedEmail
+  ){
+
+    throw new Error(
+      "The authenticated account does not match the selected class."
+    );
+
+  }
+
+  if(
+    rowEmail !== selectedEmail
+  ){
+
+    throw new Error(
+      "The class account email does not match the authenticated account."
+    );
+
+  }
+
+  if(
+    row.class_key !== selectedKey
+  ){
+
+    throw new Error(
+      `This account belongs to ${row.class_name}.`
+    );
+
+  }
+
+  if(
+    String(row.user_id) !==
+    String(authenticatedUser.id)
+  ){
+
+    throw new Error(
+      "The authenticated user is not correctly linked to this class."
+    );
+
+  }
+
+  return row;
+
+}
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+DOM.loginCard.addEventListener(
+  "submit",
+  async event=>{
+
+    event.preventDefault();
+
+    if(state.authenticating){
+
+      return;
+
+    }
+
+    const key =
+      DOM.classSelect.value;
+
+    const account =
+      CLASS_ACCOUNTS[key];
+
+    if(!account){
+
+      setStatus(
+        "Select your class first.",
+        "error"
+      );
+
+      authenticationFailure();
+
+      return;
+
+    }
+
+    const password =
+      DOM.password.value;
+
+    if(!password){
+
+      setStatus(
+        "Enter your password.",
+        "error"
+      );
+
+      DOM.password.focus();
+
+      return;
+
+    }
+
+    if(password.length < 6){
+
+      setStatus(
+        "The password entered is invalid.",
+        "error"
+      );
+
+      authenticationFailure();
+
+      return;
+
+    }
+
+    if(!navigator.onLine){
+
+      setStatus(
+        "Internet connection is required for secure login.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    setLoading(true);
+
+    setStatus(
+      "Connecting securely…"
+    );
+
+    try{
+
+      const client =
+        initializeSupabase();
+
+      setStatus(
+        "Authenticating class account…"
+      );
+
+      const authResult =
+        await withTimeout(
+
+          client.auth.signInWithPassword({
+
+            email:
+              account.email,
+
+            password
+
+          }),
+
+          15000,
+
+          "Authentication timed out. Please check your internet connection and try again."
+
+        );
+
+      const authData =
+        authResult.data;
+
+      const authError =
+        authResult.error;
+
+      if(authError){
+
+        throw authError;
+
+      }
+
+      const user =
+        authData?.user;
+
+      if(!user?.id){
+
+        throw new Error(
+          "Authentication could not be completed."
+        );
+
+      }
+
+      setStatus(
+        "Account authenticated. Verifying class…"
+      );
+
+      const profile =
+        await verifyClassAccount(
+          client,
+          user,
+          account,
+          key
+        );
+
+      saveRememberedClass();
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_CLASS_KEY",
+        profile.class_key
+      );
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_CLASS_NAME",
+        profile.class_name
+      );
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_USER_ID",
+        user.id
+      );
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_CLASS_EMAIL",
+        profile.email
+      );
+
+      setStatus(
+        `Access verified. Opening ${profile.class_name}…`,
+        "success"
+      );
+
+      /*
+        Short delay only after SUCCESS.
+        There is no artificial delay during startup.
+      */
+      setTimeout(
+        ()=>{
+          window.location.assign(
+            "class-dashboard.html"
+          );
+        },
+        250
+      );
+
+    }catch(error){
+
+      console.error(
+        "MIS-NEXUS login error:",
+        error
+      );
+
+      /*
+        Supabase's normal invalid-password error is intentionally
+        presented without exposing unnecessary technical details.
+      */
+
+      let message =
+        error?.message ||
+        "Login failed. Please check your class and password.";
+
+      const technicalMessages = [
+        "Invalid login credentials",
+        "invalid login credentials",
+        "Email not confirmed"
+      ];
+
+      if(
+        technicalMessages.some(
+          text =>
+            message.includes(text)
+        )
+      ){
+
+        message =
+          "Incorrect class password or account credentials.";
+
+      }
+
+      authenticationFailure();
+
+      setStatus(
+        message,
+        "error"
+      );
+
+      /*
+        If authentication failed after a session was created,
+        clean it up.
+      */
+
+      try{
+
+        if(supabaseClient){
+
+          await supabaseClient.auth.signOut();
+
+        }
+
+      }catch{}
+
+    }finally{
+
+      setLoading(false);
+
+    }
+
+  }
+);
+
+/* =========================================================
+   EXISTING SESSION
+   NON-BLOCKING
+========================================================= */
+
+async function restoreExistingSession(){
+
+  try{
+
+    /*
+      Supabase initialization happens after the interface is
+      already visible.
+    */
+
+    const client =
+      initializeSupabase();
+
+    const result =
+      await withTimeout(
+
+        client.auth.getSession(),
+
+        5000,
+
+        "Session check timed out."
+
+      );
+
+    const session =
+      result.data?.session;
+
+    if(!session?.user){
+
+      return;
+
+    }
+
+    const profileResult =
+      await withTimeout(
+
+        client.rpc(
+          "mis_nexus_get_my_class"
+        ),
+
+        6000,
+
+        "Session verification timed out."
+
+      );
+
+    if(
+      profileResult.error
+    ){
+
+      console.warn(
+        "Existing session verification:",
+        profileResult.error
+      );
+
+      return;
+
+    }
+
+    const row =
+      Array.isArray(
+        profileResult.data
+      )
+        ? profileResult.data[0]
+        : profileResult.data;
+
+    if(
+      row?.status === "active"
+    ){
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_CLASS_KEY",
+        row.class_key
+      );
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_CLASS_NAME",
+        row.class_name
+      );
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_USER_ID",
+        session.user.id
+      );
+
+    }
+
+  }catch(error){
+
+    console.info(
+      "No restorable class session:",
+      error
+    );
+
+  }
+
+}
+
+/* =========================================================
+   AUTH STATE LISTENER
+========================================================= */
+
+function installAuthListener(){
+
+  try{
+
+    const client =
+      initializeSupabase();
+
+    client.auth.onAuthStateChange(
+      event=>{
+
+        if(
+          event === "SIGNED_OUT"
+        ){
+
+          sessionStorage.removeItem(
+            "MIS_NEXUS_CLASS_KEY"
+          );
+
+          sessionStorage.removeItem(
+            "MIS_NEXUS_CLASS_NAME"
+          );
+
+          sessionStorage.removeItem(
+            "MIS_NEXUS_USER_ID"
+          );
+
+          sessionStorage.removeItem(
+            "MIS_NEXUS_CLASS_EMAIL"
+          );
+
+        }
+
+      }
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Auth listener unavailable:",
+      error
+    );
+
+  }
+
+}
+
+/* =========================================================
+   NIGERIA CLOCK
+   LOCAL ONLY — NO NETWORK REQUEST
+========================================================= */
+
+function nigeriaClock(){
+
+  return new Intl.DateTimeFormat(
+    "en-NG",
+    {
+      timeZone:"Africa/Lagos",
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:true
+    }
+  ).format(
+    new Date()
+  );
+
+}
+
+function updateClock(){
+
+  DOM.liveClock.textContent =
+    nigeriaClock() +
+    " WAT";
+
+}
+
+updateClock();
+
+setInterval(
+  updateClock,
+  1000
+);
+
+/* =========================================================
+   LOCATION
+   COMPLETELY NON-BLOCKING
+========================================================= */
+
+function detectLocation(){
+
+  if(
+    !navigator.geolocation
+  ){
+
+    DOM.locationState.textContent =
+      "Location unavailable";
+
+    return;
+
+  }
+
+  DOM.locationState.textContent =
+    "Location: detecting…";
+
+  navigator.geolocation.getCurrentPosition(
+
+    position=>{
+
+      state.location = {
+
+        latitude:
+          Number(
+            position.coords.latitude
+              .toFixed(6)
+          ),
+
+        longitude:
+          Number(
+            position.coords.longitude
+              .toFixed(6)
+          ),
+
+        accuracy:
+          Math.round(
+            position.coords.accuracy
+          )
+
+      };
+
+      DOM.locationState.textContent =
+        `Location: ${state.location.accuracy}m`;
+
+    },
+
+    ()=>{
+
+      DOM.locationState.textContent =
+        "Location: not shared";
+
+    },
+
+    {
+
+      enableHighAccuracy:false,
+
+      timeout:5000,
+
+      maximumAge:300000
+
+    }
+
+  );
+
+}
+
+/* =========================================================
+   PRAYER TIMES
+   NON-BLOCKING
+========================================================= */
+
+const PRAYER_API =
+  "https://api.aladhan.com/v1/timingsByCity";
+
+const PRAYERS = [
+
+  {
+    key:"Fajr",
+    label:"Fajr"
+  },
+
+  {
+    key:"Dhuhr",
+    label:"Dhuhr"
+  },
+
+  {
+    key:"Asr",
+    label:"Asr"
+  },
+
+  {
+    key:"Maghrib",
+    label:"Maghrib"
+  },
+
+  {
+    key:"Isha",
+    label:"Isha"
+  }
+
+];
+
+function nigeriaDate(){
+
+  return new Intl.DateTimeFormat(
+    "en-CA",
+    {
+      timeZone:"Africa/Lagos",
+      year:"numeric",
+      month:"2-digit",
+      day:"2-digit"
+    }
+  ).format(
+    new Date()
+  );
+
+}
+
+function nigeriaMinutes(){
+
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-NG",
+      {
+        timeZone:"Africa/Lagos",
+        hour:"2-digit",
+        minute:"2-digit",
+        hour12:false
+      }
+    ).formatToParts(
+      new Date()
+    );
+
+  const hour =
+    Number(
+      parts.find(
+        p=>p.type==="hour"
+      )?.value || 0
+    );
+
+  const minute =
+    Number(
+      parts.find(
+        p=>p.type==="minute"
+      )?.value || 0
+    );
+
+  return (
+    hour * 60 +
+    minute
+  );
+
+}
+
+function prayerMinutes(value){
+
+  if(!value){
+
+    return null;
+
+  }
+
+  const clean =
+    String(value)
+      .split(" ")[0];
+
+  const parts =
+    clean.split(":");
+
+  if(parts.length < 2){
+
+    return null;
+
+  }
+
+  return (
+    Number(parts[0]) * 60 +
+    Number(parts[1])
+  );
+
+}
+
+async function loadPrayerTimes(){
+
+  try{
+
+    const params =
+      new URLSearchParams({
+
+        city:"Abuja",
+
+        country:"Nigeria",
+
+        method:"2"
+
+      });
+
+    const response =
+      await withTimeout(
+
+        fetch(
+          `${PRAYER_API}?${params}`,
+          {
+            cache:"no-store"
+          }
+        ),
+
+        7000,
+
+        "Prayer service timeout."
+
+      );
+
+    if(!response.ok){
+
+      throw new Error(
+        "Prayer service unavailable."
+      );
+
+    }
+
+    const json =
+      await response.json();
+
+    if(
+      json.code !== 200 ||
+      !json.data?.timings
+    ){
+
+      throw new Error(
+        "Prayer data unavailable."
+      );
+
+    }
+
+    state.prayerTimes =
+      json.data.timings;
+
+    state.prayerDate =
+      nigeriaDate();
+
+    state.prayerAlarmed = {};
+
+    updatePrayerDisplay();
+
+  }catch(error){
+
+    console.warn(
+      "Prayer service:",
+      error
+    );
+
+    DOM.prayerStatus.textContent =
+      "Prayer timing unavailable";
+
+  }
+
+}
+
+function updatePrayerDisplay(){
+
+  if(
+    !state.prayerTimes
+  ){
+
+    return;
+
+  }
+
+  const now =
+    nigeriaMinutes();
+
+  let next = null;
+
+  for(
+    const prayer of PRAYERS
+  ){
+
+    const minutes =
+      prayerMinutes(
+        state.prayerTimes[
+          prayer.key
+        ]
+      );
+
+    if(
+      minutes !== null &&
+      minutes > now
+    ){
+
+      next = {
+
+        ...prayer,
+
+        minutes,
+
+        time:
+          state.prayerTimes[
+            prayer.key
+          ]
+
+      };
+
+      break;
+
+    }
+
+  }
+
+  if(!next){
+
+    const first =
+      PRAYERS[0];
+
+    next = {
+
+      ...first,
+
+      minutes:
+        prayerMinutes(
+          state.prayerTimes[
+            first.key
+          ]
+        ),
+
+      time:
+        state.prayerTimes[
+          first.key
+        ]
+
+    };
+
+  }
+
+  let difference =
+    next.minutes - now;
+
+  if(
+    difference < 0
+  ){
+
+    difference += 1440;
+
+  }
+
+  DOM.prayerStatus.textContent =
+    `Next: ${next.label} ${next.time} • ${Math.floor(difference / 60)}h ${difference % 60}m`;
+
+}
+
+/* =========================================================
+   AZAN
+========================================================= */
+
+function createAzan(){
+
+  if(
+    state.prayerAudio
+  ){
+
+    return state.prayerAudio;
+
+  }
+
+  const audio =
+    new Audio(
+      "azan.mp3"
+    );
+
+  audio.preload =
+    "auto";
+
+  audio.volume =
+    .8;
+
+  state.prayerAudio =
+    audio;
+
+  return audio;
+
+}
+
+function playAzan(){
+
+  try{
+
+    const audio =
+      createAzan();
+
+    audio.currentTime =
+      0;
+
+    const promise =
+      audio.play();
+
+    if(
+      promise &&
+      typeof promise.catch ===
+      "function"
+    ){
+
+      promise.catch(
+        error=>{
+          console.info(
+            "Azan playback requires user interaction:",
+            error
+          );
+        }
+      );
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Azan:",
+      error
+    );
+
+  }
+
+}
+
+function checkPrayerAlarm(){
+
+  if(
+    !state.prayerTimes
+  ){
+
+    return;
+
+  }
+
+  const today =
+    nigeriaDate();
+
+  if(
+    state.prayerDate !== today
+  ){
+
+    loadPrayerTimes();
+
+    return;
+
+  }
+
+  const now =
+    nigeriaMinutes();
+
+  for(
+    const prayer of PRAYERS
+  ){
+
+    const minutes =
+      prayerMinutes(
+        state.prayerTimes[
+          prayer.key
+        ]
+      );
+
+    if(
+      minutes !== null &&
+      now === minutes &&
+      !state.prayerAlarmed[
+        prayer.key
+      ]
+    ){
+
+      state.prayerAlarmed[
+        prayer.key
+      ] = true;
+
+      playAzan();
+
+    }
+
+  }
+
+  updatePrayerDisplay();
+
+}
+
+setInterval(
+  checkPrayerAlarm,
+  1000
+);
+
+/*
+  Browser audio policy:
+  create the audio object after the first user interaction,
+  but do not make this interaction affect login.
+*/
+
+document.addEventListener(
+  "click",
+  ()=>{
+    try{
+      createAzan();
+    }catch{}
+  },
+  {
+    once:true,
+    passive:true
+  }
+);
+
+/* =========================================================
+   THEMES
+========================================================= */
+
+const THEMES = [
+
+  {
+    name:"Silver",
+
+    button:
+      "linear-gradient(145deg,#ffffff,#d8dde2,#89929b)"
+  },
+
+  {
+    name:"Light Silver",
+
+    button:
+      "linear-gradient(145deg,#ffffff,#eef1f3,#aeb6bd)"
+  },
+
+  {
+    name:"Dark Silver",
+
+    button:
+      "linear-gradient(145deg,#cfd5da,#929ba3,#59626a)"
+  },
+
+  {
+    name:"Platinum",
+
+    button:
+      "linear-gradient(145deg,#ffffff,#e8ebed,#b4bbc1)"
+  }
+
+];
+
+const THEME_KEY =
+  "MIS_NEXUS_THEME";
+
+function applyTheme(index){
+
+  const safeIndex =
+    index %
+    THEMES.length;
+
+  const theme =
+    THEMES[safeIndex];
+
+  DOM.themeButton.style.background =
+    theme.button;
+
+  DOM.themeButton.title =
+    `Theme: ${theme.name}`;
+
+  DOM.themeButton.setAttribute(
+    "aria-label",
+    `Theme: ${theme.name}. Tap to change.`
+  );
+
+  try{
+
+    localStorage.setItem(
+      THEME_KEY,
+      String(safeIndex)
+    );
+
+  }catch{}
+
+}
+
+function loadTheme(){
+
+  let index = 0;
+
+  try{
+
+    const saved =
+      Number(
+        localStorage.getItem(
+          THEME_KEY
+        )
+      );
+
+    if(
+      Number.isInteger(saved) &&
+      saved >= 0
+    ){
+
+      index =
+        saved %
+        THEMES.length;
+
+    }
+
+  }catch{}
+
+  applyTheme(index);
+
+}
+
+DOM.themeButton.addEventListener(
+  "click",
+  ()=>{
+
+    let current = 0;
+
+    try{
+
+      current =
+        Number(
+          localStorage.getItem(
+            THEME_KEY
+          ) || 0
+        );
+
+    }catch{}
+
+    applyTheme(
+      current + 1
+    );
+
+  }
+);
+
+/* =========================================================
+   ONLINE / OFFLINE
+========================================================= */
+
+window.addEventListener(
+  "offline",
+  ()=>{
+
+    if(
+      !state.authenticating
+    ){
+
+      setStatus(
+        "Internet connection unavailable. Login requires an active connection.",
+        "error"
+      );
+
+    }
+
+  }
+);
+
+window.addEventListener(
+  "online",
+  ()=>{
+
+    if(
+      DOM.status.classList.contains(
+        "error"
+      )
+    ){
+
+      clearStatus();
+
+    }
+
+    /*
+      These are background services.
+      They never block login.
+    */
+
+    loadPrayerTimes();
+
+  }
+);
+
+/* =========================================================
+   STARTUP
+   CRITICAL:
+   VISUAL UI FIRST.
+   NO AWAIT.
+========================================================= */
+
+function startApplication(){
+
+  /*
+    1. Immediately restore local UI state.
+  */
+
+  loadTheme();
+
+  loadRememberedClass();
+
+  updateClock();
+
+  /*
+    2. Background services.
+       None blocks the login interface.
+  */
+
+  setTimeout(
+    detectLocation,
+    50
+  );
+
+  setTimeout(
+    loadPrayerTimes,
+    100
+  );
+
+  /*
+    3. Supabase session restoration is deliberately delayed.
+       It cannot freeze the login interface.
+  */
+
+  setTimeout(
+    ()=>{
+      restoreExistingSession();
+    },
+    150
+  );
+
+  setTimeout(
+    ()=>{
+      installAuthListener();
+    },
+    300
+  );
+
+}
+
+/*
+  Wait only for DOM parsing.
+  Do not wait for Supabase.
+  Do not wait for prayer API.
+  Do not wait for location.
+*/
+
+if(
+  document.readyState ===
+  "loading"
+){
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    startApplication,
+    {
+      once:true
+    }
+  );
+
+}else{
+
+  startApplication();
+
+}
+
+</script>
+
+</body>
+</html>
