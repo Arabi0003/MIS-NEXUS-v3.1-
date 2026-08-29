@@ -1,0 +1,3265 @@
+<!DOCTYPE html>
+<html lang="en-NG">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+>
+
+<meta
+    name="theme-color"
+    content="#07090b"
+>
+
+<meta
+    name="mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+>
+
+<meta
+    name="application-name"
+    content="MIS-NEXUS™"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="MIS-NEXUS™"
+>
+
+<title>MIS-NEXUS™ — Boarders Attendance</title>
+
+<link
+    rel="manifest"
+    href="manifest.json"
+>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+
+body{
+    font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:#050608;
+
+    color:#f5f6f7;
+
+    user-select:none;
+
+    -webkit-user-select:none;
+
+    touch-action:manipulation;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+button:disabled{
+    cursor:not-allowed;
+}
+
+
+/* =========================================================
+   APPLICATION
+========================================================= */
+
+#app{
+
+    --gold:#d5b35c;
+
+    --gold-light:#f1d98e;
+
+    --gold-soft:rgba(213,179,92,.18);
+
+    --text:#f5f6f7;
+
+    --muted:#858b93;
+
+    --border:rgba(255,255,255,.13);
+
+    --glass:rgba(12,15,18,.32);
+
+    width:100%;
+
+    height:100dvh;
+
+    min-height:560px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    isolation:isolate;
+
+    background:
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(207,173,82,.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 5% 100%,
+            rgba(255,255,255,.035),
+            transparent 35%
+        ),
+        #050608;
+}
+
+
+/* =========================================================
+   IMAGE WATERMARK
+========================================================= */
+
+.watermark{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:-5;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    pointer-events:none;
+}
+
+.watermark::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:min(100vw,900px);
+
+    height:min(100vw,900px);
+
+    border-radius:50%;
+
+    border:1px solid
+        rgba(255,255,255,.035);
+
+    transform:
+        perspective(800px)
+        rotateX(66deg)
+        rotateZ(-8deg);
+
+    box-shadow:
+        0 0 80px
+        rgba(214,178,80,.045);
+}
+
+.watermark img{
+
+    width:min(92vw,820px);
+
+    max-height:92vh;
+
+    object-fit:contain;
+
+    opacity:.055;
+
+    filter:
+        grayscale(1)
+        contrast(1.1)
+        brightness(1.5)
+        drop-shadow(
+            0 35px 50px
+            rgba(0,0,0,.7)
+        );
+
+    transform:
+        perspective(1000px)
+        rotateX(4deg)
+        rotateY(-8deg)
+        rotateZ(-7deg);
+
+    animation:
+        watermarkFloat
+        12s
+        ease-in-out
+        infinite;
+}
+
+@keyframes watermarkFloat{
+
+    0%,
+    100%{
+        transform:
+            perspective(1000px)
+            rotateX(4deg)
+            rotateY(-8deg)
+            rotateZ(-7deg)
+            scale(1);
+    }
+
+    50%{
+        transform:
+            perspective(1000px)
+            rotateX(2deg)
+            rotateY(6deg)
+            rotateZ(-5deg)
+            scale(1.025);
+    }
+}
+
+
+/* =========================================================
+   LIGHT GRID
+========================================================= */
+
+#app::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:-3;
+
+    pointer-events:none;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,.012) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.012) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        46px 46px,
+        46px 46px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+
+    position:absolute;
+
+    top:0;
+    left:0;
+    right:0;
+
+    min-height:76px;
+
+    padding:
+        max(13px,env(safe-area-inset-top))
+        max(17px,env(safe-area-inset-right))
+        12px
+        max(17px,env(safe-area-inset-left));
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    z-index:30;
+}
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    min-width:0;
+}
+
+.brand-logo{
+
+    width:39px;
+
+    height:39px;
+
+    object-fit:contain;
+
+    border-radius:12px;
+
+    filter:
+        drop-shadow(
+            0 10px 18px
+            rgba(0,0,0,.6)
+        );
+}
+
+.brand-text{
+
+    min-width:0;
+}
+
+.brand-text strong{
+
+    display:block;
+
+    font-size:11px;
+
+    letter-spacing:.15em;
+
+    line-height:1;
+}
+
+.brand-text span{
+
+    display:block;
+
+    margin-top:5px;
+
+    color:#747b83;
+
+    font-size:7px;
+
+    letter-spacing:.13em;
+
+    text-transform:uppercase;
+}
+
+.version{
+
+    color:#60666e;
+
+    font-size:7px;
+
+    letter-spacing:.12em;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+
+    width:100%;
+
+    height:100%;
+
+    padding:
+        86px
+        16px
+        max(20px,env(safe-area-inset-bottom));
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+}
+
+.stage{
+
+    width:min(100%,470px);
+
+    max-height:
+        calc(100dvh - 105px);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo-ring{
+
+    width:
+        clamp(
+            108px,
+            25vw,
+            145px
+        );
+
+    aspect-ratio:1;
+
+    position:relative;
+
+    display:grid;
+
+    place-items:center;
+
+    margin-bottom:13px;
+
+    perspective:1000px;
+}
+
+.logo-ring::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    box-shadow:
+        0 0 0 8px
+        rgba(255,255,255,.014),
+
+        0 28px 65px
+        rgba(0,0,0,.55),
+
+        inset 0 0 35px
+        rgba(255,255,255,.045);
+}
+
+.logo-ring::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-9px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        var(--gold-soft);
+
+    transform:
+        rotateX(68deg)
+        rotateZ(7deg);
+
+    box-shadow:
+        0 0 25px
+        rgba(214,178,80,.04);
+}
+
+.logo{
+
+    width:72%;
+
+    height:72%;
+
+    object-fit:contain;
+
+    border-radius:50%;
+
+    filter:
+        drop-shadow(
+            0 20px 25px
+            rgba(0,0,0,.65)
+        );
+
+    animation:
+        logoFloat
+        5s
+        ease-in-out
+        infinite;
+}
+
+@keyframes logoFloat{
+
+    0%,
+    100%{
+        transform:
+            translateY(0)
+            rotateY(-3deg);
+    }
+
+    50%{
+        transform:
+            translateY(-5px)
+            rotateY(7deg);
+    }
+}
+
+
+/* =========================================================
+   SCHOOL TITLE
+========================================================= */
+
+.school{
+
+    text-align:center;
+
+    margin-bottom:15px;
+}
+
+.school h1{
+
+    margin:0;
+
+    font-size:
+        clamp(
+            15px,
+            4vw,
+            21px
+        );
+
+    line-height:1.15;
+
+    font-weight:900;
+
+    letter-spacing:.045em;
+}
+
+.school p{
+
+    margin:6px 0 0;
+
+    color:#777e86;
+
+    font-size:7px;
+
+    letter-spacing:.21em;
+
+    text-transform:uppercase;
+}
+
+
+/* =========================================================
+   LIVE INFORMATION
+========================================================= */
+
+.info-strip{
+
+    width:min(100%,390px);
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:8px;
+
+    margin-bottom:10px;
+}
+
+.info-card{
+
+    min-width:0;
+
+    padding:10px 12px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:14px;
+
+    background:
+        rgba(14,17,20,.27);
+
+    backdrop-filter:
+        blur(14px);
+
+    -webkit-backdrop-filter:
+        blur(14px);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.045),
+
+        0 12px 30px
+        rgba(0,0,0,.2);
+}
+
+.info-label{
+
+    color:#717880;
+
+    font-size:6.5px;
+
+    letter-spacing:.15em;
+
+    text-transform:uppercase;
+}
+
+.info-value{
+
+    margin-top:5px;
+
+    color:#e8eaed;
+
+    font-size:10px;
+
+    font-weight:850;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card{
+
+    width:min(100%,390px);
+
+    padding:20px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(29,27,21,.30),
+            rgba(6,8,10,.30)
+        );
+
+    backdrop-filter:
+        blur(18px)
+        saturate(125%);
+
+    -webkit-backdrop-filter:
+        blur(18px)
+        saturate(125%);
+
+    box-shadow:
+
+        0 35px 80px
+        rgba(0,0,0,.52),
+
+        inset 0 1px 0
+        rgba(255,255,255,.075),
+
+        inset 0 -1px 0
+        rgba(0,0,0,.55);
+}
+
+.login-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:13%;
+
+    right:13%;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold-light),
+            transparent
+        );
+
+    opacity:.72;
+}
+
+.login-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+
+    height:180px;
+
+    right:-110px;
+
+    top:-110px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(215,179,92,.08),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   CARD HEADING
+========================================================= */
+
+.heading{
+
+    text-align:center;
+
+    margin-bottom:16px;
+}
+
+.heading strong{
+
+    display:block;
+
+    font-size:15px;
+
+    font-weight:900;
+
+    letter-spacing:.01em;
+}
+
+.heading span{
+
+    display:block;
+
+    margin-top:5px;
+
+    color:#777e87;
+
+    font-size:7.5px;
+
+    letter-spacing:.06em;
+}
+
+
+/* =========================================================
+   BOARDING BADGE
+========================================================= */
+
+.boarding-badge{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    width:max-content;
+
+    max-width:100%;
+
+    margin:
+        0
+        auto
+        15px;
+
+    padding:
+        6px
+        11px;
+
+    border:
+        1px solid
+        rgba(213,179,92,.17);
+
+    border-radius:999px;
+
+    background:
+        rgba(213,179,92,.045);
+
+    color:#bda96e;
+
+    font-size:6.5px;
+
+    font-weight:800;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+}
+
+.badge-dot{
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:#cdb35e;
+
+    box-shadow:
+        0 0 9px
+        rgba(213,179,92,.75);
+
+    animation:
+        pulseDot
+        2s
+        ease-in-out
+        infinite;
+}
+
+@keyframes pulseDot{
+
+    0%,
+    100%{
+        opacity:.55;
+        transform:scale(.85);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.field{
+
+    margin-bottom:12px;
+}
+
+.field-label{
+
+    display:block;
+
+    margin:
+        0
+        0
+        6px
+        3px;
+
+    color:#858c94;
+
+    font-size:7.5px;
+
+    font-weight:800;
+
+    letter-spacing:.1em;
+
+    text-transform:uppercase;
+}
+
+.input-wrap{
+
+    position:relative;
+}
+
+.input{
+
+    width:100%;
+
+    height:47px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    border-radius:13px;
+
+    outline:none;
+
+    padding:
+        0
+        44px
+        0
+        13px;
+
+    color:#f1f2f4;
+
+    background:
+        rgba(3,5,7,.42);
+
+    box-shadow:
+        inset 0 2px 8px
+        rgba(0,0,0,.3);
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
+
+    user-select:text;
+
+    -webkit-user-select:text;
+}
+
+.input:focus{
+
+    border-color:
+        rgba(213,179,92,.42);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(213,179,92,.055),
+
+        inset 0 2px 8px
+        rgba(0,0,0,.3);
+}
+
+.input::placeholder{
+
+    color:#4e555d;
+}
+
+
+/* =========================================================
+   PASSWORD BUTTON
+========================================================= */
+
+.password-button{
+
+    position:absolute;
+
+    right:6px;
+
+    top:5px;
+
+    width:36px;
+
+    height:36px;
+
+    border:0;
+
+    border-radius:10px;
+
+    color:#777f88;
+
+    background:transparent;
+
+    transition:
+        background .2s,
+        color .2s;
+}
+
+.password-button:active{
+
+    background:
+        rgba(255,255,255,.06);
+
+    color:#fff;
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.options{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin:
+        3px
+        2px
+        14px;
+}
+
+.remember{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    color:#898f97;
+
+    font-size:7.5px;
+}
+
+.remember input{
+
+    appearance:none;
+
+    width:14px;
+
+    height:14px;
+
+    margin:0;
+
+    border:
+        1px solid
+        #454b52;
+
+    border-radius:4px;
+
+    background:#080a0c;
+
+    position:relative;
+}
+
+.remember input:checked{
+
+    background:
+        var(--gold);
+
+    border-color:
+        var(--gold);
+}
+
+.remember input:checked::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:4px;
+
+    height:7px;
+
+    left:4px;
+
+    top:1px;
+
+    border:
+        solid
+        #15120b;
+
+    border-width:
+        0
+        2px
+        2px
+        0;
+
+    transform:rotate(45deg);
+}
+
+.forgot{
+
+    border:0;
+
+    background:transparent;
+
+    color:#aaaeb4;
+
+    font-size:7.5px;
+
+    padding:4px;
+
+    text-decoration:none;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button{
+
+    width:100%;
+
+    height:49px;
+
+    border:0;
+
+    border-radius:14px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    color:#17130a;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f1d98e,
+            #d6b55f 48%,
+            #927b3e
+        );
+
+    font-size:9.5px;
+
+    font-weight:950;
+
+    letter-spacing:.13em;
+
+    text-transform:uppercase;
+
+    box-shadow:
+
+        0 12px 27px
+        rgba(0,0,0,.43),
+
+        inset 0 1px 1px
+        rgba(255,255,255,.85),
+
+        inset 0 -2px 5px
+        rgba(0,0,0,.18);
+
+    transition:
+        transform .16s ease,
+        filter .16s ease,
+        opacity .2s ease;
+}
+
+.login-button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    bottom:0;
+
+    width:80px;
+
+    left:-100px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.38),
+            transparent
+        );
+
+    transform:skewX(-18deg);
+
+    animation:
+        buttonShine
+        4s
+        ease-in-out
+        infinite;
+}
+
+@keyframes buttonShine{
+
+    0%{
+        left:-110px;
+    }
+
+    35%,
+    100%{
+        left:calc(100% + 110px);
+    }
+}
+
+.login-button:active{
+
+    transform:
+        translateY(2px)
+        scale(.99);
+}
+
+.login-button.loading{
+
+    pointer-events:none;
+
+    opacity:.72;
+}
+
+.button-label{
+
+    display:block;
+}
+
+.spinner{
+
+    display:none;
+
+    width:17px;
+
+    height:17px;
+
+    margin:auto;
+
+    border:
+        2px solid
+        rgba(0,0,0,.2);
+
+    border-top-color:
+        #17130a;
+
+    border-radius:50%;
+
+    animation:
+        spin .7s
+        linear
+        infinite;
+}
+
+.login-button.loading .button-label{
+
+    display:none;
+}
+
+.login-button.loading .spinner{
+
+    display:block;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status{
+
+    min-height:20px;
+
+    margin:
+        9px
+        2px
+        0;
+
+    text-align:center;
+
+    color:#747b84;
+
+    font-size:7.5px;
+
+    line-height:1.4;
+
+    transition:
+        color .2s ease;
+}
+
+.status.error{
+
+    color:#e09a9a;
+
+    animation:
+        statusShake
+        .35s
+        ease;
+}
+
+.status.success{
+
+    color:#b8cda9;
+}
+
+@keyframes statusShake{
+
+    0%,
+    100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-4px);
+    }
+
+    75%{
+        transform:translateX(4px);
+    }
+}
+
+
+/* =========================================================
+   SECURITY LINE
+========================================================= */
+
+.security{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:6px;
+
+    margin-top:12px;
+
+    color:#515860;
+
+    font-size:6.5px;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+}
+
+.security-icon{
+
+    width:12px;
+
+    height:12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    border-radius:4px;
+
+    display:grid;
+
+    place-items:center;
+
+    font-size:7px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    margin-top:10px;
+
+    text-align:center;
+}
+
+.footer p{
+
+    margin:0;
+
+    color:#4f565e;
+
+    font-size:6.5px;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+}
+
+.footer strong{
+
+    color:#6e757d;
+}
+
+
+/* =========================================================
+   ACCESS OVERLAY
+========================================================= */
+
+.access-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:100;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(3,4,6,.82);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+}
+
+.access-overlay.show{
+
+    opacity:1;
+
+    visibility:visible;
+}
+
+.access-box{
+
+    width:min(100%,330px);
+
+    padding:25px;
+
+    text-align:center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    border-radius:22px;
+
+    background:
+        rgba(14,17,20,.65);
+
+    backdrop-filter:
+        blur(20px);
+
+    box-shadow:
+        0 35px 80px
+        rgba(0,0,0,.6);
+}
+
+.access-loader{
+
+    width:38px;
+
+    height:38px;
+
+    margin:
+        0
+        auto
+        15px;
+
+    border:
+        2px solid
+        rgba(255,255,255,.12);
+
+    border-top-color:
+        var(--gold);
+
+    border-radius:50%;
+
+    animation:
+        spin .7s
+        linear
+        infinite;
+}
+
+.access-box strong{
+
+    display:block;
+
+    font-size:12px;
+
+    letter-spacing:.05em;
+}
+
+.access-box span{
+
+    display:block;
+
+    margin-top:6px;
+
+    color:#747b84;
+
+    font-size:7.5px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-height:720px){
+
+    .main{
+
+        padding-top:73px;
+    }
+
+    .logo-ring{
+
+        width:91px;
+
+        margin-bottom:7px;
+    }
+
+    .school{
+
+        margin-bottom:8px;
+    }
+
+    .school h1{
+
+        font-size:15px;
+    }
+
+    .school p{
+
+        margin-top:4px;
+    }
+
+    .info-strip{
+
+        margin-bottom:6px;
+    }
+
+    .info-card{
+
+        padding:7px 10px;
+    }
+
+    .login-card{
+
+        padding:
+            14px
+            16px;
+
+        border-radius:20px;
+    }
+
+    .heading{
+
+        margin-bottom:9px;
+    }
+
+    .boarding-badge{
+
+        margin-bottom:9px;
+    }
+
+    .field{
+
+        margin-bottom:7px;
+    }
+
+    .input{
+
+        height:41px;
+    }
+
+    .password-button{
+
+        top:2px;
+    }
+
+    .options{
+
+        margin-bottom:9px;
+    }
+
+    .login-button{
+
+        height:43px;
+    }
+
+    .security{
+
+        margin-top:7px;
+    }
+
+    .footer{
+
+        margin-top:6px;
+    }
+}
+
+
+@media(min-width:700px){
+
+    .stage{
+
+        width:500px;
+    }
+
+    .login-card{
+
+        width:430px;
+    }
+
+    .logo-ring{
+
+        width:145px;
+    }
+}
+
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        scroll-behavior:auto !important;
+
+        transition-duration:.01ms !important;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="app">
+
+
+    <!-- =====================================================
+         BACKGROUND WATERMARK
+    ====================================================== -->
+
+    <div class="watermark">
+
+        <img
+            src="institution.png"
+            alt=""
+            aria-hidden="true"
+        >
+
+    </div>
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <img
+                class="brand-logo"
+                src="logo.png"
+                alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+            >
+
+            <div class="brand-text">
+
+                <strong>
+                    MIS-NEXUS™
+                </strong>
+
+                <span>
+                    Boarders Attendance Gateway
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="version">
+            V3.1
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+        <section class="stage">
+
+
+            <!-- =================================================
+                 3D LOGO
+            ================================================== -->
+
+            <div class="logo-ring">
+
+                <img
+                    class="logo"
+                    src="logo.png"
+                    alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+                >
+
+            </div>
+
+
+            <!-- =================================================
+                 SCHOOL
+            ================================================== -->
+
+            <div class="school">
+
+                <h1>
+                    MISBAHUL 'ILM SCHOOLS ABUJA
+                </h1>
+
+                <p>
+                    Boarding Attendance &amp; Parent Gateway
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 LIVE INFORMATION
+            ================================================== -->
+
+            <div class="info-strip">
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Abuja • Nigeria
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="clock"
+                    >
+                        --:--:--
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Attendance Cycle
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="cycle"
+                    >
+                        Every 3 Days
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN
+            ================================================== -->
+
+            <form
+                class="login-card"
+                id="loginForm"
+                autocomplete="on"
+                novalidate
+            >
+
+
+                <div class="heading">
+
+                    <strong>
+                        Boarders Access
+                    </strong>
+
+                    <span>
+                        Authorized boarding attendance gateway
+                    </span>
+
+                </div>
+
+
+                <div class="boarding-badge">
+
+                    <span class="badge-dot"></span>
+
+                    SECURE BOARDING SYSTEM
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="field">
+
+                    <label
+                        class="field-label"
+                        for="email"
+                    >
+                        Registered Email
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <input
+                            class="input"
+                            id="email"
+                            name="email"
+                            type="email"
+                            inputmode="email"
+                            autocomplete="username"
+                            value="boarders@gmail.com"
+                            placeholder="Enter registered email"
+                            readonly
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="field">
+
+                    <label
+                        class="field-label"
+                        for="password"
+                    >
+                        Secure Password
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <input
+                            class="input"
+                            id="password"
+                            name="password"
+                            type="password"
+                            autocomplete="current-password"
+                            placeholder="Enter secure password"
+                            required
+                            minlength="6"
+                        >
+
+                        <button
+                            class="password-button"
+                            id="passwordToggle"
+                            type="button"
+                            aria-label="Show password"
+                        >
+                            ◉
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+
+                <div class="options">
+
+                    <label class="remember">
+
+                        <input
+                            id="remember"
+                            type="checkbox"
+                        >
+
+                        <span>
+                            Remember this device
+                        </span>
+
+                    </label>
+
+
+                    <button
+                        class="forgot"
+                        id="forgot"
+                        type="button"
+                    >
+                        Forgot password?
+                    </button>
+
+                </div>
+
+
+                <!-- LOGIN -->
+
+                <button
+                    class="login-button"
+                    id="loginButton"
+                    type="submit"
+                >
+
+                    <span class="button-label">
+                        ENTER BOARDERS GATEWAY
+                    </span>
+
+                    <span class="spinner"></span>
+
+                </button>
+
+
+                <!-- STATUS -->
+
+                <div
+                    class="status"
+                    id="status"
+                    aria-live="polite"
+                ></div>
+
+
+                <div class="security">
+
+                    <span class="security-icon">
+                        ✓
+                    </span>
+
+                    Protected Institutional Access
+
+                </div>
+
+            </form>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <footer class="footer">
+
+                <p>
+                    MIS-NEXUS™ •
+                    <strong>
+                        MISBAHUL 'ILM SCHOOLS ABUJA
+                    </strong>
+                </p>
+
+            </footer>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         ACCESS OVERLAY
+    ====================================================== -->
+
+    <div
+        class="access-overlay"
+        id="accessOverlay"
+        aria-hidden="true"
+    >
+
+        <div class="access-box">
+
+            <div class="access-loader"></div>
+
+            <strong>
+                Verifying Boarders Access
+            </strong>
+
+            <span>
+                Please wait while your institutional session is secured.
+            </span>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script type="module">
+
+"use strict";
+
+
+/* =========================================================
+   MIS-NEXUS™
+   BOARDERS ATTENDANCE GATEWAY
+========================================================= */
+
+
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
+
+const SUPABASE_URL =
+    "https://ysjugqdcnbpzrqnvowpl.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_4IiL5xK5zv8C-VG7kNW92g_v1ghHlqx";
+
+
+const BOARDERS_EMAIL =
+    "boarders@gmail.com";
+
+
+const BOARDERS_TABLE =
+    "mis_nexus_boarders_access";
+
+
+const BOARDERS_DASHBOARD =
+    "boarders-dashboard.html";
+
+
+let supabaseClient =
+    null;
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const $ = id =>
+    document.getElementById(id);
+
+
+const DOM = {
+
+    form:
+        $("loginForm"),
+
+    email:
+        $("email"),
+
+    password:
+        $("password"),
+
+    passwordToggle:
+        $("passwordToggle"),
+
+    remember:
+        $("remember"),
+
+    forgot:
+        $("forgot"),
+
+    loginButton:
+        $("loginButton"),
+
+    status:
+        $("status"),
+
+    clock:
+        $("clock"),
+
+    cycle:
+        $("cycle"),
+
+    overlay:
+        $("accessOverlay")
+
+};
+
+
+/* =========================================================
+   CONSTANTS
+========================================================= */
+
+const REMEMBER_KEY =
+    "MIS_NEXUS_BOARDERS_REMEMBER";
+
+const SESSION_ROLE_KEY =
+    "MIS_NEXUS_BOARDERS_ROLE";
+
+const SESSION_ACCESS_KEY =
+    "MIS_NEXUS_BOARDERS_AUTHORIZED";
+
+
+/* =========================================================
+   SUPABASE INITIALIZATION
+========================================================= */
+
+async function initializeSupabase(){
+
+    if(supabaseClient){
+
+        return supabaseClient;
+
+    }
+
+    try{
+
+        const module =
+            await import(
+                "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+            );
+
+
+        supabaseClient =
+            module.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY,
+                {
+                    auth:{
+                        persistSession:true,
+                        autoRefreshToken:true,
+                        detectSessionInUrl:true
+                    },
+
+                    global:{
+                        headers:{
+                            "X-Client-Info":
+                                "MIS-NEXUS-Boarders-Gateway"
+                        }
+                    }
+                }
+            );
+
+
+        return supabaseClient;
+
+    }catch(error){
+
+        console.error(
+            "MIS-NEXUS Supabase initialization:",
+            error
+        );
+
+        throw new Error(
+            "The secure authentication service could not be initialized."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(
+    message,
+    type = ""
+){
+
+    DOM.status.textContent =
+        message;
+
+    DOM.status.className =
+        "status" +
+        (
+            type
+                ? " " + type
+                : ""
+        );
+
+}
+
+
+function clearStatus(){
+
+    setStatus("");
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+function setLoading(
+    loading
+){
+
+    DOM.loginButton.classList.toggle(
+        "loading",
+        loading
+    );
+
+    DOM.loginButton.disabled =
+        loading;
+
+    DOM.email.readOnly =
+        true;
+
+    DOM.password.disabled =
+        loading;
+
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+function showOverlay(
+    message
+){
+
+    const span =
+        DOM.overlay.querySelector(
+            ".access-box span"
+        );
+
+    if(span){
+
+        span.textContent =
+            message;
+    }
+
+    DOM.overlay.classList.add(
+        "show"
+    );
+
+    DOM.overlay.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+
+function hideOverlay(){
+
+    DOM.overlay.classList.remove(
+        "show"
+    );
+
+    DOM.overlay.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+/* =========================================================
+   PASSWORD VISIBILITY
+========================================================= */
+
+DOM.passwordToggle.addEventListener(
+    "click",
+    () => {
+
+        const showing =
+            DOM.password.type ===
+            "text";
+
+
+        DOM.password.type =
+            showing
+                ? "password"
+                : "text";
+
+
+        DOM.passwordToggle.textContent =
+            showing
+                ? "◉"
+                : "◌";
+
+
+        DOM.passwordToggle.setAttribute(
+            "aria-label",
+            showing
+                ? "Show password"
+                : "Hide password"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   DEVICE FEEDBACK
+========================================================= */
+
+function securityFailureFeedback(){
+
+    try{
+
+        if(
+            "vibrate" in navigator
+        ){
+
+            navigator.vibrate(
+                [
+                    70,
+                    45,
+                    70
+                ]
+            );
+
+        }
+
+    }catch{
+
+        /* Vibration is optional. */
+
+    }
+
+
+    /*
+       Local Web Audio beep.
+
+       No external audio file is required.
+    */
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if(!AudioContext){
+
+            return;
+
+        }
+
+        const context =
+            new AudioContext();
+
+        const oscillator =
+            context.createOscillator();
+
+        const gain =
+            context.createGain();
+
+
+        oscillator.type =
+            "sine";
+
+        oscillator.frequency.value =
+            440;
+
+
+        gain.gain.setValueAtTime(
+            0.0001,
+            context.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.055,
+            context.currentTime + .01
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            context.currentTime + .18
+        );
+
+
+        oscillator.connect(
+            gain
+        );
+
+        gain.connect(
+            context.destination
+        );
+
+
+        oscillator.start();
+
+        oscillator.stop(
+            context.currentTime + .2
+        );
+
+
+        setTimeout(
+            () => {
+
+                try{
+
+                    context.close();
+
+                }catch{}
+
+            },
+            350
+        );
+
+    }catch{
+
+        /* Audio is optional. */
+
+    }
+
+}
+
+
+/* =========================================================
+   REMEMBER DEVICE
+========================================================= */
+
+function saveRememberPreference(){
+
+    try{
+
+        if(
+            DOM.remember.checked
+        ){
+
+            localStorage.setItem(
+                REMEMBER_KEY,
+                "1"
+            );
+
+        }else{
+
+            localStorage.removeItem(
+                REMEMBER_KEY
+            );
+
+        }
+
+    }catch{
+
+        /* Local storage may be unavailable. */
+
+    }
+
+}
+
+
+function loadRememberPreference(){
+
+    try{
+
+        DOM.remember.checked =
+            localStorage.getItem(
+                REMEMBER_KEY
+            ) === "1";
+
+    }catch{
+
+        DOM.remember.checked =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTHENTICATED ACCOUNT VERIFICATION
+========================================================= */
+
+async function verifyBoardersAccess(
+    client,
+    user
+){
+
+    if(!user){
+
+        throw new Error(
+            "No authenticated account was returned."
+        );
+
+    }
+
+
+    const authenticatedEmail =
+        String(
+            user.email || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    if(
+        authenticatedEmail !==
+        BOARDERS_EMAIL
+    ){
+
+        throw new Error(
+            "This account is not authorized for the Boarders Gateway."
+        );
+
+    }
+
+
+    const result =
+        await client
+            .from(
+                BOARDERS_TABLE
+            )
+            .select(
+                "id,login_email,display_name,access_role,account_status,attendance_cycle_days"
+            )
+            .eq(
+                "login_email",
+                BOARDERS_EMAIL
+            )
+            .eq(
+                "account_status",
+                "active"
+            )
+            .maybeSingle();
+
+
+    if(result.error){
+
+        console.error(
+            "Boarders access verification:",
+            result.error
+        );
+
+        throw new Error(
+            "Boarders access could not be verified."
+        );
+
+    }
+
+
+    if(!result.data){
+
+        throw new Error(
+            "This account is not registered for Boarders access."
+        );
+
+    }
+
+
+    if(
+        result.data.access_role !==
+        "boarders_admin" &&
+        result.data.access_role !==
+        "boarders_gateway"
+    ){
+
+        throw new Error(
+            "The account does not have Boarders access."
+        );
+
+    }
+
+
+    return result.data;
+
+}
+
+
+/* =========================================================
+   OPEN DASHBOARD
+========================================================= */
+
+function openBoardersDashboard(
+    access
+){
+
+    try{
+
+        sessionStorage.setItem(
+            SESSION_ROLE_KEY,
+            access.access_role
+        );
+
+        sessionStorage.setItem(
+            SESSION_ACCESS_KEY,
+            "authorized"
+        );
+
+
+        sessionStorage.setItem(
+            "MIS_NEXUS_BOARDERS_EMAIL",
+            BOARDERS_EMAIL
+        );
+
+
+        sessionStorage.setItem(
+            "MIS_NEXUS_BOARDERS_CYCLE",
+            String(
+                access.attendance_cycle_days
+            )
+        );
+
+    }catch{
+
+        /* Session storage unavailable. */
+
+    }
+
+
+    showOverlay(
+        "Access verified. Opening Boarders Gateway..."
+    );
+
+
+    setTimeout(
+        () => {
+
+            window.location.assign(
+                BOARDERS_DASHBOARD
+            );
+
+        },
+        650
+    );
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+DOM.form.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        if(
+            DOM.loginButton.disabled
+        ){
+
+            return;
+
+        }
+
+
+        clearStatus();
+
+
+        const email =
+            DOM.email.value
+                .trim()
+                .toLowerCase();
+
+
+        const password =
+            DOM.password.value;
+
+
+        if(
+            email !==
+            BOARDERS_EMAIL
+        ){
+
+            securityFailureFeedback();
+
+            setStatus(
+                "Invalid Boarders account.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(!password){
+
+            securityFailureFeedback();
+
+            setStatus(
+                "Enter your secure password.",
+                "error"
+            );
+
+            DOM.password.focus();
+
+            return;
+
+        }
+
+
+        if(
+            password.length < 6
+        ){
+
+            securityFailureFeedback();
+
+            setStatus(
+                "Enter the complete secure password.",
+                "error"
+            );
+
+            DOM.password.focus();
+
+            return;
+
+        }
+
+
+        saveRememberPreference();
+
+        setLoading(true);
+
+        setStatus(
+            "Authenticating secure access..."
+        );
+
+
+        try{
+
+            const client =
+                await initializeSupabase();
+
+
+            /*
+             * Make sure a stale session does not
+             * interfere with a fresh login.
+             */
+
+            const {
+                data:
+                    existingSession
+            } =
+                await client.auth.getSession();
+
+
+            if(
+                existingSession?.session?.user
+            ){
+
+                try{
+
+                    const existingAccess =
+                        await verifyBoardersAccess(
+                            client,
+                            existingSession.session.user
+                        );
+
+
+                    setStatus(
+                        "Existing Boarders session verified.",
+                        "success"
+                    );
+
+
+                    openBoardersDashboard(
+                        existingAccess
+                    );
+
+
+                    return;
+
+                }catch{
+
+                    await client.auth.signOut();
+
+                }
+
+            }
+
+
+            const {
+                data,
+                error
+            } =
+                await client.auth.signInWithPassword({
+
+                    email:
+                        BOARDERS_EMAIL,
+
+                    password:
+                        password
+
+                });
+
+
+            if(error){
+
+                console.error(
+                    "Boarders authentication:",
+                    error
+                );
+
+                securityFailureFeedback();
+
+                throw new Error(
+                    "Invalid email or password."
+                );
+
+            }
+
+
+            if(
+                !data ||
+                !data.user
+            ){
+
+                securityFailureFeedback();
+
+                throw new Error(
+                    "Authentication could not be completed."
+                );
+
+            }
+
+
+            const access =
+                await verifyBoardersAccess(
+                    client,
+                    data.user
+                );
+
+
+            setStatus(
+                "Access verified successfully.",
+                "success"
+            );
+
+
+            openBoardersDashboard(
+                access
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "MIS-NEXUS Boarders Login:",
+                error
+            );
+
+
+            hideOverlay();
+
+
+            setStatus(
+                error?.message ||
+                "Unable to authenticate.",
+                "error"
+            );
+
+        }finally{
+
+            setLoading(false);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+DOM.forgot.addEventListener(
+    "click",
+    async () => {
+
+        clearStatus();
+
+        DOM.forgot.disabled =
+            true;
+
+
+        try{
+
+            const client =
+                await initializeSupabase();
+
+
+            const {
+                error
+            } =
+                await client.auth
+                    .resetPasswordForEmail(
+                        BOARDERS_EMAIL,
+                        {
+                            redirectTo:
+                                window.location.origin +
+                                "/reset-password.html"
+                        }
+                    );
+
+
+            if(error){
+
+                throw error;
+
+            }
+
+
+            setStatus(
+                "Password recovery instructions have been requested.",
+                "success"
+            );
+
+        }catch(error){
+
+            console.error(
+                "Password recovery:",
+                error
+            );
+
+
+            setStatus(
+                "Password recovery could not be processed.",
+                "error"
+            );
+
+        }finally{
+
+            DOM.forgot.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   NIGERIA CLOCK
+========================================================= */
+
+function updateClock(){
+
+    try{
+
+        const now =
+            new Date();
+
+
+        const formatted =
+            new Intl.DateTimeFormat(
+                "en-NG",
+                {
+                    timeZone:
+                        "Africa/Lagos",
+
+                    hour:
+                        "2-digit",
+
+                    minute:
+                        "2-digit",
+
+                    second:
+                        "2-digit",
+
+                    hour12:
+                        true
+                }
+            ).format(now);
+
+
+        DOM.clock.textContent =
+            formatted +
+            " WAT";
+
+    }catch{
+
+        DOM.clock.textContent =
+            "--:--:--";
+
+    }
+
+}
+
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+
+/* =========================================================
+   SESSION CHECK
+========================================================= */
+
+async function checkExistingSession(){
+
+    try{
+
+        const client =
+            await initializeSupabase();
+
+
+        const {
+            data
+        } =
+            await client.auth.getSession();
+
+
+        const session =
+            data?.session;
+
+
+        if(!session?.user){
+
+            return;
+
+        }
+
+
+        const email =
+            String(
+                session.user.email || ""
+            )
+            .toLowerCase();
+
+
+        if(
+            email !==
+            BOARDERS_EMAIL
+        ){
+
+            await client.auth.signOut();
+
+            return;
+
+        }
+
+
+        const access =
+            await verifyBoardersAccess(
+                client,
+                session.user
+            );
+
+
+        /*
+         * Existing valid session.
+         *
+         * We do not blindly redirect:
+         * access is checked against the new
+         * standalone Boarders table first.
+         */
+
+        openBoardersDashboard(
+            access
+        );
+
+    }catch(error){
+
+        console.info(
+            "No valid Boarders session:",
+            error
+        );
+
+        hideOverlay();
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+async function monitorAuth(){
+
+    try{
+
+        const client =
+            await initializeSupabase();
+
+
+        client.auth.onAuthStateChange(
+            (event, session) => {
+
+                if(
+                    event ===
+                    "SIGNED_OUT"
+                ){
+
+                    try{
+
+                        sessionStorage.removeItem(
+                            SESSION_ROLE_KEY
+                        );
+
+                        sessionStorage.removeItem(
+                            SESSION_ACCESS_KEY
+                        );
+
+                    }catch{}
+
+                }
+
+            }
+        );
+
+    }catch(error){
+
+        console.error(
+            "Auth listener:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   BOARDING CYCLE DISPLAY
+========================================================= */
+
+function initializeCycleDisplay(){
+
+    DOM.cycle.textContent =
+        "Every 3 Days";
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+async function initialize(){
+
+    loadRememberPreference();
+
+    initializeCycleDisplay();
+
+    hideOverlay();
+
+    await monitorAuth();
+
+}
+
+
+initialize();
+
+
+/* =========================================================
+   PREVENT ACCIDENTAL GESTURE ZOOM
+========================================================= */
+
+document.addEventListener(
+    "gesturestart",
+    event => {
+
+        event.preventDefault();
+
+    },
+    {
+        passive:false
+    }
+);
+
+
+document.addEventListener(
+    "gesturechange",
+    event => {
+
+        event.preventDefault();
+
+    },
+    {
+        passive:false
+    }
+);
+
+
+document.addEventListener(
+    "gestureend",
+    event => {
+
+        event.preventDefault();
+
+    },
+    {
+        passive:false
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD ACCESSIBILITY
+========================================================= */
+
+DOM.password.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key ===
+            "Enter"
+        ){
+
+            DOM.form.requestSubmit();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ONLINE / OFFLINE STATUS
+========================================================= */
+
+window.addEventListener(
+    "offline",
+    () => {
+
+        setStatus(
+            "Internet connection unavailable.",
+            "error"
+        );
+
+    }
+);
+
+
+window.addEventListener(
+    "online",
+    () => {
+
+        if(
+            !DOM.loginButton.disabled
+        ){
+
+            clearStatus();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
