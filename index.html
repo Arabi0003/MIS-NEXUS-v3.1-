@@ -1,0 +1,6698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="
+    width=device-width,
+    initial-scale=1,
+    maximum-scale=1,
+    user-scalable=no,
+    viewport-fit=cover
+  "
+>
+
+<meta
+  name="theme-color"
+  content="#06130e"
+  id="themeColor"
+>
+
+<meta
+  name="mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="black-translucent"
+>
+
+<meta
+  name="application-name"
+  content="MIS-NEXUS™"
+>
+
+<meta
+  name="apple-mobile-web-app-title"
+  content="MIS-NEXUS™"
+>
+
+<meta
+  name="description"
+  content="
+    MIS-NEXUS™ — MISBAHUL 'ILM SCHOOLS ABUJA
+    Institutional Digital Ecosystem
+  "
+>
+
+<title>
+  MIS-NEXUS™ — MISBAHUL 'ILM SCHOOLS ABUJA
+</title>
+
+<link
+  rel="icon"
+  type="image/png"
+  href="logo.png"
+  sizes="any"
+>
+
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="favicon.svg"
+>
+
+<link
+  rel="shortcut icon"
+  href="logo.png"
+>
+
+<link
+  rel="apple-touch-icon"
+  href="logo.png"
+>
+
+<link
+  rel="manifest"
+  href="manifest.json"
+>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+
+<meta
+  name="format-detection"
+  content="telephone=no"
+>
+
+<style>
+
+/* ============================================================
+   MIS-NEXUS™
+   PREMIUM INSTITUTIONAL INTERFACE
+   REDESIGNED APPLICATION CORE
+   ============================================================ */
+
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+
+:root {
+
+  --bg:
+    #06130e;
+
+  --bg-deep:
+    #020806;
+
+  --surface:
+    rgba(10, 29, 21, .72);
+
+  --surface-solid:
+    #0b2017;
+
+  --surface-soft:
+    rgba(255,255,255,.045);
+
+  --surface-hover:
+    rgba(255,255,255,.075);
+
+  --text:
+    #f7fffb;
+
+  --text-soft:
+    #dcebe4;
+
+  --muted:
+    #91a99e;
+
+  --muted-soft:
+    #62776c;
+
+  --line:
+    rgba(255,255,255,.105);
+
+  --line-strong:
+    rgba(255,255,255,.17);
+
+
+  /* CLEAN INSTITUTIONAL EMERALD */
+
+  --emerald:
+    #16a36f;
+
+  --emerald-clean:
+    #18b77d;
+
+  --emerald-light:
+    #58e0ae;
+
+  --emerald-dark:
+    #08724c;
+
+  --emerald-glow:
+    rgba(24,183,125,.30);
+
+
+  /* VIBE SILVER */
+
+  --silver:
+    #d7dee5;
+
+  --silver-light:
+    #f7fafc;
+
+  --silver-mid:
+    #aeb8c3;
+
+  --silver-dark:
+    #687582;
+
+  --silver-glow:
+    rgba(215,222,229,.26);
+
+
+  --accent:
+    var(--emerald-clean);
+
+  --accent-light:
+    var(--emerald-light);
+
+  --accent-dark:
+    var(--emerald-dark);
+
+  --accent-glow:
+    var(--emerald-glow);
+
+
+  --danger:
+    #ff647c;
+
+  --warning:
+    #ffc15c;
+
+  --success:
+    #35d69a;
+
+
+  --radius-xl:
+    36px;
+
+  --radius-lg:
+    28px;
+
+  --radius-md:
+    20px;
+
+  --radius-sm:
+    14px;
+
+
+  --shadow-xl:
+    0 45px 120px
+    rgba(0,0,0,.56);
+
+  --shadow-lg:
+    0 28px 70px
+    rgba(0,0,0,.42);
+
+  --shadow-md:
+    0 16px 40px
+    rgba(0,0,0,.30);
+
+
+  --transition:
+    280ms
+    cubic-bezier(.2,.8,.2,1);
+
+}
+
+
+/* ============================================================
+   SILVER THEME
+   ============================================================ */
+
+html[data-theme="silver"] {
+
+  --bg:
+    #171b20;
+
+  --bg-deep:
+    #090c10;
+
+  --surface:
+    rgba(31,36,43,.76);
+
+  --surface-solid:
+    #20252b;
+
+  --surface-soft:
+    rgba(255,255,255,.055);
+
+  --surface-hover:
+    rgba(255,255,255,.095);
+
+  --text:
+    #fbfdff;
+
+  --text-soft:
+    #e3e8ed;
+
+  --muted:
+    #a5afb9;
+
+  --muted-soft:
+    #727d88;
+
+  --line:
+    rgba(255,255,255,.12);
+
+  --line-strong:
+    rgba(255,255,255,.20);
+
+  --accent:
+    #d7dee5;
+
+  --accent-light:
+    #ffffff;
+
+  --accent-dark:
+    #7d8995;
+
+  --accent-glow:
+    rgba(215,222,229,.25);
+
+}
+
+
+/* ============================================================
+   EMERALD THEME
+   ============================================================ */
+
+html[data-theme="emerald"] {
+
+  --bg:
+    #061a12;
+
+  --bg-deep:
+    #020b07;
+
+  --surface:
+    rgba(8,35,24,.78);
+
+  --surface-solid:
+    #0a2419;
+
+  --surface-soft:
+    rgba(24,183,125,.055);
+
+  --surface-hover:
+    rgba(24,183,125,.095);
+
+  --accent:
+    #18b77d;
+
+  --accent-light:
+    #64e5b4;
+
+  --accent-dark:
+    #08724c;
+
+  --accent-glow:
+    rgba(24,183,125,.32);
+
+}
+
+
+/* ============================================================
+   MIDNIGHT
+   ============================================================ */
+
+html[data-theme="midnight"] {
+
+  --bg:
+    #07111f;
+
+  --bg-deep:
+    #020712;
+
+  --surface:
+    rgba(12,24,40,.78);
+
+  --surface-solid:
+    #0c1828;
+
+  --accent:
+    #4d8dff;
+
+  --accent-light:
+    #82b9ff;
+
+  --accent-dark:
+    #235dc2;
+
+  --accent-glow:
+    rgba(77,141,255,.30);
+
+}
+
+
+/* ============================================================
+   ROYAL
+   ============================================================ */
+
+html[data-theme="royal"] {
+
+  --bg:
+    #11091d;
+
+  --bg-deep:
+    #06030b;
+
+  --surface:
+    rgba(25,16,39,.78);
+
+  --surface-solid:
+    #191027;
+
+  --accent:
+    #a97bff;
+
+  --accent-light:
+    #d4b8ff;
+
+  --accent-dark:
+    #7041c7;
+
+  --accent-glow:
+    rgba(169,123,255,.30);
+
+}
+
+
+/* ============================================================
+   SAPPHIRE
+   ============================================================ */
+
+html[data-theme="sapphire"] {
+
+  --bg:
+    #06141f;
+
+  --bg-deep:
+    #020a11;
+
+  --surface:
+    rgba(10,30,45,.78);
+
+  --surface-solid:
+    #0a1e2d;
+
+  --accent:
+    #42c2ff;
+
+  --accent-light:
+    #8bddff;
+
+  --accent-dark:
+    #1676ad;
+
+  --accent-glow:
+    rgba(66,194,255,.30);
+
+}
+
+
+/* ============================================================
+   LIGHT
+   ============================================================ */
+
+html[data-theme="light"] {
+
+  --bg:
+    #f3f6fa;
+
+  --bg-deep:
+    #e8edf3;
+
+  --surface:
+    rgba(255,255,255,.84);
+
+  --surface-solid:
+    #ffffff;
+
+  --surface-soft:
+    rgba(20,35,50,.045);
+
+  --surface-hover:
+    rgba(20,35,50,.075);
+
+  --text:
+    #15202b;
+
+  --text-soft:
+    #354555;
+
+  --muted:
+    #667687;
+
+  --muted-soft:
+    #8794a2;
+
+  --line:
+    rgba(20,35,50,.10);
+
+  --line-strong:
+    rgba(20,35,50,.16);
+
+  --accent:
+    #15966a;
+
+  --accent-light:
+    #36bf8b;
+
+  --accent-dark:
+    #08724c;
+
+  --accent-glow:
+    rgba(21,150,106,.18);
+
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+* {
+
+  box-sizing:
+    border-box;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+}
+
+
+html {
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  background:
+    transparent;
+
+  overscroll-behavior:
+    none;
+
+}
+
+
+body {
+
+  width:
+    100%;
+
+  min-height:
+    100%;
+
+  margin:
+    0;
+
+  overflow:
+    hidden;
+
+  background:
+    transparent;
+
+  color:
+    var(--text);
+
+  font-family:
+    Inter,
+    "SF Pro Display",
+    "SF Pro Text",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  text-rendering:
+    optimizeLegibility;
+
+  touch-action:
+    manipulation;
+
+}
+
+
+/* ============================================================
+   APPLICATION
+   ============================================================ */
+
+#app {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100dvh;
+
+  overflow:
+    hidden;
+
+  background:
+    transparent;
+
+}
+
+
+.application {
+
+  position:
+    relative;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  overflow:
+    hidden;
+
+  isolation:
+    isolate;
+
+  background:
+
+    radial-gradient(
+      850px 600px
+      at 50% -10%,
+      var(--accent-glow),
+      transparent 70%
+    ),
+
+    radial-gradient(
+      650px 500px
+      at -15% 90%,
+      color-mix(
+        in srgb,
+        var(--accent-light) 8%,
+        transparent
+      ),
+      transparent 70%
+    ),
+
+    linear-gradient(
+      145deg,
+      var(--bg),
+      var(--bg-deep)
+    );
+
+  transition:
+    background 700ms ease;
+
+}
+
+
+/* ============================================================
+   AMBIENT LIGHT
+   ============================================================ */
+
+.ambient {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  overflow:
+    hidden;
+
+  pointer-events:
+    none;
+
+  z-index:
+    0;
+
+}
+
+
+.ambient::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    55vw;
+
+  height:
+    55vw;
+
+  min-width:
+    300px;
+
+  min-height:
+    300px;
+
+  left:
+    50%;
+
+  top:
+    30%;
+
+  transform:
+    translate(-50%,-50%);
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      var(--accent-glow),
+      transparent 68%
+    );
+
+  filter:
+    blur(55px);
+
+  animation:
+    ambientPulse
+    8s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes ambientPulse {
+
+  0%,
+  100% {
+
+    transform:
+      translate(-50%,-50%)
+      scale(.82);
+
+    opacity:
+      .65;
+
+  }
+
+  50% {
+
+    transform:
+      translate(-50%,-50%)
+      scale(1.08);
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* ============================================================
+   AMBIENT GRID
+   ============================================================ */
+
+.ambient::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    -50%;
+
+  background:
+
+    linear-gradient(
+      rgba(255,255,255,.025)
+      1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025)
+      1px,
+      transparent 1px
+    );
+
+  background-size:
+    70px 70px;
+
+  transform:
+    perspective(700px)
+    rotateX(58deg)
+    translateY(25%);
+
+  transform-origin:
+    center;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black 35%,
+      transparent 85%
+    );
+
+  opacity:
+    .35;
+
+}
+
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+
+.appbar {
+
+  position:
+    absolute;
+
+  z-index:
+    80;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  min-height:
+    calc(76px + env(safe-area-inset-top));
+
+  padding:
+    calc(12px + env(safe-area-inset-top))
+    clamp(15px,4vw,42px)
+    10px;
+
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      color-mix(
+        in srgb,
+        var(--bg-deep) 96%,
+        transparent
+      ),
+      transparent
+    );
+
+  pointer-events:
+    none;
+
+}
+
+
+.nigerian-clock {
+  position: absolute;
+  left: 50%;
+  top: 16%;
+  transform: translateX(-50%);
+  z-index: 2;
+  min-width: 126px;
+  height: 34px;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-solid) 86%, transparent);
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.nigerian-clock-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.nigerian-clock-time {
+  color: var(--text);
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 950;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .08em;
+}
+
+.nigerian-clock-zone {
+  color: var(--muted);
+  font-size: 6px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 430px) {
+  .nigerian-clock {
+    min-width: 116px;
+    height: 32px;
+    padding: 0 10px;
+    gap: 6px;
+  }
+
+  .nigerian-clock-time {
+    font-size: 9px;
+  }
+
+  .nigerian-clock-zone {
+    font-size: 5.5px;
+  }
+}
+
+
+.identity {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  min-width:
+    0;
+
+  pointer-events:
+    auto;
+
+}
+
+
+.identity-logo {
+
+  width:
+    50px;
+
+  height:
+    50px;
+
+  object-fit:
+    contain;
+
+  padding:
+    4px;
+
+  border-radius:
+    16px;
+
+  background:
+    rgba(255,255,255,.96);
+
+  box-shadow:
+
+    0 14px 32px
+    rgba(0,0,0,.30),
+
+    inset
+    0 1px 0
+    rgba(255,255,255,.9);
+
+}
+
+
+.identity-copy {
+
+  min-width:
+    0;
+
+}
+
+
+.identity-name {
+
+  font-size:
+    15px;
+
+  line-height:
+    1;
+
+  font-weight:
+    1000;
+
+  letter-spacing:
+    -.055em;
+
+}
+
+
+.identity-name sup {
+
+  color:
+    var(--accent-light);
+
+  font-size:
+    7px;
+
+}
+
+
+.identity-school {
+
+  margin-top:
+    5px;
+
+  max-width:
+    min(65vw,360px);
+
+  overflow:
+    hidden;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
+
+  color:
+    var(--muted);
+
+  font-size:
+    7px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.25px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.header-actions {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  pointer-events:
+    auto;
+
+}
+
+
+.header-button {
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:
+    14px;
+
+  background:
+    var(--surface-soft);
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    var(--shadow-md);
+
+  transition:
+    transform var(--transition),
+    background var(--transition);
+
+}
+
+
+.header-button:active {
+
+  transform:
+    scale(.90);
+
+}
+
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+
+.main {
+
+  position:
+    relative;
+
+  z-index:
+    10;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  padding:
+    calc(84px + env(safe-area-inset-top))
+    clamp(14px,4vw,42px)
+    calc(14px + env(safe-area-inset-bottom));
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  overflow:
+    hidden;
+
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+
+  position:
+    relative;
+
+  flex:
+    1;
+
+  min-height:
+    0;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+}
+
+
+.hero-stage {
+
+  position:
+    relative;
+
+  width:
+    min(72vw,520px);
+
+  height:
+    min(72vw,520px);
+
+  max-height:
+    52vh;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  perspective:
+    1800px;
+
+}
+
+
+.hero-stage::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    86%;
+
+  height:
+    86%;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      var(--accent-glow),
+      transparent 67%
+    );
+
+  filter:
+    blur(35px);
+
+  animation:
+    logoAura
+    6s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes logoAura {
+
+  0%,
+  100% {
+
+    transform:
+      scale(.84);
+
+    opacity:
+      .60;
+
+  }
+
+  50% {
+
+    transform:
+      scale(1.12);
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* ============================================================
+   ORBIT SYSTEM
+   ============================================================ */
+
+.orbit {
+
+  position:
+    absolute;
+
+  width:
+    88%;
+
+  height:
+    88%;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--accent) 32%,
+      transparent
+    );
+
+  border-radius:
+    50%;
+
+  transform:
+    rotateX(68deg)
+    rotateZ(-15deg);
+
+  box-shadow:
+    0 0 65px
+    var(--accent-glow);
+
+  animation:
+    orbitSpin
+    15s
+    linear
+    infinite;
+
+}
+
+
+@keyframes orbitSpin {
+
+  to {
+
+    transform:
+      rotateX(68deg)
+      rotateZ(345deg);
+
+  }
+
+}
+
+
+.orbit::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    9%;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:
+    50%;
+
+}
+
+
+.orbit::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    12px;
+
+  height:
+    12px;
+
+  left:
+    8%;
+
+  top:
+    50%;
+
+  transform:
+    translateY(-50%);
+
+  border-radius:
+    50%;
+
+  background:
+    var(--accent-light);
+
+  box-shadow:
+    0 0 25px
+    var(--accent-light);
+
+}
+
+
+/* ============================================================
+   LOGO CONTAINER
+   ============================================================ */
+
+.logo-depth {
+
+  position:
+    relative;
+
+  width:
+    min(58vw,390px);
+
+  height:
+    min(58vw,390px);
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  transform-style:
+    preserve-3d;
+
+  animation:
+    logoFloat
+    7s
+    cubic-bezier(.2,.75,.18,1)
+    infinite;
+
+}
+
+
+@keyframes logoFloat {
+
+  0%,
+  100% {
+
+    transform:
+      rotateX(0deg)
+      rotateY(-12deg)
+      rotateZ(-2deg)
+      translateY(5px)
+      scale(.97);
+
+  }
+
+  22% {
+
+    transform:
+      rotateX(11deg)
+      rotateY(42deg)
+      rotateZ(1deg)
+      translateY(-8px)
+      scale(1);
+
+  }
+
+  48% {
+
+    transform:
+      rotateX(-7deg)
+      rotateY(125deg)
+      rotateZ(-2deg)
+      translateY(2px)
+      scale(1.04);
+
+  }
+
+  70% {
+
+    transform:
+      rotateX(8deg)
+      rotateY(225deg)
+      rotateZ(2deg)
+      translateY(-7px)
+      scale(1.02);
+
+  }
+
+  88% {
+
+    transform:
+      rotateX(-5deg)
+      rotateY(320deg)
+      rotateZ(-1deg)
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+.logo-depth::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    7%;
+
+  border-radius:
+    30%;
+
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--accent) 45%,
+        transparent
+      ),
+      transparent 65%
+    );
+
+  transform:
+    translateZ(-45px)
+    scale(.96);
+
+  filter:
+    blur(14px);
+
+  opacity:
+    .65;
+
+}
+
+
+.logo-depth::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    14%;
+
+  right:
+    14%;
+
+  bottom:
+    -7%;
+
+  height:
+    15%;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--accent);
+
+  filter:
+    blur(18px);
+
+  opacity:
+    .22;
+
+  transform:
+    rotateX(76deg);
+
+}
+
+
+.hero-logo {
+
+  position:
+    relative;
+
+  z-index:
+    5;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    contain;
+
+  padding:
+    17px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
+  border-radius:
+    clamp(36px,8vw,64px);
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.13),
+      rgba(255,255,255,.025)
+    );
+
+  box-shadow:
+
+    0 48px 110px
+    rgba(0,0,0,.55),
+
+    0 18px 38px
+    rgba(0,0,0,.28),
+
+    inset
+    0 1px 0
+    rgba(255,255,255,.20);
+
+  transform:
+    translateZ(35px);
+
+}
+
+
+/* ============================================================
+   AUDIO CONTROL
+   ============================================================ */
+
+.audio-control {
+
+  position:
+    absolute;
+
+  z-index:
+    30;
+
+  left:
+    50%;
+
+  bottom:
+    -16px;
+
+  transform:
+    translateX(-50%);
+
+  min-width:
+    126px;
+
+  height:
+    31px;
+
+  padding:
+    0 11px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    7px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--accent) 30%,
+      var(--line)
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--surface-solid) 88%,
+      transparent
+    );
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  color:
+    var(--text-soft);
+
+  font-size:
+    7px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    1px;
+
+  text-transform:
+    uppercase;
+
+  box-shadow:
+    0 10px 28px
+    rgba(0,0,0,.25);
+
+}
+
+
+.audio-dot {
+
+  width:
+    7px;
+
+  height:
+    7px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--accent);
+
+  box-shadow:
+    0 0 13px
+    var(--accent);
+
+}
+
+
+.audio-control.playing
+.audio-dot {
+
+  animation:
+    audioPulse
+    1.1s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes audioPulse {
+
+  0%,
+  100% {
+
+    transform:
+      scale(.75);
+
+    opacity:
+      .55;
+
+  }
+
+  50% {
+
+    transform:
+      scale(1.25);
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* ============================================================
+   ACCESS GRID
+   ============================================================ */
+
+.access {
+
+  width:
+    100%;
+
+  max-width:
+    1180px;
+
+  margin:
+    0 auto;
+
+}
+
+
+.access-header {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    0 4px 10px;
+
+}
+
+
+.access-title {
+
+  font-size:
+    12px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    -.025em;
+
+}
+
+
+.access-meta {
+
+  color:
+    var(--muted-soft);
+
+  font-size:
+    7px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.app-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:
+    clamp(8px,2vw,14px);
+
+}
+
+
+.app-card {
+
+  position:
+    relative;
+
+  min-width:
+    0;
+
+  height:
+    clamp(108px,17vw,148px);
+
+  padding:
+    clamp(12px,2.5vw,17px);
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    space-between;
+
+  overflow:
+    hidden;
+
+  text-align:
+    left;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    clamp(22px,4vw,30px);
+
+  background:
+
+    linear-gradient(
+      150deg,
+      color-mix(
+        in srgb,
+        var(--icon-color) 9%,
+        var(--surface-solid)
+      ),
+      var(--surface)
+    );
+
+  box-shadow:
+    var(--shadow-lg);
+
+  transform:
+    translateZ(0);
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+
+}
+
+
+.app-card:hover {
+
+  transform:
+    translateY(-5px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--icon-color) 38%,
+      var(--line)
+    );
+
+  box-shadow:
+    0 35px 75px
+    rgba(0,0,0,.42);
+
+}
+
+
+.app-card:active {
+
+  transform:
+    translateY(3px)
+    scale(.965);
+
+}
+
+
+/* ============================================================
+   3D ICON
+   ============================================================ */
+
+.app-icon {
+
+  position:
+    relative;
+
+  width:
+    clamp(55px,12vw,74px);
+
+  height:
+    clamp(55px,12vw,74px);
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--icon-color) 34%,
+      var(--line)
+    );
+
+  border-radius:
+    clamp(17px,3.5vw,23px);
+
+  background:
+
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--icon-color) 20%,
+        var(--surface-solid)
+      ),
+      var(--surface-solid)
+    );
+
+  box-shadow:
+
+    0 14px 25px
+    rgba(0,0,0,.32),
+
+    inset
+    0 1px 0
+    rgba(255,255,255,.15),
+
+    inset
+    0 -8px 18px
+    rgba(0,0,0,.12);
+
+  transform:
+    perspective(700px)
+    rotateX(5deg)
+    rotateY(-7deg);
+
+  transition:
+    transform var(--transition);
+
+}
+
+
+.app-card:hover
+.app-icon {
+
+  transform:
+    perspective(700px)
+    rotateX(0)
+    rotateY(0)
+    translateZ(12px)
+    scale(1.04);
+
+}
+
+
+.app-icon::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  border-radius:
+    inherit;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.17),
+      transparent 35%
+    );
+
+  pointer-events:
+    none;
+
+}
+
+
+.app-icon::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    15%;
+
+  right:
+    15%;
+
+  bottom:
+    -10px;
+
+  height:
+    13px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--icon-color);
+
+  opacity:
+    .20;
+
+  filter:
+    blur(8px);
+
+}
+
+
+.app-icon svg {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    clamp(29px,7vw,41px);
+
+  height:
+    clamp(29px,7vw,41px);
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    1.55;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+
+  color:
+    var(--icon-color);
+
+  filter:
+    drop-shadow(
+      0 5px 8px
+      color-mix(
+        in srgb,
+        var(--icon-color) 45%,
+        transparent
+      )
+    );
+
+}
+
+
+.app-name {
+
+  display:
+    block;
+
+  overflow:
+    hidden;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
+
+  font-size:
+    clamp(9px,2.1vw,12px);
+
+  font-weight:
+    950;
+
+}
+
+
+.app-desc {
+
+  display:
+    block;
+
+  margin-top:
+    4px;
+
+  overflow:
+    hidden;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
+
+  color:
+    var(--muted);
+
+  font-size:
+    clamp(6px,1.55vw,8px);
+
+}
+
+
+/* ============================================================
+   LOADING OVERLAY
+   ============================================================ */
+
+.loading {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    300;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--bg-deep) 92%,
+      transparent
+    );
+
+  backdrop-filter:
+    blur(20px);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  transition:
+    opacity .3s ease,
+    visibility .3s ease;
+
+}
+
+
+.loading.active {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+}
+
+
+.loading-card {
+
+  width:
+    min(86vw,370px);
+
+  padding:
+    32px 24px;
+
+  text-align:
+    center;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    32px;
+
+  background:
+    var(--surface-solid);
+
+  box-shadow:
+    var(--shadow-xl);
+
+}
+
+
+.loading-logo {
+
+  width:
+    100px;
+
+  height:
+    100px;
+
+  margin:
+    0 auto 22px;
+
+  padding:
+    10px;
+
+  object-fit:
+    contain;
+
+  border-radius:
+    28px;
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 22px 55px
+    rgba(0,0,0,.38);
+
+  animation:
+    loadingLogo
+    1.8s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes loadingLogo {
+
+  0%,
+  100% {
+
+    transform:
+      rotateY(0)
+      scale(.94);
+
+  }
+
+  50% {
+
+    transform:
+      rotateY(180deg)
+      scale(1.04);
+
+  }
+
+}
+
+
+/* ============================================================
+   INTRO
+   ============================================================ */
+
+.intro {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    500;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  overflow:
+    hidden;
+
+  background:
+    var(--bg-deep);
+
+  transition:
+    opacity .8s ease,
+    visibility .8s ease;
+
+}
+
+
+.intro.finished {
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+}
+
+
+.intro-content {
+
+  position:
+    relative;
+
+  z-index:
+    3;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+}
+
+
+.intro-logo {
+
+  width:
+    min(64vw,340px);
+
+  height:
+    min(64vw,340px);
+
+  object-fit:
+    contain;
+
+  padding:
+    17px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.15);
+
+  border-radius:
+    38px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.12),
+      rgba(255,255,255,.025)
+    );
+
+  box-shadow:
+    0 50px 120px
+    rgba(0,0,0,.58);
+
+  animation:
+    introLogo
+    5s
+    cubic-bezier(.18,.78,.16,1)
+    infinite;
+
+}
+
+
+@keyframes introLogo {
+
+  0% {
+
+    transform:
+      rotateX(-8deg)
+      rotateY(-20deg)
+      rotateZ(-2deg)
+      scale(.90);
+
+  }
+
+  25% {
+
+    transform:
+      rotateX(14deg)
+      rotateY(70deg)
+      rotateZ(3deg)
+      scale(1);
+
+  }
+
+  50% {
+
+    transform:
+      rotateX(-10deg)
+      rotateY(180deg)
+      rotateZ(-2deg)
+      scale(1.05);
+
+  }
+
+  75% {
+
+    transform:
+      rotateX(12deg)
+      rotateY(285deg)
+      rotateZ(2deg)
+      scale(1);
+
+  }
+
+  100% {
+
+    transform:
+      rotateX(-8deg)
+      rotateY(342deg)
+      rotateZ(-2deg)
+      scale(.90);
+
+  }
+
+}
+
+
+.intro-title {
+
+  margin-top:
+    20px;
+
+  font-size:
+    clamp(30px,8vw,58px);
+
+  font-weight:
+    1000;
+
+  letter-spacing:
+    -.09em;
+
+}
+
+
+.intro-title sup {
+
+  color:
+    var(--accent-light);
+
+  font-size:
+    8px;
+
+}
+
+
+.intro-label {
+
+  margin-top:
+    9px;
+
+  color:
+    var(--accent-light);
+
+  font-size:
+    7px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    2px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+/* ============================================================
+   THEME DRAWER
+   ============================================================ */
+
+.theme-drawer {
+
+  position:
+    fixed;
+
+  z-index:
+    250;
+
+  top:
+    calc(76px + env(safe-area-inset-top));
+
+  right:
+    12px;
+
+  width:
+    min(340px,calc(100vw - 24px));
+
+  padding:
+    15px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    25px;
+
+  background:
+    var(--surface-solid);
+
+  backdrop-filter:
+    blur(24px);
+
+  -webkit-backdrop-filter:
+    blur(24px);
+
+  box-shadow:
+    var(--shadow-xl);
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+  transform:
+    translateY(-12px)
+    scale(.97);
+
+  transition:
+    opacity var(--transition),
+    visibility var(--transition),
+    transform var(--transition);
+
+}
+
+
+.theme-drawer.open {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  pointer-events:
+    auto;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+}
+
+
+.theme-heading {
+
+  margin-bottom:
+    12px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    8px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    1.4px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.theme-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:
+    8px;
+
+}
+
+
+.theme {
+
+  position:
+    relative;
+
+  height:
+    68px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    17px;
+
+  background:
+    var(--surface-soft);
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition);
+
+}
+
+
+.theme:active {
+
+  transform:
+    scale(.94);
+
+}
+
+
+.theme.active {
+
+  border-color:
+    var(--theme-color);
+
+  box-shadow:
+    0 0 24px
+    color-mix(
+      in srgb,
+      var(--theme-color) 22%,
+      transparent
+    );
+
+}
+
+
+.theme-color {
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  top:
+    39%;
+
+  width:
+    27px;
+
+  height:
+    27px;
+
+  transform:
+    translate(-50%,-50%);
+
+  border-radius:
+    50%;
+
+  background:
+    var(--theme-color);
+
+  box-shadow:
+    0 0 20px
+    color-mix(
+      in srgb,
+      var(--theme-color) 50%,
+      transparent
+    );
+
+}
+
+
+.theme-label {
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  bottom:
+    7px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    6px;
+
+  font-weight:
+    900;
+
+  text-align:
+    center;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (min-width:600px) {
+
+  .app-grid {
+
+    grid-template-columns:
+      repeat(6,minmax(0,1fr));
+
+  }
+
+  .hero-stage {
+
+    width:
+      min(52vw,520px);
+
+    height:
+      min(52vw,520px);
+
+  }
+
+}
+
+
+@media (min-width:1000px) {
+
+  .main {
+
+    max-width:
+      1280px;
+
+    margin:
+      0 auto;
+
+  }
+
+  .hero-stage {
+
+    width:
+      520px;
+
+    height:
+      520px;
+
+  }
+
+  .app-card {
+
+    height:
+      148px;
+
+  }
+
+}
+
+
+@media (max-height:700px) {
+
+  .hero-stage {
+
+    width:
+      min(48vw,330px);
+
+    height:
+      min(48vw,330px);
+
+  }
+
+  .hero-logo {
+
+    padding:
+      11px;
+
+  }
+
+  .app-card {
+
+    height:
+      94px;
+
+  }
+
+  .app-icon {
+
+    width:
+      47px;
+
+    height:
+      47px;
+
+  }
+
+}
+
+
+@media (prefers-reduced-motion:reduce) {
+
+  *,
+  *::before,
+  *::after {
+
+    animation-duration:
+      .01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      .01ms !important;
+
+  }
+
+}
+
+
+/* ============================================================
+   2026 MOBILE APP UPGRADE OVERRIDES
+   ============================================================ */
+
+:root{
+  --accent:#b9c2cb;
+  --accent-light:#f8fafc;
+  --accent-dark:#77828d;
+  --accent-glow:rgba(185,194,203,.28);
+}
+
+html[data-theme="navy"]{
+  --bg:#071a33;
+  --bg-deep:#031020;
+  --surface:rgba(248,251,255,.96);
+  --surface-solid:#ffffff;
+  --surface-soft:rgba(7,35,68,.055);
+  --surface-hover:rgba(7,35,68,.09);
+  --text:#10243d;
+  --text-soft:#38516b;
+  --muted:#6c7f93;
+  --muted-soft:#91a1b1;
+  --line:rgba(12,39,72,.12);
+  --line-strong:rgba(12,39,72,.20);
+  --accent:#183f70;
+  --accent-light:#557ba6;
+  --accent-dark:#09284f;
+  --accent-glow:rgba(39,82,128,.24);
+}
+
+html[data-theme="silver"]{
+  --bg:#171b20;
+  --bg-deep:#090c10;
+  --surface:rgba(35,40,47,.90);
+  --surface-solid:#20252b;
+  --surface-soft:rgba(255,255,255,.055);
+  --surface-hover:rgba(255,255,255,.095);
+  --text:#fbfdff;
+  --text-soft:#e4e9ee;
+  --muted:#a7b0b9;
+  --muted-soft:#7d8893;
+  --line:rgba(255,255,255,.12);
+  --line-strong:rgba(255,255,255,.20);
+  --accent:#d7dee5;
+  --accent-light:#ffffff;
+  --accent-dark:#87929d;
+  --accent-glow:rgba(215,222,229,.26);
+}
+
+html[data-theme="light"]{
+  --bg:#f7f9fb;
+  --bg-deep:#e9eef3;
+  --surface:rgba(255,255,255,.96);
+  --surface-solid:#ffffff;
+  --surface-soft:rgba(20,35,50,.045);
+  --surface-hover:rgba(20,35,50,.075);
+  --text:#15202b;
+  --text-soft:#3c4b59;
+  --muted:#697987;
+  --muted-soft:#8c9aa7;
+  --line:rgba(20,35,50,.10);
+  --line-strong:rgba(20,35,50,.17);
+  --accent:#788692;
+  --accent-light:#aeb8c2;
+  --accent-dark:#4e5a64;
+  --accent-glow:rgba(120,134,146,.18);
+}
+
+.header-icon{
+  width:21px;
+  height:21px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.notification-link{
+  position:relative;
+}
+
+.notification-badge{
+  position:absolute;
+  top:4px;
+  right:4px;
+  width:9px;
+  height:9px;
+  border:2px solid var(--surface-solid);
+  border-radius:999px;
+  background:#d95568;
+  box-shadow:0 0 0 2px rgba(217,85,104,.12);
+  transform:scale(0);
+  transition:transform 140ms ease;
+}
+
+.notification-badge.visible{
+  transform:scale(1);
+}
+
+.notification-badge[data-count]:not([data-count="0"]){
+  width:auto;
+  min-width:17px;
+  height:17px;
+  top:2px;
+  right:1px;
+  padding:0 3px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  border-width:1px;
+  font-size:8px;
+  font-weight:950;
+}
+
+.notification-badge[data-count]:not([data-count="0"])::after{
+  content:attr(data-count);
+}
+
+.header-button{
+  will-change:transform;
+}
+
+.app-card,
+.header-button,
+.theme,
+.audio-control{
+  contain:layout paint;
+}
+
+.application.low-power-device .ambient::before,
+.application.low-power-device .orbit{
+  animation-duration:18s;
+}
+
+.application.reduced-motion .ambient::before,
+.application.reduced-motion .orbit,
+.application.reduced-motion .logo-depth,
+.application.reduced-motion .hero-stage::before,
+.application.reduced-motion .intro-logo,
+.application.reduced-motion .loading-logo{
+  animation:none!important;
+}
+
+
+
+/* ============================================================
+   APP SHELL ENHANCEMENT LAYER
+   ============================================================ */
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  overscroll-behavior-x: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+button,
+a,
+.app-card,
+.theme,
+.audio-control,
+.header-button {
+  touch-action: manipulation;
+}
+
+.smart-app-footer {
+  width: min(100%, 1180px);
+  margin: 10px auto 0;
+  padding: 0 14px calc(16px + env(safe-area-inset-bottom));
+}
+
+.smart-footer-inner {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--surface);
+  backdrop-filter: blur(18px) saturate(125%);
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  box-shadow: 0 16px 50px rgba(0,0,0,.12);
+  padding: 12px;
+}
+
+.smart-footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: .9px;
+  text-transform: uppercase;
+}
+
+.smart-footer-brand img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: 7px;
+}
+
+.store-badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.store-badge {
+  min-width: 118px;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface-soft);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform .16s ease, background .16s ease, border-color .16s ease;
+}
+
+.store-badge:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.store-badge:active {
+  transform: scale(.96);
+}
+
+.store-icon {
+  width: 19px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 19px;
+  color: var(--accent);
+}
+
+.store-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.store-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.store-copy small {
+  font-size: 5px;
+  letter-spacing: .55px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.store-copy strong {
+  margin-top: 3px;
+  font-size: 9px;
+  letter-spacing: -.2px;
+}
+
+.install-app-button {
+  width: 100%;
+  min-height: 36px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--accent);
+  color: var(--bg-deep);
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.install-glyph {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.smart-footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 9px;
+  color: var(--muted);
+  font-size: 6px;
+  font-weight: 750;
+  letter-spacing: .35px;
+  text-align: center;
+}
+
+/* ============================================================
+   SMART NOTIFICATION OVERLAY
+   ============================================================ */
+
+#mnSmartNotificationRoot {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+}
+
+.mn-smart-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.42);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s ease, visibility .2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.mn-smart-panel {
+  position: absolute;
+  top: max(9px, env(safe-area-inset-top));
+  right: 9px;
+  width: min(420px, calc(100vw - 18px));
+  max-height: min(700px, calc(100dvh - 18px));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  background: var(--surface-solid);
+  border: 1px solid var(--line-strong);
+  border-radius: 25px;
+  box-shadow: 0 30px 100px rgba(0,0,0,.45);
+  opacity: 0;
+  transform: translateY(-14px) scale(.97);
+  visibility: hidden;
+  transition: opacity .22s ease, transform .24s cubic-bezier(.2,.8,.2,1), visibility .22s ease;
+  pointer-events: auto;
+}
+
+.mn-smart-open .mn-smart-backdrop {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mn-smart-open .mn-smart-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+}
+
+.mn-smart-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px;
+  border-bottom: 1px solid var(--line);
+}
+
+.mn-smart-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.mn-smart-kicker {
+  color: var(--muted);
+  font-size: 6px;
+  font-weight: 950;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.mn-smart-title {
+  margin-top: 3px;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -.05em;
+}
+
+.mn-smart-button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.mn-smart-button:active {
+  transform: scale(.92);
+}
+
+.mn-smart-button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mn-smart-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.mn-smart-summary strong {
+  color: var(--text);
+  font-size: 12px;
+}
+
+.mn-smart-read {
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 6px;
+  font-weight: 950;
+  letter-spacing: .55px;
+  cursor: pointer;
+}
+
+.mn-smart-list {
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 9px;
+  display: grid;
+  gap: 7px;
+}
+
+.mn-smart-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: var(--surface-soft);
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease;
+}
+
+.mn-smart-item:hover {
+  background: var(--surface-hover);
+}
+
+.mn-smart-item:active {
+  transform: scale(.985);
+}
+
+.mn-smart-item.unread::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 15px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #d95568;
+}
+
+.mn-smart-icon {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--surface-solid);
+  color: var(--accent);
+}
+
+.mn-smart-icon svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mn-smart-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.mn-smart-item-title {
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.25;
+}
+
+.mn-smart-body {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.mn-smart-time {
+  margin-top: 6px;
+  color: var(--muted-soft);
+  font-size: 5.5px;
+  font-weight: 900;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.mn-smart-empty {
+  padding: 45px 15px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 9px;
+}
+
+.mn-smart-empty strong {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--text);
+  font-size: 12px;
+}
+
+@media (max-width: 430px) {
+  .smart-app-footer {
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+
+  .store-badge {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+@media (min-width: 800px) {
+  .smart-app-footer {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+@media (display-mode: standalone) {
+  .smart-app-footer {
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+  <div
+    class="application"
+    id="application"
+  >
+
+    <div
+      class="ambient"
+      aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="appbar">
+
+      <div class="identity">
+
+        <img
+          class="identity-logo"
+          src="logo.png"
+          alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+        >
+
+        <div class="identity-copy">
+
+          <div class="identity-name">
+            MIS-NEXUS<sup>™</sup>
+          </div>
+
+          <div class="identity-school">
+            MISBAHUL 'ILM SCHOOLS ABUJA • MIS_ABUJA
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          class="header-button notification-link"
+          id="notificationLink"
+          href="notifications.html"
+          aria-label="Open notifications"
+          title="Notifications"
+        >
+          <svg
+            class="header-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+            <path d="M10 21h4"></path>
+          </svg>
+          <span
+            class="notification-badge"
+            id="notificationBadge"
+            aria-hidden="true"
+          ></span>
+        </a>
+
+        <button
+          class="header-button"
+          id="themeButton"
+          type="button"
+          aria-label="Change theme"
+          title="Change theme"
+        >
+
+          ◐
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="main">
+
+      <section class="hero">
+
+        <div class="hero-stage">
+
+          <div
+            class="nigerian-clock"
+            id="nigerianClock"
+            role="status"
+            aria-label="Current Nigerian time"
+          >
+            <span class="nigerian-clock-dot" aria-hidden="true"></span>
+            <span class="nigerian-clock-time" id="nigerianClockTime">--:--:--</span>
+            <span class="nigerian-clock-zone">WAT</span>
+          </div>
+
+          <div
+            class="orbit"
+            aria-hidden="true"
+          ></div>
+
+
+          <div class="logo-depth">
+
+            <img
+              class="hero-logo"
+              id="heroImage"
+              src="logo.png"
+              alt="MIS-NEXUS™"
+            >
+
+
+            <!-- AUDIO CONTROL UNDER LOGO -->
+
+            <button
+              class="audio-control"
+              id="audioControl"
+              type="button"
+              aria-label="Toggle welcome audio"
+            >
+
+              <span
+                class="audio-dot"
+                id="audioDot"
+              ></span>
+
+              <span id="audioLabel">
+                AUDIO PLAYING
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           ACCESS
+           =================================================== -->
+
+      <section class="access">
+
+        <div class="access-header">
+
+          <div class="access-title">
+            Institutional Access
+          </div>
+
+          <div class="access-meta">
+            SECURE • MIS_ABUJA
+          </div>
+
+        </div>
+
+
+        <div class="app-grid">
+
+
+          <!-- TEACHERS -->
+
+          <button
+            class="app-card"
+            data-route="teachers.html"
+            style="--icon-color:#4d8dff"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="10"
+                  cy="8"
+                  r="3.3"
+                />
+
+                <path
+                  d="
+                    M4 20v-1.4
+                    A4.6 4.6 0 0 1
+                    8.6 14h2.8
+                    A4.6 4.6 0 0 1
+                    16 18.6V20
+                  "
+                />
+
+                <path
+                  d="
+                    M16 5.2
+                    a3.1 3.1 0 0 1 0 5.9
+                  "
+                />
+
+                <path
+                  d="
+                    M17 14.2
+                    a4.4 4.4 0 0 1 3 4.2V20
+                  "
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Teachers
+              </span>
+
+              <span class="app-desc">
+                Attendance & classes
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- STUDENTS -->
+
+          <button
+            class="app-card"
+            data-route="students.html"
+            style="--icon-color:#18b77d"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="12"
+                  cy="8"
+                  r="3.4"
+                />
+
+                <path
+                  d="
+                    M5 20
+                    a7 7 0 0 1 14 0
+                  "
+                />
+
+                <path
+                  d="M8.5 13.2h7"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Students
+              </span>
+
+              <span class="app-desc">
+                Student records
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- PARENTS -->
+
+          <button
+            class="app-card"
+            data-route="parents.html"
+            style="--icon-color:#a97bff"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <path
+                  d="
+                    M3.5 10.5
+                    12 4
+                    20.5 10.5
+                  "
+                />
+
+                <path
+                  d="
+                    M5.5 10
+                    v9.5
+                    h13V10
+                  "
+                />
+
+                <path
+                  d="
+                    M9 19.5v-6h6v6
+                  "
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Parents
+              </span>
+
+              <span class="app-desc">
+                Family connection
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- BOARDERS -->
+
+          <button
+            class="app-card"
+            data-route="boarders.html"
+            style="--icon-color:#ffc15c"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <path
+                  d="
+                    M4 20
+                    V9.5
+                    L12 4
+                    L20 9.5
+                    V20
+                  "
+                />
+
+                <path
+                  d="
+                    M7 20
+                    v-5.5
+                    h10
+                    V20
+                  "
+                />
+
+                <path
+                  d="M8.5 10.5h7"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Boarders
+              </span>
+
+              <span class="app-desc">
+                Boarding records
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- STAFF -->
+
+          <button
+            class="app-card"
+            data-route="staff.html"
+            style="--icon-color:#ff6684"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <rect
+                  x="5"
+                  y="3.5"
+                  width="14"
+                  height="17"
+                  rx="2.5"
+                />
+
+                <path
+                  d="M9 8h6"
+                />
+
+                <path
+                  d="M9 12h6"
+                />
+
+                <path
+                  d="M9 16h3.5"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Staff
+              </span>
+
+              <span class="app-desc">
+                Staff records
+              </span>
+
+            </span>
+
+          </button>
+
+
+          <!-- CLASSES -->
+
+          <button
+            class="app-card"
+            data-route="classes.html"
+            style="--icon-color:#4eb9ff"
+            type="button"
+          >
+
+            <span class="app-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <rect
+                  x="4"
+                  y="4"
+                  width="6"
+                  height="6"
+                  rx="1.5"
+                />
+
+                <rect
+                  x="14"
+                  y="4"
+                  width="6"
+                  height="6"
+                  rx="1.5"
+                />
+
+                <rect
+                  x="4"
+                  y="14"
+                  width="6"
+                  height="6"
+                  rx="1.5"
+                />
+
+                <rect
+                  x="14"
+                  y="14"
+                  width="6"
+                  height="6"
+                  rx="1.5"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+
+              <span class="app-name">
+                Classes
+              </span>
+
+              <span class="app-desc">
+                Class records
+              </span>
+
+            </span>
+
+          </button>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         SMART APP FOOTER
+         ===================================================== -->
+
+    <footer class="smart-app-footer" id="smartAppFooter">
+
+      <div class="smart-footer-inner">
+
+        <div class="smart-footer-brand">
+          <img src="logo.png" alt="MIS-NEXUS™" loading="lazy">
+          <span>MIS-NEXUS™</span>
+        </div>
+
+        <div class="store-badges" aria-label="Application installation options">
+
+          <button class="store-badge" id="playStoreBadge" type="button" aria-label="Google Play application">
+            <span class="store-icon play-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 3.5 14.5 12 4 20.5z"></path>
+                <path d="m14.5 12 3.7-2.6 1.8 1.1c.8.5.8 1.5 0 2l-1.8 1.1z"></path>
+              </svg>
+            </span>
+            <span class="store-copy">
+              <small>GET IT ON</small>
+              <strong>Google Play</strong>
+            </span>
+          </button>
+
+          <button class="store-badge" id="appleStoreBadge" type="button" aria-label="Apple App Store application">
+            <span class="store-icon apple-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M15.2 5.2c.7-.8 1.2-2 1.1-3.1-1 .1-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.1-.5 2.8-1.4Z"></path>
+                <path d="M19.2 12.7c0-2.4 2-3.6 2.1-3.7-1.1-1.6-2.8-1.8-3.4-1.9-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-3-.8-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.7 1.1 8.9.7 1.1 1.6 2.3 2.8 2.2 1.1 0 1.5-.7 2.9-.7 1.3 0 1.7.7 2.9.7 1.2 0 2-.1 2.7-1.2.8-1.1 1.2-2.2 1.2-2.3-.1 0-2.2-.9-2.2-4.2Z"></path>
+              </svg>
+            </span>
+            <span class="store-copy">
+              <small>DOWNLOAD ON THE</small>
+              <strong>App Store</strong>
+            </span>
+          </button>
+
+        </div>
+
+        <button class="install-app-button" id="installAppButton" type="button" hidden>
+          <span class="install-glyph" aria-hidden="true">＋</span>
+          <span>Install App</span>
+        </button>
+
+        <div class="smart-footer-meta">
+          <span>Secure institutional access</span>
+          <span aria-hidden="true">•</span>
+          <span>© <span id="footerYear"></span> MISBAHUL 'ILM SCHOOLS ABUJA</span>
+        </div>
+
+      </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         THEME DRAWER
+         ===================================================== -->
+
+    <aside
+      class="theme-drawer"
+      id="themeDrawer"
+      aria-hidden="true"
+    >
+
+      <div class="theme-heading">
+        MIS-NEXUS™ Appearance
+      </div>
+
+      <div class="theme-grid">
+
+        <button
+          class="theme active"
+          data-theme="silver"
+          style="--theme-color:#d7dee5"
+          type="button"
+          aria-label="Use Silver theme"
+          aria-pressed="true"
+        >
+          <span class="theme-color"></span>
+          <span class="theme-label">
+            Silver
+          </span>
+        </button>
+
+        <button
+          class="theme"
+          data-theme="navy"
+          style="--theme-color:#234b7c"
+          type="button"
+          aria-label="Use Navy and White theme"
+          aria-pressed="false"
+        >
+          <span class="theme-color"></span>
+          <span class="theme-label">
+            Navy + White
+          </span>
+        </button>
+
+        <button
+          class="theme"
+          data-theme="light"
+          style="--theme-color:#aeb8c3"
+          type="button"
+          aria-label="Use Light theme"
+          aria-pressed="false"
+        >
+          <span class="theme-color"></span>
+          <span class="theme-label">
+            Light Mode
+          </span>
+        </button>
+
+      </div>
+    </aside>
+
+
+    <!-- =====================================================
+         LOADING
+         ===================================================== -->
+
+    <div
+      class="loading"
+      id="loading"
+      aria-hidden="true"
+    >
+
+      <div class="loading-card">
+
+        <img
+          class="loading-logo"
+          src="logo.png"
+          alt="MIS-NEXUS™"
+        >
+
+        <div class="loading-title">
+          Opening MIS-NEXUS™
+        </div>
+
+        <div class="loading-subtitle">
+          Preparing secure institutional access…
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INTRO
+         ===================================================== -->
+
+    <section
+      class="intro"
+      id="intro"
+      aria-label="MIS-NEXUS introduction"
+    >
+
+      <div class="intro-content">
+
+        <img
+          class="intro-logo"
+          src="logo.png"
+          alt="MIS-NEXUS™"
+        >
+
+        <div class="intro-title">
+          MIS-NEXUS<sup>™</sup>
+        </div>
+
+        <div class="intro-label">
+          INSTITUTIONAL DIGITAL ECOSYSTEM
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+
+<!-- ==========================================================
+     WELCOME AUDIO
+     ========================================================== -->
+
+<audio
+  id="welcomeAudio"
+  src="welcome.mp3"
+  preload="auto"
+  autoplay
+  playsinline
+  loop
+>
+</audio>
+
+
+<script>
+
+"use strict";
+
+
+/* ============================================================
+   APPLICATION CONFIGURATION
+   ============================================================ */
+
+const CONFIG = {
+
+  storageTheme:
+    "mis-nexus-theme",
+
+  storageAudio:
+    "mis-nexus-audio",
+
+  storageNotifications:
+    "mis-nexus-notifications",
+
+  defaultTheme:
+    "silver",
+
+  introDuration:
+    5200,
+
+  loadingDelay:
+    120,
+
+  routes: {
+
+    teachers:
+      "teachers.html",
+
+    students:
+      "students.html",
+
+    parents:
+      "parents.html",
+
+    boarders:
+      "boarders.html",
+
+    staff:
+      "staff.html",
+
+    classes:
+      "classes.html"
+
+  }
+
+};
+
+
+/* ============================================================
+   DOM
+   ============================================================ */
+
+const DOM = {
+
+  html:
+    document.documentElement,
+
+  body:
+    document.body,
+
+  application:
+    document.getElementById(
+      "application"
+    ),
+
+  themeButton:
+    document.getElementById(
+      "themeButton"
+    ),
+
+  notificationLink:
+    document.getElementById(
+      "notificationLink"
+    ),
+
+  notificationBadge:
+    document.getElementById(
+      "notificationBadge"
+    ),
+
+  themeDrawer:
+    document.getElementById(
+      "themeDrawer"
+    ),
+
+  themes:
+    [
+      ...document.querySelectorAll(
+        ".theme"
+      )
+    ],
+
+  audio:
+    document.getElementById(
+      "welcomeAudio"
+    ),
+
+  audioControl:
+    document.getElementById(
+      "audioControl"
+    ),
+
+  audioLabel:
+    document.getElementById(
+      "audioLabel"
+    ),
+
+  audioDot:
+    document.getElementById(
+      "audioDot"
+    ),
+
+  intro:
+    document.getElementById(
+      "intro"
+    ),
+
+  loading:
+    document.getElementById(
+      "loading"
+    ),
+
+  accessCards:
+    [
+      ...document.querySelectorAll(
+        ".app-card"
+      )
+    ],
+
+  themeColor:
+    document.getElementById(
+      "themeColor"
+    )
+
+};
+
+
+/* ============================================================
+   STATE
+   ============================================================ */
+
+const state = {
+
+  theme:
+    (function(){
+      const saved = localStorage.getItem(CONFIG.storageTheme);
+      const migrated = {
+        midnight: "navy",
+        emerald: "navy",
+        royal: "navy",
+        sapphire: "navy",
+        silver: "silver",
+        light: "light",
+        navy: "navy"
+      };
+      return migrated[saved] || CONFIG.defaultTheme;
+    })(),
+
+  audioEnabled:
+    localStorage.getItem(
+      CONFIG.storageAudio
+    ) !== "off",
+
+  themeOpen:
+    false,
+
+  introFinished:
+    false,
+
+  navigating:
+    false
+
+};
+
+
+/* ============================================================
+   THEME ENGINE
+   ============================================================ */
+
+function applyTheme(
+  themeName
+) {
+
+  const theme =
+    CONFIG.themes?.[themeName];
+
+  DOM.html.dataset.theme =
+    themeName;
+
+  state.theme =
+    themeName;
+
+  localStorage.setItem(
+    CONFIG.storageTheme,
+    themeName
+  );
+
+  DOM.themes.forEach(
+    button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.theme ===
+        themeName
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   THEME DRAWER
+   ============================================================ */
+
+function toggleThemeDrawer(
+  force
+) {
+
+  state.themeOpen =
+    typeof force ===
+    "boolean"
+      ? force
+      : !state.themeOpen;
+
+  DOM.themeDrawer.classList.toggle(
+    "open",
+    state.themeOpen
+  );
+
+  DOM.themeDrawer.setAttribute(
+    "aria-hidden",
+    String(
+      !state.themeOpen
+    )
+  );
+
+}
+
+
+/* ============================================================
+   AUDIO UI
+   ============================================================ */
+
+function updateAudioUI(
+  playing
+) {
+
+  DOM.audioControl.classList.toggle(
+    "playing",
+    playing
+  );
+
+  DOM.audioLabel.textContent =
+    playing
+      ? "AUDIO PLAYING"
+      : "AUDIO OFF";
+
+}
+
+
+/* ============================================================
+   AUDIO PLAYBACK
+   ============================================================ */
+
+async function startAudio() {
+
+  if (
+    !state.audioEnabled ||
+    !DOM.audio
+  ) {
+
+    updateAudioUI(
+      false
+    );
+
+    return false;
+
+  }
+
+
+  try {
+
+    DOM.audio.muted =
+      false;
+
+    await DOM.audio.play();
+
+    updateAudioUI(
+      true
+    );
+
+    return true;
+
+  } catch (
+    error
+  ) {
+
+    /*
+      Browser autoplay policy may reject
+      unmuted playback before interaction.
+
+      We do not pretend this can be bypassed.
+      Playback is retried automatically after
+      legitimate user interaction.
+    */
+
+    updateAudioUI(
+      false
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* ============================================================
+   AUDIO RETRY
+   ============================================================ */
+
+function installAudioRetry() {
+
+  const retry =
+    () => {
+
+      if (
+        state.audioEnabled &&
+        DOM.audio.paused
+      ) {
+
+        void startAudio();
+
+      }
+
+    };
+
+
+  [
+    "pointerdown",
+    "touchstart",
+    "keydown",
+    "click"
+  ].forEach(
+    eventName => {
+
+      document.addEventListener(
+        eventName,
+        retry,
+        {
+          passive:
+            true
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   AUDIO CONTROL
+   ============================================================ */
+
+function initializeAudio() {
+
+  DOM.audioControl.addEventListener(
+    "click",
+    async event => {
+
+      event.stopPropagation();
+
+      if (
+        DOM.audio.paused
+      ) {
+
+        state.audioEnabled =
+          true;
+
+        localStorage.setItem(
+          CONFIG.storageAudio,
+          "on"
+        );
+
+        await startAudio();
+
+        return;
+
+      }
+
+
+      DOM.audio.pause();
+
+      state.audioEnabled =
+        false;
+
+      localStorage.setItem(
+        CONFIG.storageAudio,
+        "off"
+      );
+
+      updateAudioUI(
+        false
+      );
+
+    }
+  );
+
+
+  DOM.audio.addEventListener(
+    "play",
+    () => {
+
+      updateAudioUI(
+        true
+      );
+
+    }
+  );
+
+
+  DOM.audio.addEventListener(
+    "pause",
+    () => {
+
+      updateAudioUI(
+        false
+      );
+
+    }
+  );
+
+
+  DOM.audio.addEventListener(
+    "error",
+    () => {
+
+      updateAudioUI(
+        false
+      );
+
+    }
+  );
+
+
+  installAudioRetry();
+
+  void startAudio();
+
+}
+
+
+/* ============================================================
+   NOTIFICATION ENGINE
+   ============================================================ */
+
+const DEFAULT_NOTIFICATIONS = [
+  {
+    id: "mis-nexus-welcome",
+    title: "MIS-NEXUS™ is ready",
+    body: "Your institutional access hub is available.",
+    type: "system",
+    time: "Just now",
+    unread: true
+  },
+  {
+    id: "mis-nexus-updates",
+    title: "School updates",
+    body: "New announcements can appear here whenever they are published.",
+    type: "announcement",
+    time: "Today",
+    unread: true
+  }
+];
+
+function notificationRead() {
+  try {
+    const raw = localStorage.getItem(CONFIG.storageNotifications);
+    if (!raw) return DEFAULT_NOTIFICATIONS.map(item => ({ ...item }));
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return DEFAULT_NOTIFICATIONS.map(item => ({ ...item }));
+    return parsed.filter(item => item && typeof item === "object");
+  } catch (error) {
+    return DEFAULT_NOTIFICATIONS.map(item => ({ ...item }));
+  }
+}
+
+function notificationWrite(items) {
+  try {
+    localStorage.setItem(
+      CONFIG.storageNotifications,
+      JSON.stringify(items)
+    );
+  } catch (error) {
+    /* Storage may be unavailable; the app remains usable. */
+  }
+}
+
+function notificationCount() {
+  return notificationRead().reduce(
+    (count, item) => count + (item.unread ? 1 : 0),
+    0
+  );
+}
+
+function updateNotificationBadge() {
+  if (!DOM.notificationBadge) return;
+
+  const count = notificationCount();
+
+  if (count <= 0) {
+    DOM.notificationBadge.classList.remove("visible");
+    DOM.notificationBadge.removeAttribute("data-count");
+    DOM.notificationBadge.setAttribute("aria-hidden", "true");
+    return;
+  }
+
+  DOM.notificationBadge.classList.add("visible");
+  DOM.notificationBadge.dataset.count = count > 99 ? "99+" : String(count);
+  DOM.notificationBadge.setAttribute("aria-hidden", "false");
+}
+
+function markNotificationsRead() {
+  const items = notificationRead().map(item => ({
+    ...item,
+    unread: false
+  }));
+
+  notificationWrite(items);
+  updateNotificationBadge();
+}
+
+function pushNotification(title, body, type = "announcement") {
+  const items = notificationRead();
+  const item = {
+    id: `notice-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    title: String(title || "New notification"),
+    body: String(body || ""),
+    type: String(type || "announcement"),
+    time: "Just now",
+    unread: true
+  };
+
+  items.unshift(item);
+  notificationWrite(items.slice(0, 100));
+  updateNotificationBadge();
+  return item;
+}
+
+function initializeNotifications() {
+  updateNotificationBadge();
+
+  DOM.notificationLink?.addEventListener("click", () => {
+    try {
+      localStorage.setItem("mis-nexus-last-notifications", String(Date.now()));
+    } catch (error) {
+      /* Ignore storage failures. */
+    }
+  });
+
+  window.addEventListener("storage", event => {
+    if (event.key === CONFIG.storageNotifications) {
+      updateNotificationBadge();
+    }
+  });
+}
+
+/* ============================================================
+   ACCESS NAVIGATION
+   ============================================================ */
+
+async function navigateTo(
+  route
+) {
+
+  if (
+    state.navigating
+  ) {
+
+    return;
+
+  }
+
+  if (
+    !route
+  ) {
+
+    return;
+
+  }
+
+  state.navigating =
+    true;
+
+
+  DOM.loading.classList.add(
+    "active"
+  );
+
+  DOM.loading.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  await new Promise(resolve => setTimeout(resolve, 180));
+  window.location.assign(route);
+
+}
+
+
+/* ============================================================
+   ACCESS INITIALIZATION
+   ============================================================ */
+
+function initializeAccess() {
+
+  DOM.accessCards.forEach(
+    card => {
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          const route =
+            card.dataset.route;
+
+          void navigateTo(
+            route
+          );
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   THEME INITIALIZATION
+   ============================================================ */
+
+function initializeThemes() {
+
+  applyTheme(
+    state.theme
+  );
+
+
+  DOM.themeButton.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      toggleThemeDrawer();
+
+    }
+  );
+
+
+  DOM.themes.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          applyTheme(
+            button.dataset.theme
+          );
+
+          toggleThemeDrawer(
+            false
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  document.addEventListener(
+    "pointerdown",
+    event => {
+
+      if (
+        state.themeOpen &&
+        !DOM.themeDrawer.contains(
+          event.target
+        ) &&
+        !DOM.themeButton.contains(
+          event.target
+        )
+      ) {
+
+        toggleThemeDrawer(
+          false
+        );
+
+      }
+
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+}
+
+
+/* ============================================================
+   INTRO
+   ============================================================ */
+
+function initializeIntro() {
+
+  window.setTimeout(
+    () => {
+
+      state.introFinished =
+        true;
+
+      DOM.intro.classList.add(
+        "finished"
+      );
+
+      DOM.intro.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    },
+    CONFIG.introDuration
+  );
+
+}
+
+
+/* ============================================================
+   KEYBOARD
+   ============================================================ */
+
+function initializeKeyboard() {
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key ===
+        "Escape"
+      ) {
+
+        toggleThemeDrawer(
+          false
+        );
+
+      }
+
+
+      if (
+        event.key.toLowerCase() ===
+        "t"
+      ) {
+
+        toggleThemeDrawer();
+
+      }
+
+
+      if (
+        event.key.toLowerCase() ===
+        "m"
+      ) {
+
+        if (
+          DOM.audio.paused
+        ) {
+
+          state.audioEnabled =
+            true;
+
+          void startAudio();
+
+        } else {
+
+          DOM.audio.pause();
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   PERFORMANCE
+   ============================================================ */
+
+function initializePerformance() {
+
+  const images =
+    [
+      "logo.png",
+      "institution.png",
+      "secure.png"
+    ];
+
+
+  images.forEach(
+    source => {
+
+      const image =
+        new Image();
+
+      image.decoding =
+        "async";
+
+      image.src =
+        source;
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   SERVICE WORKER
+   ============================================================ */
+
+function initializeServiceWorker() {
+
+  if (
+    !("serviceWorker" in navigator)
+  ) {
+
+    return;
+
+  }
+
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      navigator.serviceWorker
+        .register(
+          "./sw.js",
+          {
+            scope: "./",
+            updateViaCache: "none"
+          }
+        )
+        .catch(
+          () => {
+
+            /*
+              Application remains functional
+              when SW is not deployed.
+            */
+
+          }
+        );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   APPLICATION BOOT
+   ============================================================ */
+
+function bootstrap() {
+
+  initializeThemes();
+
+  initializeAudio();
+
+  initializeNotifications();
+
+  initializeAccess();
+
+  initializeIntro();
+
+  initializeKeyboard();
+
+  initializePerformance();
+
+  initializeServiceWorker();
+
+}
+
+
+/* ============================================================
+   START
+   ============================================================ */
+
+if (
+  document.readyState ===
+  "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    bootstrap,
+    {
+      once:
+        true
+    }
+  );
+
+} else {
+
+  bootstrap();
+
+}
+
+
+/* ============================================================
+   EXTENDED CLIENT UTILITIES
+   ============================================================
+*/
+const MISNexusTools = Object.freeze({
+  clamp(value,min,max){return Math.min(Math.max(Number(value)||0,min),max);},
+  normalize(value){return String(value??"").replace(/\s+/g," ").trim();},
+  safeNumber(value,fallback=0){const n=Number(value);return Number.isFinite(n)?n:fallback;},
+  now(){return Date.now();},
+  iso(){return new Date().toISOString();},
+  delay(ms){return new Promise(resolve=>setTimeout(resolve,ms));},
+  idle(callback,timeout=800){if("requestIdleCallback" in window)return requestIdleCallback(callback,{timeout});return setTimeout(callback,Math.min(timeout,250));},
+  frame(callback){return requestAnimationFrame(callback);},
+  storage(key,value){try{if(arguments.length>1)localStorage.setItem(key,String(value));return localStorage.getItem(key);}catch{return null;}},
+  removeStorage(key){try{localStorage.removeItem(key);}catch{}},
+  json(value,fallback=null){try{return JSON.parse(value);}catch{return fallback;}},
+  uuid(prefix="mis"){return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;},
+  online(){return navigator.onLine;},
+  standalone(){return Boolean(matchMedia?.("(display-mode: standalone)")?.matches||navigator.standalone);},
+  reducedMotion(){return Boolean(matchMedia?.("(prefers-reduced-motion: reduce)")?.matches);},
+  viewport(){return {width:innerWidth,height:innerHeight,dpr:devicePixelRatio||1};}
+});
+
+
+function misNexusUtility1(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 1, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility2(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 2, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility3(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 3, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility4(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 4, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility5(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 5, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility6(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 6, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility7(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 7, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility8(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 8, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility9(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 9, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility10(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 10, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility11(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 11, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility12(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 12, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility13(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 13, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility14(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 14, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility15(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 15, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility16(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 16, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility17(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 17, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility18(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 18, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility19(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 19, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility20(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 20, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility21(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 21, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility22(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 22, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility23(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 23, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility24(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 24, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility25(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 25, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility26(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 26, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility27(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 27, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility28(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 28, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility29(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 29, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility30(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 30, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility31(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 31, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility32(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 32, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility33(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 33, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility34(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 34, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility35(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 35, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility36(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 36, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility37(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 37, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility38(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 38, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility39(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 39, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility40(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 40, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility41(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 41, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility42(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 42, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility43(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 43, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility44(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 44, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility45(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 45, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility46(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 46, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility47(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 47, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility48(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 48, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility49(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 49, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility50(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 50, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility51(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 51, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility52(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 52, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility53(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 53, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility54(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 54, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility55(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 55, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility56(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 56, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility57(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 57, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility58(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 58, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility59(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 59, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility60(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 60, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility61(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 61, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility62(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 62, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility63(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 63, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility64(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 64, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility65(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 65, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility66(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 66, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility67(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 67, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility68(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 68, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility69(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 69, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility70(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 70, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility71(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 71, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility72(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 72, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility73(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 73, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility74(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 74, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility75(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 75, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility76(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 76, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility77(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 77, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility78(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 78, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility79(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 79, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility80(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 80, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility81(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 81, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility82(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 82, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility83(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 83, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility84(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 84, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility85(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 85, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility86(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 86, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility87(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 87, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility88(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 88, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility89(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 89, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility90(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 90, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility91(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 91, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility92(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 92, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility93(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 93, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility94(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 94, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility95(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 95, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility96(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 96, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility97(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 97, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility98(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 98, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility99(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 99, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility100(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 100, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility101(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 101, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility102(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 102, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility103(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 103, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility104(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 104, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility105(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 105, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility106(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 106, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility107(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 107, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility108(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 108, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility109(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 109, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility110(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 110, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility111(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 111, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility112(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 112, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility113(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 113, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility114(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 114, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility115(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 115, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility116(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 116, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility117(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 117, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility118(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 118, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility119(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 119, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility120(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 120, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility121(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 121, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility122(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 122, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility123(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 123, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility124(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 124, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility125(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 125, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility126(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 126, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility127(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 127, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility128(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 128, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility129(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 129, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility130(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 130, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility131(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 131, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility132(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 132, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility133(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 133, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility134(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 134, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility135(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 135, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility136(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 136, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility137(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 137, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility138(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 138, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility139(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 139, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility140(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 140, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility141(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 141, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility142(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 142, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility143(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 143, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility144(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 144, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+function misNexusUtility145(value, fallback = null) {
+  const text = String(value ?? "").trim();
+  if (text.length === 0) return fallback;
+  return { index: 145, value: text, theme: state.theme, online: navigator.onLine };
+}
+
+
+window.MIS_NEXUS = Object.freeze({
+  config: CONFIG,
+  tools: MISNexusTools,
+  notifications: {
+    read: notificationRead,
+    write: notificationWrite,
+    count: notificationCount,
+    markRead: markNotificationsRead,
+    push: pushNotification,
+    refresh: updateNotificationBadge
+  },
+  theme: {
+    get: () => state.theme,
+    set: applyTheme
+  }
+});
+
+</script>
+
+
+
+<script>
+/* ============================================================
+   MIS-NEXUS™ SMART APP RUNTIME
+   ============================================================ */
+(() => {
+  "use strict";
+
+  const APP = {
+    notificationKey: "mis-nexus-notifications",
+    themeKey: "mis-nexus-theme",
+    installKey: "mis-nexus-install-dismissed",
+    maxNotifications: 100,
+    themes: ["silver", "navy", "light"]
+  };
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+  const safeJSON = (value, fallback) => {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return fallback;
+    }
+  };
+
+  const escapeHTML = value => String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+  const readNotifications = () => {
+    const raw = localStorage.getItem(APP.notificationKey);
+    if (!raw) return [
+      {
+        id: "mis-nexus-welcome",
+        title: "MIS-NEXUS™ is ready",
+        body: "Your institutional access hub is available.",
+        type: "system",
+        time: "Just now",
+        unread: true,
+        createdAt: Date.now()
+      },
+      {
+        id: "mis-nexus-updates",
+        title: "School updates",
+        body: "New announcements can appear here whenever they are published.",
+        type: "announcement",
+        time: "Today",
+        unread: true,
+        createdAt: Date.now() - 1000
+      }
+    ];
+    const parsed = safeJSON(raw, []);
+    return Array.isArray(parsed) ? parsed : [];
+  };
+
+  const writeNotifications = items => {
+    const normalized = items
+      .filter(item => item && typeof item === "object")
+      .slice(0, APP.maxNotifications);
+    try {
+      localStorage.setItem(APP.notificationKey, JSON.stringify(normalized));
+    } catch {}
+    updateBadge();
+    window.dispatchEvent(new CustomEvent("mis-nexus-notifications-updated", {
+      detail: normalized
+    }));
+  };
+
+  const unreadCount = () => readNotifications().filter(item => item.unread).length;
+
+  const updateBadge = () => {
+    const badge = $("#notificationBadge");
+    if (!badge) return;
+    const count = unreadCount();
+    badge.classList.toggle("visible", count > 0);
+    badge.dataset.count = count > 99 ? "99+" : String(count);
+    badge.setAttribute("aria-hidden", count > 0 ? "false" : "true");
+  };
+
+  const markNotificationRead = id => {
+    writeNotifications(readNotifications().map(item =>
+      item.id === id ? { ...item, unread: false } : item
+    ));
+  };
+
+  const markAllNotificationsRead = () => {
+    writeNotifications(readNotifications().map(item => ({ ...item, unread: false })));
+  };
+
+  const addNotification = (title, body, type = "announcement") => {
+    const item = {
+      id: `notice-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+      title: String(title || "New notification"),
+      body: String(body || ""),
+      type: String(type || "announcement"),
+      time: "Just now",
+      unread: true,
+      createdAt: Date.now()
+    };
+    writeNotifications([item, ...readNotifications()]);
+    return item;
+  };
+
+  const iconFor = type => {
+    if (type === "announcement") return `<svg viewBox="0 0 24 24"><path d="M4 11h5l8-4v10l-8-4H4z"></path><path d="M9 15l1.5 5"></path></svg>`;
+    if (type === "attendance") return `<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="m8 12 2.2 2.2L16 8.5"></path></svg>`;
+    if (type === "classes") return `<svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"></rect><rect x="14" y="4" width="6" height="6" rx="1.5"></rect><rect x="4" y="14" width="6" height="6" rx="1.5"></rect><rect x="14" y="14" width="6" height="6" rx="1.5"></rect></svg>`;
+    return `<svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>`;
+  };
+
+  let overlay = null;
+  let isOpen = false;
+
+  const buildOverlay = () => {
+    if (overlay) return overlay;
+
+    overlay = document.createElement("div");
+    overlay.id = "mnSmartNotificationRoot";
+    overlay.innerHTML = `
+      <div class="mn-smart-backdrop" data-smart-notification-close></div>
+      <section class="mn-smart-panel" role="dialog" aria-modal="true" aria-label="MIS-NEXUS notifications">
+        <header class="mn-smart-head">
+          <div class="mn-smart-heading">
+            <div class="mn-smart-kicker">MIS-NEXUS™ • LIVE UPDATES</div>
+            <div class="mn-smart-title">Notifications</div>
+          </div>
+          <button class="mn-smart-button" type="button" data-smart-read aria-label="Mark all notifications read" title="Mark all read">
+            <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>
+          </button>
+          <button class="mn-smart-button" type="button" data-smart-notification-close aria-label="Close notifications" title="Close">
+            <svg viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+          </button>
+        </header>
+        <div class="mn-smart-summary">
+          <span><strong id="mnSmartUnread">0</strong> unread updates</span>
+          <button class="mn-smart-read" type="button" data-smart-read>MARK ALL READ</button>
+        </div>
+        <div class="mn-smart-list" id="mnSmartList" tabindex="0"></div>
+      </section>
+    `;
+    document.body.appendChild(overlay);
+
+    $$('[data-smart-notification-close]', overlay).forEach(button => {
+      button.addEventListener("click", closeNotifications);
+    });
+
+    $$('[data-smart-read]', overlay).forEach(button => {
+      button.addEventListener("click", () => {
+        markAllNotificationsRead();
+        renderNotifications();
+      });
+    });
+
+    return overlay;
+  };
+
+  const renderNotifications = () => {
+    const host = buildOverlay();
+    const list = $("#mnSmartList", host);
+    const counter = $("#mnSmartUnread", host);
+    const items = readNotifications();
+    const unread = items.filter(item => item.unread).length;
+
+    counter.textContent = String(unread);
+
+    if (!items.length) {
+      list.innerHTML = `<div class="mn-smart-empty"><strong>You're all caught up.</strong>No new notifications right now.</div>`;
+      return;
+    }
+
+    list.innerHTML = items.map(item => `
+      <article class="mn-smart-item ${item.unread ? "unread" : ""}" data-notification-id="${escapeHTML(item.id)}" tabindex="0" role="button">
+        <div class="mn-smart-icon">${iconFor(item.type)}</div>
+        <div class="mn-smart-copy">
+          <div class="mn-smart-item-title">${escapeHTML(item.title)}</div>
+          <div class="mn-smart-body">${escapeHTML(item.body)}</div>
+          <div class="mn-smart-time">${escapeHTML(item.time || "Update")}</div>
+        </div>
+      </article>
+    `).join("");
+
+    $$(".mn-smart-item", list).forEach(card => {
+      const activate = () => {
+        markNotificationRead(card.dataset.notificationId);
+        renderNotifications();
+      };
+      card.addEventListener("click", activate);
+      card.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activate();
+        }
+      });
+    });
+  };
+
+  function openNotifications() {
+    buildOverlay();
+    renderNotifications();
+    document.documentElement.classList.add("mn-notification-open");
+    overlay.classList.add("mn-smart-open");
+    isOpen = true;
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onNotificationKeydown, true);
+  }
+
+  function closeNotifications() {
+    if (!overlay || !isOpen) return;
+    overlay.classList.remove("mn-smart-open");
+    document.documentElement.classList.remove("mn-notification-open");
+    isOpen = false;
+    document.body.style.overflow = "";
+    document.removeEventListener("keydown", onNotificationKeydown, true);
+  }
+
+  function onNotificationKeydown(event) {
+    if (event.key === "Escape") closeNotifications();
+  }
+
+  function toggleNotifications() {
+    if (isOpen) closeNotifications();
+    else openNotifications();
+  }
+
+  /* Capture phase deliberately intercepts the existing notifications.html link. */
+  document.addEventListener("click", event => {
+    const link = event.target.closest?.('a[href="notifications.html"], #notificationLink, [data-open-notifications]');
+    if (!link) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    openNotifications();
+  }, true);
+
+  window.addEventListener("storage", event => {
+    if (event.key === APP.notificationKey) {
+      updateBadge();
+      if (isOpen) renderNotifications();
+    }
+    if (event.key === APP.themeKey) applySupportedTheme();
+  });
+
+  window.addEventListener("mis-nexus-notifications-updated", () => {
+    updateBadge();
+    if (isOpen) renderNotifications();
+  });
+
+  const applySupportedTheme = () => {
+    let theme = localStorage.getItem(APP.themeKey) || "silver";
+    if (!APP.themes.includes(theme)) theme = "silver";
+    document.documentElement.dataset.theme = theme;
+    const themeButtons = $$(".theme");
+    themeButtons.forEach(button => {
+      const active = button.dataset.theme === theme;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    const themeColor = $("#themeColor");
+    if (themeColor) {
+      themeColor.setAttribute("content", theme === "navy" ? "#183f70" : theme === "light" ? "#f7f9fb" : "#d7dee5");
+    }
+  };
+
+  const installManager = (() => {
+    let deferredPrompt = null;
+    const button = $("#installAppButton");
+
+    const show = () => {
+      if (!button) return;
+      button.hidden = false;
+      button.setAttribute("aria-label", "Install MIS-NEXUS as an application");
+    };
+
+    const hide = () => {
+      if (!button) return;
+      button.hidden = true;
+    };
+
+    const isStandalone = () =>
+      window.matchMedia?.("(display-mode: standalone)")?.matches ||
+      window.navigator.standalone === true ||
+      document.referrer.startsWith("android-app://");
+
+    const showInstallGuide = () => {
+      if (isStandalone()) return;
+      const ua = navigator.userAgent || "";
+      const ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const android = /Android/i.test(ua);
+      const message = ios
+        ? "In Safari, tap Share, then Add to Home Screen."
+        : android
+          ? "Open your browser menu and choose Install app or Add to Home screen."
+          : "Use your browser's install icon/menu and choose Install MIS-NEXUS. If unavailable, choose Create shortcut or Add to Home Screen.";
+      let host = document.getElementById("mnInstallGuide");
+      if (!host) {
+        host = document.createElement("div");
+        host.id = "mnInstallGuide";
+        host.setAttribute("role", "dialog");
+        host.setAttribute("aria-modal", "true");
+        host.innerHTML = `<div class="mn-install-backdrop"></div><section class="mn-install-card"><div class="mn-install-icon">M</div><div class="mn-install-kicker">MIS-NEXUS™ • APP INSTALL</div><h2>Install MIS-NEXUS</h2><p>${escapeHTML(message)}</p><button type="button" class="mn-install-close">CONTINUE</button></section>`;
+        document.body.appendChild(host);
+        const style = document.createElement("style");
+        style.textContent = `#mnInstallGuide{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.42);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:.18s ease}#mnInstallGuide.open{opacity:1;visibility:visible}.mn-install-card{width:min(390px,100%);padding:24px;border:1px solid var(--line-strong);border-radius:26px;background:var(--surface-solid);color:var(--text);box-shadow:var(--shadow-xl)}.mn-install-icon{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:linear-gradient(145deg,var(--silver-light),var(--silver-dark));color:#20252b;font-weight:1000;font-size:22px;margin-bottom:14px}.mn-install-kicker{font-size:7px;font-weight:950;letter-spacing:1.4px;color:var(--muted);margin-bottom:7px}.mn-install-card h2{margin:0 0 8px;font-size:22px}.mn-install-card p{margin:0;color:var(--muted);font-size:11px;line-height:1.6}.mn-install-close{margin-top:18px;border:0;border-radius:13px;padding:11px 16px;background:var(--text);color:var(--bg-deep);font-weight:950;font-size:8px}`;
+        document.head.appendChild(style);
+        const close = () => { host.classList.remove("open"); };
+        host.addEventListener("click", e => { if (e.target === host || e.target.closest(".mn-install-close,.mn-install-backdrop")) close(); });
+      }
+      host.classList.add("open");
+    };
+
+    window.addEventListener("beforeinstallprompt", event => {
+      event.preventDefault();
+      deferredPrompt = event;
+      show();
+    });
+
+    window.addEventListener("appinstalled", () => {
+      deferredPrompt = null;
+      hide();
+      try { localStorage.setItem(APP.installKey, "installed"); } catch {}
+    });
+
+    button?.addEventListener("click", async () => {
+      if (isStandalone()) return;
+      if (!deferredPrompt) {
+        showInstallGuide();
+        return;
+      }
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice.catch(() => null);
+      deferredPrompt = null;
+      hide();
+    });
+
+    if (isStandalone()) {
+      hide();
+    } else {
+      // Keep the install control available. Chrome will replace the fallback
+      // guide with the native install prompt as soon as beforeinstallprompt fires.
+      show();
+    }
+
+    return Object.freeze({
+      show,
+      hide,
+      guide: showInstallGuide,
+      available: () => Boolean(deferredPrompt),
+      installed: isStandalone
+    });
+  })();
+
+  const storeBadgeManager = () => {
+    const play = $("#playStoreBadge");
+    const apple = $("#appleStoreBadge");
+
+    const unavailable = platform => {
+      if (window.MISNexusTools?.toast) {
+        window.MISNexusTools.toast(`${platform} listing will be available when the store release is published.`);
+        return;
+      }
+      const original = document.title;
+      document.title = `${platform} release coming soon • ${original}`;
+      window.setTimeout(() => { document.title = original; }, 1800);
+    };
+
+    play?.addEventListener("click", () => unavailable("Google Play"));
+    apple?.addEventListener("click", () => unavailable("Apple App Store"));
+  };
+
+  const addToastSystem = () => {
+    if (window.MISNexusTools?.toast) return;
+
+    const toast = message => {
+      let host = $("#misNexusRuntimeToast");
+      if (!host) {
+        host = document.createElement("div");
+        host.id = "misNexusRuntimeToast";
+        host.style.cssText = "position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(15px);z-index:2147482999;opacity:0;transition:.22s ease;pointer-events:none;max-width:min(92vw,420px);padding:10px 13px;border:1px solid var(--line);border-radius:14px;background:var(--surface-solid);color:var(--text);font:800 9px/1.35 Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;box-shadow:0 18px 50px rgba(0,0,0,.25);text-align:center";
+        document.body.appendChild(host);
+      }
+      host.textContent = String(message || "");
+      host.style.opacity = "1";
+      host.style.transform = "translateX(-50%) translateY(0)";
+      clearTimeout(host._timer);
+      host._timer = setTimeout(() => {
+        host.style.opacity = "0";
+        host.style.transform = "translateX(-50%) translateY(15px)";
+      }, 2200);
+    };
+
+    window.MISNexusTools = window.MISNexusTools || {};
+    window.MISNexusTools.toast = toast;
+  };
+
+  const accessibility = () => {
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Tab") return;
+      document.documentElement.classList.add("keyboard-navigation");
+    }, { passive: true });
+
+    document.addEventListener("pointerdown", () => {
+      document.documentElement.classList.remove("keyboard-navigation");
+    }, { passive: true });
+  };
+
+  const nigerianClock = () => {
+    const clock = $("#nigerianClockTime");
+    if (!clock) return;
+
+    const update = () => {
+      clock.textContent = new Intl.DateTimeFormat("en-NG", {
+        timeZone: "Africa/Lagos",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(new Date());
+    };
+
+    update();
+    window.setInterval(update, 1000);
+  };
+
+  const footerClock = () => {
+    const year = $("#footerYear");
+    if (year) year.textContent = String(new Date().getFullYear());
+  };
+
+  const performanceGuard = () => {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const lowPower = Boolean(connection?.saveData || /2g/.test(connection?.effectiveType || ""));
+    const app = $("#application");
+    if (app && lowPower) app.classList.add("low-power-device");
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) app?.classList.add("reduced-motion");
+    const warmRoutes = ["teachers.html","students.html","parents.html","boarders.html","staff.html","classes.html"];
+    const warm = () => {
+      if (navigator.onLine === false) return;
+      warmRoutes.forEach(route => { const link = document.createElement("link"); link.rel = "prefetch"; link.href = route; document.head.appendChild(link); });
+    };
+    if ("requestIdleCallback" in window) requestIdleCallback(warm, { timeout: 1800 });
+    else setTimeout(warm, 900);
+  };
+
+  const preventAccidentalZoom = () => {
+    document.addEventListener("gesturestart", event => event.preventDefault(), { passive: false });
+    document.addEventListener("gesturechange", event => event.preventDefault(), { passive: false });
+    document.addEventListener("gestureend", event => event.preventDefault(), { passive: false });
+    let lastTouchEnd = 0;
+    document.addEventListener("touchend", event => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 280) event.preventDefault();
+      lastTouchEnd = now;
+    }, { passive: false });
+  };
+
+  const exposeAPI = () => {
+    window.MISNexusApp = Object.freeze({
+      notifications: Object.freeze({
+        open: openNotifications,
+        close: closeNotifications,
+        toggle: toggleNotifications,
+        add: addNotification,
+        markRead: markNotificationRead,
+        markAllRead: markAllNotificationsRead,
+        getAll: readNotifications,
+        unreadCount
+      }),
+      install: installManager,
+      theme: Object.freeze({
+        get: () => document.documentElement.dataset.theme || "silver",
+        set: theme => {
+          if (!APP.themes.includes(theme)) return false;
+          localStorage.setItem(APP.themeKey, theme);
+          applySupportedTheme();
+          return true;
+        }
+      })
+    });
+  };
+
+  const boot = () => {
+    applySupportedTheme();
+    updateBadge();
+    nigerianClock();
+    footerClock();
+    storeBadgeManager();
+    addToastSystem();
+    accessibility();
+    performanceGuard();
+    preventAccidentalZoom();
+    exposeAPI();
+
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
+  }
+})();
+</script>
+
+</body>
+</html>
