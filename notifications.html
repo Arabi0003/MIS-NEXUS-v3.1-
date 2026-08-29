@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#d7dee5">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<title>Notifications — MIS-NEXUS™</title>
+<style>
+:root{--bg:#171b20;--surface:#20252b;--surface2:#2a3037;--text:#fbfdff;--muted:#a7b0b9;--line:rgba(255,255,255,.12);--accent:#d7dee5;--danger:#d95568}
+html[data-theme="navy"]{--bg:#edf3f8;--surface:#fff;--surface2:#f1f5f9;--text:#10243d;--muted:#6c7f93;--line:rgba(12,39,72,.12);--accent:#183f70}
+html[data-theme="light"]{--bg:#f7f9fb;--surface:#fff;--surface2:#f1f4f7;--text:#15202b;--muted:#697987;--line:rgba(20,35,50,.10);--accent:#788692}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}body{touch-action:pan-y;user-select:none;-webkit-user-select:none}button,a{font:inherit;color:inherit}button{border:0}a{text-decoration:none}.page{min-height:100dvh;padding:calc(12px + env(safe-area-inset-top)) 15px 24px}.top{max-width:760px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.back{width:44px;height:44px;border:1px solid var(--line);border-radius:15px;background:var(--surface);display:grid;place-items:center}.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.heading{text-align:center;flex:1}.kicker{font-size:7px;font-weight:900;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}.title{margin-top:3px;font-size:20px;font-weight:950;letter-spacing:-.045em}.spacer{width:44px}.content{max-width:760px;margin:24px auto}.summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:20px;background:var(--surface);font-size:10px}.summary strong{font-size:13px}.clear{padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);font-size:8px;font-weight:900;cursor:pointer}.list{margin-top:12px;display:grid;gap:10px}.notification{position:relative;padding:16px;border:1px solid var(--line);border-radius:21px;background:var(--surface)}.notification.unread{border-color:color-mix(in srgb,var(--accent) 42%,var(--line))}.notification.unread::before{content:"";position:absolute;left:8px;top:18px;width:6px;height:6px;border-radius:50%;background:var(--danger)}.row{display:flex;gap:12px;align-items:flex-start}.nicon{width:42px;height:42px;flex:0 0 42px;border-radius:14px;display:grid;place-items:center;background:var(--surface2);color:var(--accent)}.nicon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ntitle{font-size:12px;font-weight:950}.nbody{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.5}.ntime{margin-top:8px;color:var(--muted);font-size:7px;font-weight:850;text-transform:uppercase;letter-spacing:.8px}.empty{padding:45px 20px;text-align:center;color:var(--muted);font-size:11px}.empty strong{display:block;margin-bottom:4px;color:var(--text);font-size:13px}
+</style>
+</head>
+<body>
+<div class="page"><header class="top"><a class="back" href="index.html" aria-label="Back to home"><svg class="icon" viewBox="0 0 24 24"><path d="M15 18 9 12l6-6"></path></svg></a><div class="heading"><div class="kicker">MIS-NEXUS™</div><div class="title">Notifications</div></div><div class="spacer"></div></header><main class="content"><section class="summary"><div><strong id="unreadCount">0</strong><span> unread updates</span></div><button class="clear" id="clearButton" type="button">MARK ALL READ</button></section><section class="list" id="notificationList" aria-live="polite"></section></main></div>
+<script src="notifications.js"></script>
+<script>
+"use strict";
+const engine=window.MISNEXUSNotifications;
+const list=document.getElementById("notificationList");
+const count=document.getElementById("unreadCount");
+const clear=document.getElementById("clearButton");
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function icon(t){if(t==="announcement")return '<svg viewBox="0 0 24 24"><path d="M4 11h5l8-4v10l-8-4H4z"></path><path d="M9 15l1.5 5"></path></svg>';if(t==="attendance")return '<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="m8 12 2.2 2.2L16 8.5"></path></svg>';return '<svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>'}
+function render(){const items=engine.getAll();count.textContent=items.filter(x=>x.unread).length;list.innerHTML=items.length?items.map(x=>`<article class="notification ${x.unread?"unread":""}" data-id="${esc(x.id)}"><div class="row"><div class="nicon">${icon(x.type)}</div><div><div class="ntitle">${esc(x.title)}</div><div class="nbody">${esc(x.body)}</div><div class="ntime">${esc(x.time||"Update")}</div></div></div></article>`).join(""): '<div class="empty"><strong>You are all caught up.</strong>No notifications yet.</div>';list.querySelectorAll(".notification").forEach(card=>card.addEventListener("click",()=>{engine.markRead(card.dataset.id);render()}))}
+clear.addEventListener("click",()=>{engine.markAllRead();render()});window.addEventListener("storage",render);render();
+</script>
+</body>
+</html>
