@@ -1,0 +1,9925 @@
+<!DOCTYPE html>
+<html lang="en-NG">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07110d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="application-name" content="MIS-NEXUS">
+<meta name="description" content="MIS-NEXUS School Management Dashboard">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<title>MIS-NEXUS™ — Dashboard</title>
+
+<style>
+:root{
+  --bg:#07110d;
+  --bg2:#0b1712;
+  --surface:#0e1d16;
+  --surface2:#12251c;
+  --surface3:#162d23;
+  --text:#f4f8f5;
+  --muted:#91a59a;
+  --muted2:#60756a;
+  --border:rgba(255,255,255,.09);
+  --border2:rgba(255,255,255,.14);
+  --accent:#c9a451;
+  --accent2:#f3d98e;
+  --success:#42d98b;
+  --danger:#ff6675;
+  --warning:#f1bc52;
+  --info:#65b9ff;
+  --shadow:0 25px 80px rgba(0,0,0,.34);
+  --radius:20px;
+  --sidebar:276px;
+  --header:82px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+html,
+body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+body{
+  overflow:hidden;
+}
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+button{
+  cursor:pointer;
+}
+img{
+  max-width:100%;
+}
+a{
+  color:inherit;
+  text-decoration:none;
+}
+.hidden{
+  display:none!important;
+}
+.no-scroll{
+  overflow:hidden!important;
+}
+::selection{
+  background:rgba(201,164,81,.28);
+}
+::-webkit-scrollbar{
+  width:8px;
+  height:8px;
+}
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.12);
+  border-radius:20px;
+}
+::-webkit-scrollbar-thumb:hover{
+  background:rgba(255,255,255,.2);
+}
+
+/* APP */
+#app{
+  width:100%;
+  height:100dvh;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 78% -12%,rgba(201,164,81,.13),transparent 32%),
+    radial-gradient(circle at -8% 108%,rgba(45,155,99,.11),transparent 30%),
+    linear-gradient(135deg,#06100c 0%,#0a1711 48%,#06100b 100%);
+}
+#app.theme-blue{
+  --accent:#68aee8;
+  --accent2:#cce7ff;
+  --success:#4bd4a0;
+  background:
+    radial-gradient(circle at 78% -12%,rgba(80,153,220,.17),transparent 32%),
+    linear-gradient(135deg,#06101c,#0b1929,#06101a);
+}
+#app.theme-gold{
+  --accent:#c9a451;
+  --accent2:#f3d98e;
+}
+#app.theme-emerald{
+  --accent:#43d49a;
+  --accent2:#b8ffe0;
+  background:
+    radial-gradient(circle at 78% -12%,rgba(67,212,154,.14),transparent 32%),
+    linear-gradient(135deg,#06110d,#091c15,#05100c);
+}
+#app.theme-plum{
+  --accent:#c68adf;
+  --accent2:#f0d3fa;
+  background:
+    radial-gradient(circle at 78% -12%,rgba(198,138,223,.16),transparent 32%),
+    linear-gradient(135deg,#110713,#1a0b1e,#0d0610);
+}
+#app.theme-slate{
+  --accent:#b9c7d5;
+  --accent2:#ffffff;
+  background:
+    radial-gradient(circle at 78% -12%,rgba(185,199,213,.13),transparent 32%),
+    linear-gradient(135deg,#080b0f,#111820,#070a0d);
+}
+
+/* GLOBAL LOADER */
+#bootLoader{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(201,164,81,.10),transparent 28%),
+    #050a07;
+  transition:opacity .55s var(--ease),visibility .55s var(--ease);
+}
+#bootLoader.hide{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.boot-card{
+  width:min(90vw,410px);
+  text-align:center;
+}
+.boot-logo-wrap{
+  width:112px;
+  height:112px;
+  margin:0 auto 28px;
+  position:relative;
+  display:grid;
+  place-items:center;
+}
+.boot-logo-wrap::before,
+.boot-logo-wrap::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:1px solid rgba(201,164,81,.30);
+}
+.boot-logo-wrap::before{
+  animation:spin 2.3s linear infinite;
+}
+.boot-logo-wrap::after{
+  inset:-12px;
+  border-color:rgba(255,255,255,.07);
+  animation:spinReverse 3.6s linear infinite;
+}
+.boot-logo{
+  width:74px;
+  height:74px;
+  object-fit:contain;
+  border-radius:50%;
+  animation:float 2.2s ease-in-out infinite;
+  filter:drop-shadow(0 15px 28px rgba(0,0,0,.55));
+}
+.boot-brand{
+  font-size:19px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.boot-sub{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.boot-progress{
+  width:190px;
+  height:3px;
+  margin:24px auto 0;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(255,255,255,.07);
+}
+.boot-progress span{
+  display:block;
+  width:45%;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  animation:progress 1.5s ease-in-out infinite;
+}
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+@keyframes spinReverse{
+  to{transform:rotate(-360deg)}
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) scale(.98)}
+  50%{transform:translateY(-6px) scale(1)}
+}
+@keyframes progress{
+  0%{transform:translateX(-130%)}
+  100%{transform:translateX(340%)}
+}
+
+/* PAGE LOADER */
+#pageLoader{
+  position:fixed;
+  inset:0;
+  z-index:90000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(2,7,5,.54);
+  backdrop-filter:blur(10px);
+}
+#pageLoader.show{
+  display:flex;
+}
+.page-loader-card{
+  width:min(90vw,340px);
+  padding:30px;
+  text-align:center;
+  border:1px solid var(--border2);
+  border-radius:24px;
+  background:rgba(13,27,20,.92);
+  box-shadow:var(--shadow);
+}
+.spinner{
+  width:46px;
+  height:46px;
+  margin:0 auto 18px;
+  border:3px solid rgba(255,255,255,.10);
+  border-top-color:var(--accent);
+  border-right-color:var(--accent2);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+.page-loader-title{
+  font-size:14px;
+  font-weight:800;
+}
+.page-loader-text{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* AUTH BLOCK */
+#authBlocked{
+  position:fixed;
+  inset:0;
+  z-index:99000;
+  display:none;
+  place-items:center;
+  padding:22px;
+  background:#050a07;
+}
+#authBlocked.show{
+  display:grid;
+}
+.auth-card{
+  width:min(100%,440px);
+  padding:38px;
+  border:1px solid var(--border2);
+  border-radius:28px;
+  background:linear-gradient(145deg,rgba(19,38,28,.95),rgba(8,18,13,.95));
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+.auth-card img{
+  width:74px;
+  height:74px;
+  object-fit:contain;
+  border-radius:20px;
+  margin-bottom:20px;
+}
+.auth-card h2{
+  margin:0;
+  font-size:24px;
+}
+.auth-card p{
+  margin:12px 0 24px;
+  color:var(--muted);
+  line-height:1.7;
+  font-size:13px;
+}
+.auth-card button{
+  width:100%;
+  min-height:48px;
+  border:0;
+  border-radius:14px;
+  color:#111;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:absolute;
+  z-index:300;
+  left:0;
+  top:0;
+  bottom:0;
+  width:var(--sidebar);
+  display:flex;
+  flex-direction:column;
+  padding:20px 16px;
+  border-right:1px solid var(--border);
+  background:rgba(5,13,9,.88);
+  backdrop-filter:blur(28px);
+  transition:transform .35s var(--ease);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:5px 8px 25px;
+}
+.brand-logo{
+  width:47px;
+  height:47px;
+  flex:0 0 auto;
+  object-fit:contain;
+  border-radius:14px;
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.4));
+}
+.brand-title{
+  min-width:0;
+}
+.brand-title strong{
+  display:block;
+  font-size:14px;
+  font-weight:950;
+  letter-spacing:.09em;
+}
+.brand-title span{
+  display:block;
+  margin-top:4px;
+  color:var(--muted2);
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.class-chip{
+  margin:0 4px 20px;
+  padding:14px;
+  border:1px solid rgba(201,164,81,.18);
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(201,164,81,.09),rgba(255,255,255,.025));
+}
+.class-chip-label{
+  color:var(--muted2);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.class-chip-name{
+  margin-top:6px;
+  font-size:14px;
+  font-weight:900;
+}
+.class-chip-email{
+  margin-top:5px;
+  overflow:hidden;
+  color:var(--muted);
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.nav-title{
+  padding:0 9px 8px;
+  color:var(--muted2);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+.nav-btn{
+  width:100%;
+  min-height:47px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 13px;
+  border:1px solid transparent;
+  border-radius:14px;
+  color:#8ea097;
+  background:transparent;
+  text-align:left;
+  font-size:12px;
+  font-weight:800;
+  transition:all .22s var(--ease);
+}
+.nav-btn:hover{
+  color:#fff;
+  background:rgba(255,255,255,.045);
+}
+.nav-btn.active{
+  color:#fff;
+  border-color:rgba(201,164,81,.18);
+  background:linear-gradient(135deg,rgba(201,164,81,.15),rgba(255,255,255,.035));
+  box-shadow:inset 3px 0 0 var(--accent);
+}
+.nav-icon{
+  width:23px;
+  height:23px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:8px;
+  background:rgba(255,255,255,.045);
+}
+.nav-icon svg{
+  width:15px;
+  height:15px;
+}
+.nav-badge{
+  min-width:22px;
+  height:21px;
+  margin-left:auto;
+  display:grid;
+  place-items:center;
+  padding:0 6px;
+  border-radius:20px;
+  color:#111;
+  background:var(--accent);
+  font-size:10px;
+  font-weight:950;
+}
+.sidebar-bottom{
+  margin-top:auto;
+}
+.connection{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 4px 12px;
+  padding:11px 12px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:var(--muted);
+  background:rgba(255,255,255,.025);
+  font-size:10px;
+}
+.connection-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--warning);
+  box-shadow:0 0 0 4px rgba(241,188,82,.08);
+}
+.connection.online .connection-dot{
+  background:var(--success);
+  box-shadow:0 0 0 4px rgba(66,217,139,.08);
+}
+.connection.offline .connection-dot{
+  background:var(--danger);
+}
+.logout-btn{
+  width:100%;
+  min-height:44px;
+  border:1px solid rgba(255,102,117,.13);
+  border-radius:13px;
+  color:#ff9aa4;
+  background:rgba(255,102,117,.05);
+  font-size:11px;
+  font-weight:850;
+}
+
+/* MOBILE OVERLAY */
+#sidebarOverlay{
+  position:fixed;
+  inset:0;
+  z-index:250;
+  display:none;
+  background:rgba(0,0,0,.56);
+  backdrop-filter:blur(2px);
+}
+#sidebarOverlay.show{
+  display:block;
+}
+
+/* MAIN */
+.main{
+  position:absolute;
+  inset:0 0 0 var(--sidebar);
+  overflow:hidden;
+}
+.topbar{
+  height:var(--header);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:0 28px;
+  border-bottom:1px solid var(--border);
+  background:rgba(5,13,9,.62);
+  backdrop-filter:blur(24px);
+}
+.top-left{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+.mobile-menu{
+  display:none;
+  width:42px;
+  height:42px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:#fff;
+  background:rgba(255,255,255,.045);
+}
+.top-title{
+  min-width:0;
+}
+.top-title h1{
+  margin:0;
+  overflow:hidden;
+  font-size:19px;
+  font-weight:900;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.top-title p{
+  margin:4px 0 0;
+  overflow:hidden;
+  color:var(--muted);
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.clock{
+  min-width:180px;
+  padding:9px 13px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:rgba(255,255,255,.035);
+  text-align:right;
+}
+.clock-time{
+  font-variant-numeric:tabular-nums;
+  font-size:14px;
+  font-weight:900;
+}
+.clock-date{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:9px;
+}
+.icon-btn{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:#dbe4df;
+  background:rgba(255,255,255,.035);
+  transition:all .2s var(--ease);
+}
+.icon-btn:hover{
+  border-color:rgba(201,164,81,.35);
+  transform:translateY(-1px);
+}
+.profile-btn{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-height:42px;
+  padding:4px 9px 4px 5px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  color:#fff;
+  background:rgba(255,255,255,.035);
+}
+.profile-avatar{
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  color:#111;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  font-size:12px;
+  font-weight:950;
+}
+.profile-meta{
+  text-align:left;
+}
+.profile-meta strong{
+  display:block;
+  max-width:150px;
+  overflow:hidden;
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.profile-meta span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:8px;
+}
+
+/* CONTENT */
+.content{
+  height:calc(100dvh - var(--header));
+  overflow:auto;
+  padding:28px;
+  scroll-behavior:smooth;
+}
+.page{
+  display:none;
+  animation:pageIn .35s var(--ease);
+}
+.page.active{
+  display:block;
+}
+@keyframes pageIn{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+.page-heading{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:24px;
+}
+.heading-title h2{
+  margin:0;
+  font-size:27px;
+  line-height:1.15;
+  font-weight:950;
+  letter-spacing:-.035em;
+}
+.heading-title p{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+.heading-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+/* BUTTONS */
+.btn{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 15px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  font-size:11px;
+  font-weight:850;
+  transition:all .2s var(--ease);
+}
+.btn:hover{
+  transform:translateY(-1px);
+}
+.btn-primary{
+  border-color:transparent;
+  color:#10140f;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  box-shadow:0 9px 25px rgba(201,164,81,.12);
+}
+.btn-secondary{
+  color:#e5ece8;
+  background:rgba(255,255,255,.045);
+}
+.btn-success{
+  border-color:rgba(66,217,139,.18);
+  color:#9bf1c4;
+  background:rgba(66,217,139,.08);
+}
+.btn-danger{
+  border-color:rgba(255,102,117,.18);
+  color:#ff9ca5;
+  background:rgba(255,102,117,.07);
+}
+.btn-warning{
+  border-color:rgba(241,188,82,.18);
+  color:#f5d486;
+  background:rgba(241,188,82,.07);
+}
+.btn-sm{
+  min-height:34px;
+  padding:0 11px;
+  font-size:10px;
+}
+
+/* CARDS */
+.card{
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015));
+  box-shadow:0 15px 45px rgba(0,0,0,.10);
+}
+.card-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:20px 21px;
+  border-bottom:1px solid var(--border);
+}
+.card-title{
+  font-size:13px;
+  font-weight:900;
+}
+.card-subtitle{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
+}
+.card-body{
+  padding:20px;
+}
+
+/* STATS */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:18px;
+}
+.stat-card{
+  position:relative;
+  overflow:hidden;
+  min-height:142px;
+  padding:19px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+}
+.stat-card::after{
+  content:"";
+  position:absolute;
+  width:110px;
+  height:110px;
+  right:-42px;
+  top:-45px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(201,164,81,.17),transparent 68%);
+}
+.stat-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.stat-label{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.stat-icon{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  color:var(--accent2);
+  background:rgba(201,164,81,.09);
+}
+.stat-value{
+  margin-top:18px;
+  font-size:31px;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+.stat-foot{
+  margin-top:7px;
+  color:var(--muted2);
+  font-size:9px;
+}
+
+/* DASHBOARD GRID */
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.5fr) minmax(300px,.8fr);
+  gap:18px;
+}
+.dashboard-grid-wide{
+  grid-column:1/-1;
+}
+.chart-wrap{
+  height:290px;
+  position:relative;
+}
+.chart-canvas{
+  width:100%;
+  height:100%;
+}
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.quick-action{
+  min-height:104px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:9px;
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  color:#fff;
+  background:rgba(255,255,255,.028);
+  transition:all .22s var(--ease);
+  text-align:left;
+}
+.quick-action:hover{
+  border-color:rgba(201,164,81,.28);
+  background:rgba(201,164,81,.06);
+  transform:translateY(-2px);
+}
+.quick-icon{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  color:var(--accent2);
+  background:rgba(201,164,81,.09);
+}
+.quick-action strong{
+  font-size:11px;
+}
+.quick-action span{
+  color:var(--muted);
+  font-size:9px;
+}
+
+/* PROGRESS */
+.progress{
+  width:100%;
+  height:8px;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(255,255,255,.07);
+}
+.progress span{
+  display:block;
+  width:0;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .8s var(--ease);
+}
+.attendance-summary{
+  display:grid;
+  gap:15px;
+}
+.summary-row{
+  display:grid;
+  grid-template-columns:86px 1fr 55px;
+  align-items:center;
+  gap:10px;
+}
+.summary-row label{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+}
+.summary-row strong{
+  text-align:right;
+  font-size:11px;
+}
+
+/* TABLE TOOLBAR */
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+.search{
+  position:relative;
+  flex:1 1 280px;
+}
+.search svg{
+  position:absolute;
+  left:13px;
+  top:50%;
+  width:17px;
+  height:17px;
+  color:var(--muted2);
+  transform:translateY(-50%);
+}
+.search input{
+  width:100%;
+  min-height:44px;
+  padding:0 14px 0 41px;
+  outline:none;
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:#fff;
+  background:rgba(255,255,255,.035);
+}
+.search input:focus{
+  border-color:rgba(201,164,81,.40);
+}
+.filter-group{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.select{
+  min-height:44px;
+  padding:0 35px 0 12px;
+  outline:none;
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:#fff;
+  background:#0d1a14;
+}
+.table-shell{
+  width:100%;
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:16px;
+}
+table{
+  width:100%;
+  min-width:850px;
+  border-collapse:collapse;
+}
+th,
+td{
+  padding:13px 14px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  white-space:nowrap;
+}
+th{
+  color:var(--muted2);
+  background:rgba(255,255,255,.025);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+td{
+  color:#dfe8e3;
+  font-size:11px;
+}
+tbody tr{
+  transition:background .18s ease;
+}
+tbody tr:hover{
+  background:rgba(255,255,255,.028);
+}
+tbody tr:last-child td{
+  border-bottom:0;
+}
+.student-cell{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.student-avatar{
+  width:36px;
+  height:36px;
+  flex:0 0 auto;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--border);
+  border-radius:11px;
+  color:#111;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  font-size:11px;
+  font-weight:950;
+}
+.student-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.student-name{
+  font-weight:850;
+}
+.student-id{
+  margin-top:3px;
+  color:var(--muted2);
+  font-size:9px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:24px;
+  padding:0 8px;
+  border-radius:20px;
+  font-size:9px;
+  font-weight:900;
+}
+.badge-active{
+  color:#8af0b6;
+  background:rgba(66,217,139,.09);
+}
+.badge-inactive{
+  color:#f3ca75;
+  background:rgba(241,188,82,.08);
+}
+.badge-archived{
+  color:#b4c0ca;
+  background:rgba(180,192,202,.08);
+}
+.badge-present{
+  color:#8af0b6;
+  background:rgba(66,217,139,.09);
+}
+.badge-absent{
+  color:#ff9da6;
+  background:rgba(255,102,117,.08);
+}
+.badge-late{
+  color:#f4d27f;
+  background:rgba(241,188,82,.08);
+}
+.row-actions{
+  display:flex;
+  gap:6px;
+}
+.row-action{
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--border);
+  border-radius:9px;
+  color:#b8c5be;
+  background:rgba(255,255,255,.025);
+}
+.row-action:hover{
+  color:#fff;
+  border-color:rgba(201,164,81,.28);
+}
+
+/* EMPTY */
+.empty{
+  padding:55px 20px;
+  text-align:center;
+}
+.empty-icon{
+  width:56px;
+  height:56px;
+  margin:0 auto 15px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  color:var(--accent2);
+  background:rgba(201,164,81,.08);
+}
+.empty strong{
+  display:block;
+  font-size:14px;
+}
+.empty p{
+  margin:7px 0 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* PAGINATION */
+.pagination{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:14px;
+  color:var(--muted);
+  font-size:10px;
+}
+.page-buttons{
+  display:flex;
+  gap:5px;
+}
+.page-btn{
+  min-width:34px;
+  height:34px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  color:#cbd5cf;
+  background:rgba(255,255,255,.025);
+}
+.page-btn.active{
+  color:#111;
+  border-color:transparent;
+  background:var(--accent);
+}
+
+/* ATTENDANCE */
+.attendance-controls{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:10px;
+  align-items:center;
+}
+.attendance-date{
+  min-height:44px;
+  padding:0 12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:#fff;
+  background:rgba(255,255,255,.035);
+}
+.attendance-stat-row{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:16px;
+}
+.mini-stat{
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:rgba(255,255,255,.025);
+}
+.mini-stat span{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+}
+.mini-stat strong{
+  display:block;
+  margin-top:7px;
+  font-size:22px;
+}
+.attendance-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:16px;
+}
+.attendance-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:7px;
+}
+.att-btn{
+  min-height:36px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font-size:9px;
+  font-weight:900;
+}
+.att-btn.present{
+  color:#92f2bd;
+  background:rgba(66,217,139,.08);
+}
+.att-btn.absent{
+  color:#ff9da6;
+  background:rgba(255,102,117,.08);
+}
+.att-btn.late{
+  color:#f5d17a;
+  background:rgba(241,188,82,.08);
+}
+.att-time{
+  color:var(--muted);
+  font-size:9px;
+}
+
+/* ANALYTICS */
+.analytics-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.analytics-wide{
+  grid-column:1/-1;
+}
+.donut-area{
+  display:grid;
+  grid-template-columns:190px 1fr;
+  align-items:center;
+  gap:22px;
+}
+.donut{
+  width:170px;
+  height:170px;
+  margin:auto;
+  position:relative;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:conic-gradient(var(--success) 0deg,#f1bc52 0deg,#ff6675 0deg,rgba(255,255,255,.07) 0deg);
+}
+.donut::after{
+  content:"";
+  position:absolute;
+  inset:22px;
+  border-radius:50%;
+  background:var(--surface);
+}
+.donut-content{
+  position:relative;
+  z-index:1;
+  text-align:center;
+}
+.donut-content strong{
+  display:block;
+  font-size:28px;
+}
+.donut-content span{
+  color:var(--muted);
+  font-size:9px;
+}
+.legend{
+  display:grid;
+  gap:12px;
+}
+.legend-row{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.legend-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+}
+.legend-row span{
+  flex:1;
+  color:var(--muted);
+  font-size:10px;
+}
+.legend-row strong{
+  font-size:11px;
+}
+
+/* REPORTS */
+.report-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+.report-card{
+  min-height:170px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:space-between;
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  transition:all .22s var(--ease);
+}
+.report-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(201,164,81,.25);
+}
+.report-icon{
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  color:var(--accent2);
+  background:rgba(201,164,81,.09);
+}
+.report-card strong{
+  font-size:13px;
+}
+.report-card p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+}
+
+/* SETTINGS */
+.settings-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.setting-list{
+  display:grid;
+}
+.setting{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:16px 0;
+  border-bottom:1px solid var(--border);
+}
+.setting:last-child{
+  border-bottom:0;
+}
+.setting-info strong{
+  display:block;
+  font-size:11px;
+}
+.setting-info span{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.5;
+}
+.theme-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+}
+.theme-btn{
+  height:70px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+.theme-btn span{
+  position:absolute;
+  left:8px;
+  right:8px;
+  bottom:8px;
+  color:#fff;
+  font-size:8px;
+  font-weight:850;
+}
+.theme-btn.active{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.theme-gold-preview{background:linear-gradient(135deg,#17130a,#c9a451)}
+.theme-blue-preview{background:linear-gradient(135deg,#07101a,#68aee8)}
+.theme-emerald-preview{background:linear-gradient(135deg,#06120c,#43d49a)}
+.theme-plum-preview{background:linear-gradient(135deg,#110713,#c68adf)}
+.theme-slate-preview{background:linear-gradient(135deg,#080b0f,#b9c7d5)}
+
+/* MODALS */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:8000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.62);
+  backdrop-filter:blur(12px);
+}
+.modal.show{
+  display:flex;
+}
+.modal-dialog{
+  width:min(100%,760px);
+  max-height:min(92dvh,900px);
+  overflow:auto;
+  border:1px solid var(--border2);
+  border-radius:25px;
+  background:#0c1912;
+  box-shadow:0 40px 110px rgba(0,0,0,.55);
+  animation:modalIn .28s var(--ease);
+}
+.modal-dialog.large{
+  width:min(100%,1100px);
+}
+@keyframes modalIn{
+  from{
+    opacity:0;
+    transform:translateY(12px) scale(.985);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+.modal-header{
+  position:sticky;
+  top:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:20px 22px;
+  border-bottom:1px solid var(--border);
+  background:rgba(12,25,18,.94);
+  backdrop-filter:blur(15px);
+}
+.modal-title{
+  font-size:16px;
+  font-weight:950;
+}
+.modal-subtitle{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:9px;
+}
+.modal-close{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:#dce6e0;
+  background:rgba(255,255,255,.035);
+}
+.modal-body{
+  padding:22px;
+}
+.modal-footer{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  padding:16px 22px;
+  border-top:1px solid var(--border);
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.field.full{
+  grid-column:1/-1;
+}
+.field label{
+  color:#a9b8af;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  min-height:45px;
+  outline:none;
+  padding:11px 12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:#fff;
+  background:rgba(0,0,0,.19);
+}
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:rgba(201,164,81,.45);
+}
+.photo-upload{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.photo-preview{
+  width:78px;
+  height:78px;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border:1px solid var(--border);
+  border-radius:18px;
+  color:var(--muted);
+  background:rgba(255,255,255,.035);
+}
+.photo-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* CONFIRM */
+.confirm{
+  text-align:center;
+}
+.confirm-icon{
+  width:66px;
+  height:66px;
+  margin:0 auto 18px;
+  display:grid;
+  place-items:center;
+  border-radius:20px;
+  color:#ff9da6;
+  background:rgba(255,102,117,.08);
+}
+.confirm h3{
+  margin:0;
+  font-size:18px;
+}
+.confirm p{
+  margin:9px auto 0;
+  max-width:440px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+}
+
+/* REPORT PREVIEW */
+.report-preview{
+  padding:28px;
+  border-radius:16px;
+  background:#fff;
+  color:#111;
+}
+.report-head{
+  display:grid;
+  grid-template-columns:75px 1fr 170px;
+  align-items:center;
+  gap:18px;
+  padding-bottom:20px;
+  border-bottom:2px solid #111;
+}
+.report-logo{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+}
+.report-school{
+  text-align:center;
+}
+.report-school h2{
+  margin:0;
+  font-size:19px;
+  font-weight:950;
+}
+.report-school p{
+  margin:5px 0 0;
+  font-size:10px;
+}
+.report-meta{
+  text-align:right;
+  font-size:9px;
+  line-height:1.7;
+}
+.report-title{
+  margin:22px 0 15px;
+  text-align:center;
+}
+.report-title h3{
+  margin:0;
+  font-size:16px;
+}
+.report-title p{
+  margin:5px 0 0;
+  font-size:9px;
+}
+.report-table{
+  width:100%;
+  min-width:0;
+  border-collapse:collapse;
+}
+.report-table th,
+.report-table td{
+  padding:7px 8px;
+  border:1px solid #cfd4d1;
+  color:#111;
+  font-size:9px;
+}
+.report-table th{
+  background:#eef2ef;
+  font-size:8px;
+}
+.report-footer{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  margin-top:45px;
+  padding-top:12px;
+  font-size:9px;
+}
+
+/* TOAST */
+#toastStack{
+  position:fixed;
+  z-index:99999;
+  right:20px;
+  bottom:20px;
+  width:min(92vw,380px);
+  display:grid;
+  gap:9px;
+  pointer-events:none;
+}
+.toast{
+  display:grid;
+  grid-template-columns:34px 1fr 25px;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border:1px solid var(--border2);
+  border-radius:15px;
+  background:rgba(13,28,20,.95);
+  box-shadow:0 18px 45px rgba(0,0,0,.35);
+  pointer-events:auto;
+  animation:toastIn .3s var(--ease);
+}
+.toast.out{
+  animation:toastOut .25s var(--ease) forwards;
+}
+@keyframes toastIn{
+  from{
+    opacity:0;
+    transform:translateX(20px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+@keyframes toastOut{
+  to{
+    opacity:0;
+    transform:translateX(20px);
+  }
+}
+.toast-icon{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+}
+.toast.success .toast-icon{
+  color:#8ef0b7;
+  background:rgba(66,217,139,.09);
+}
+.toast.error .toast-icon{
+  color:#ff9da6;
+  background:rgba(255,102,117,.09);
+}
+.toast.info .toast-icon{
+  color:#8ecbff;
+  background:rgba(101,185,255,.09);
+}
+.toast.warning .toast-icon{
+  color:#f5d27d;
+  background:rgba(241,188,82,.09);
+}
+.toast strong{
+  display:block;
+  font-size:11px;
+}
+.toast span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.4;
+}
+.toast-close{
+  border:0;
+  color:var(--muted);
+  background:none;
+}
+
+/* PROFILE POPOVER */
+.popover{
+  position:fixed;
+  z-index:7000;
+  top:72px;
+  right:22px;
+  width:min(90vw,330px);
+  display:none;
+  padding:16px;
+  border:1px solid var(--border2);
+  border-radius:18px;
+  background:#0d1b14;
+  box-shadow:var(--shadow);
+}
+.popover.show{
+  display:block;
+  animation:modalIn .2s var(--ease);
+}
+.popover-user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+}
+.popover-avatar{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  color:#111;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  font-weight:950;
+}
+.popover-user strong{
+  display:block;
+  font-size:11px;
+}
+.popover-user span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
+}
+.popover-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:11px 0;
+  border-bottom:1px solid var(--border);
+  font-size:10px;
+}
+.popover-row span{
+  color:var(--muted);
+}
+.popover-row strong{
+  text-align:right;
+}
+.popover-logout{
+  width:100%;
+  min-height:40px;
+  margin-top:13px;
+  border:1px solid rgba(255,102,117,.15);
+  border-radius:11px;
+  color:#ff9da6;
+  background:rgba(255,102,117,.06);
+  font-size:10px;
+  font-weight:900;
+}
+
+/* NOTIFICATION PANEL */
+.notification-panel{
+  position:fixed;
+  z-index:7000;
+  top:72px;
+  right:75px;
+  width:min(92vw,360px);
+  max-height:470px;
+  overflow:auto;
+  display:none;
+  border:1px solid var(--border2);
+  border-radius:18px;
+  background:#0d1b14;
+  box-shadow:var(--shadow);
+}
+.notification-panel.show{
+  display:block;
+  animation:modalIn .2s var(--ease);
+}
+.notification-head{
+  display:flex;
+  justify-content:space-between;
+  padding:16px;
+  border-bottom:1px solid var(--border);
+}
+.notification-head strong{
+  font-size:12px;
+}
+.notification-list{
+  padding:7px;
+}
+.notification-item{
+  display:flex;
+  gap:10px;
+  padding:12px;
+  border-radius:12px;
+}
+.notification-item:hover{
+  background:rgba(255,255,255,.035);
+}
+.notification-item-icon{
+  width:33px;
+  height:33px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  color:var(--accent2);
+  background:rgba(201,164,81,.08);
+}
+.notification-item strong{
+  display:block;
+  font-size:10px;
+}
+.notification-item span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.4;
+}
+
+/* RESPONSIVE */
+@media(max-width:1250px){
+  :root{
+    --sidebar:245px;
+  }
+  .stats-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .report-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .dashboard-grid{
+    grid-template-columns:1fr;
+  }
+  .dashboard-grid-wide{
+    grid-column:auto;
+  }
+  .attendance-grid{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:900px){
+  :root{
+    --sidebar:0px;
+  }
+  .sidebar{
+    width:min(86vw,310px);
+    transform:translateX(-105%);
+    box-shadow:30px 0 80px rgba(0,0,0,.4);
+  }
+  .sidebar.open{
+    transform:translateX(0);
+  }
+  .main{
+    inset:0;
+  }
+  .mobile-menu{
+    display:grid;
+    place-items:center;
+  }
+  .topbar{
+    padding:0 16px;
+  }
+  .clock{
+    min-width:auto;
+  }
+  .clock-date{
+    display:none;
+  }
+  .profile-meta{
+    display:none;
+  }
+  .content{
+    padding:20px 16px 35px;
+  }
+  .analytics-grid{
+    grid-template-columns:1fr;
+  }
+  .analytics-wide{
+    grid-column:auto;
+  }
+  .settings-grid{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:680px){
+  .topbar{
+    height:70px;
+  }
+  .top-title h1{
+    font-size:15px;
+  }
+  .top-title p{
+    font-size:9px;
+  }
+  .top-actions{
+    gap:5px;
+  }
+  .icon-btn{
+    width:38px;
+    height:38px;
+  }
+  .profile-btn{
+    width:38px;
+    height:38px;
+    padding:3px;
+    border-radius:12px;
+  }
+  .profile-avatar{
+    width:30px;
+    height:30px;
+  }
+  .clock{
+    display:none;
+  }
+  .content{
+    height:calc(100dvh - 70px);
+    padding:17px 12px 30px;
+  }
+  .page-heading{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:13px;
+  }
+  .heading-title h2{
+    font-size:23px;
+  }
+  .heading-actions{
+    width:100%;
+  }
+  .heading-actions .btn{
+    flex:1;
+  }
+  .stats-grid{
+    gap:9px;
+  }
+  .stat-card{
+    min-height:125px;
+    padding:14px;
+    border-radius:16px;
+  }
+  .stat-value{
+    font-size:25px;
+  }
+  .stat-label{
+    font-size:8px;
+  }
+  .quick-grid{
+    gap:8px;
+  }
+  .quick-action{
+    min-height:92px;
+    padding:12px;
+  }
+  .card-header,
+  .card-body{
+    padding:15px;
+  }
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+  .field.full{
+    grid-column:auto;
+  }
+  .attendance-stat-row{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .attendance-controls{
+    grid-template-columns:1fr;
+  }
+  .report-grid{
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+  .report-card{
+    min-height:150px;
+    padding:14px;
+  }
+  .theme-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .donut-area{
+    grid-template-columns:1fr;
+  }
+  .report-head{
+    grid-template-columns:55px 1fr;
+  }
+  .report-meta{
+    grid-column:1/-1;
+    text-align:left;
+  }
+}
+@media(max-width:430px){
+  .stats-grid{
+    grid-template-columns:1fr 1fr;
+  }
+  .stat-card{
+    min-height:112px;
+  }
+  .stat-value{
+    margin-top:13px;
+    font-size:22px;
+  }
+  .stat-foot{
+    display:none;
+  }
+  .report-grid{
+    grid-template-columns:1fr 1fr;
+  }
+  .quick-action span{
+    font-size:8px;
+  }
+  .modal{
+    padding:8px;
+  }
+  .modal-dialog{
+    border-radius:19px;
+    max-height:96dvh;
+  }
+  .modal-body{
+    padding:15px;
+  }
+  .modal-header{
+    padding:15px;
+  }
+  .modal-footer{
+    padding:13px 15px;
+  }
+  .modal-footer .btn{
+    flex:1;
+  }
+  #toastStack{
+    right:10px;
+    bottom:10px;
+    width:calc(100vw - 20px);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+@media print{
+  body{
+    overflow:visible;
+    background:#fff!important;
+  }
+  #app,
+  #bootLoader,
+  #pageLoader,
+  #authBlocked,
+  #toastStack,
+  .modal:not(#reportModal){
+    display:none!important;
+  }
+  #reportModal{
+    position:static!important;
+    display:block!important;
+    padding:0!important;
+    background:#fff!important;
+  }
+  #reportModal .modal-dialog{
+    width:100%!important;
+    max-height:none!important;
+    overflow:visible!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+  #reportModal .modal-header,
+  #reportModal .modal-footer{
+    display:none!important;
+  }
+  #reportModal .modal-body{
+    padding:0!important;
+  }
+  .report-preview{
+    border-radius:0!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="bootLoader">
+  <div class="boot-card">
+    <div class="boot-logo-wrap">
+      <img class="boot-logo" src="logo.png" alt="MIS-NEXUS">
+    </div>
+    <div class="boot-brand">MIS-NEXUS™</div>
+    <div class="boot-sub" id="bootText">Securing your dashboard</div>
+    <div class="boot-progress"><span></span></div>
+  </div>
+</div>
+
+<div id="pageLoader">
+  <div class="page-loader-card">
+    <div class="spinner"></div>
+    <div class="page-loader-title" id="loaderTitle">Please wait</div>
+    <div class="page-loader-text" id="loaderText">Processing securely...</div>
+  </div>
+</div>
+
+<div id="authBlocked">
+  <div class="auth-card">
+    <img src="logo.png" alt="MIS-NEXUS">
+    <h2>Secure Access Required</h2>
+    <p>Your MIS-NEXUS session is no longer available. Please return to the existing class login page and sign in again.</p>
+    <button id="authLoginBtn">Return to Login</button>
+  </div>
+</div>
+
+<div id="app" class="theme-gold">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <img class="brand-logo" src="logo.png" alt="MIS-NEXUS">
+      <div class="brand-title">
+        <strong>MIS-NEXUS™</strong>
+        <span>School Management</span>
+      </div>
+    </div>
+
+    <div class="class-chip">
+      <div class="class-chip-label">Authenticated Class</div>
+      <div class="class-chip-name" id="sideClassName">Loading...</div>
+      <div class="class-chip-email" id="sideEmail">Loading...</div>
+    </div>
+
+    <div class="nav-title">Workspace</div>
+
+    <nav class="nav">
+
+      <button class="nav-btn active" data-page="overview">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+          </svg>
+        </span>
+        Dashboard
+      </button>
+
+      <button class="nav-btn" data-page="students">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </span>
+        Students
+        <span class="nav-badge" id="navStudentCount">0</span>
+      </button>
+
+      <button class="nav-btn" data-page="attendance">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+            <path d="M8 2v4M16 2v4M3 10h18"></path>
+            <path d="m8 15 2 2 5-5"></path>
+          </svg>
+        </span>
+        Attendance
+        <span class="nav-badge" id="navAttendanceCount">0</span>
+      </button>
+
+      <button class="nav-btn" data-page="reports">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2h9l5 5v15H6z"></path>
+            <path d="M14 2v6h6"></path>
+            <path d="M9 13h6M9 17h6M9 9h2"></path>
+          </svg>
+        </span>
+        Reports
+      </button>
+
+      <button class="nav-btn" data-page="analytics">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19V5M4 19h17"></path>
+            <path d="m7 15 4-4 3 2 6-7"></path>
+          </svg>
+        </span>
+        Analytics
+      </button>
+
+      <button class="nav-btn" data-page="activity">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 8v5l3 2"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+          </svg>
+        </span>
+        Activity
+      </button>
+
+      <button class="nav-btn" data-page="settings">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.9 1.9-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V22h-2.68v-.08a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.9-1.9.06-.06A1.7 1.7 0 0 0 7.8 15a1.7 1.7 0 0 0-1.56-1.03H6v-2.68h.08A1.7 1.7 0 0 0 7.64 10a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.9-1.9.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56V5h2.68v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.9 1.9-.06.06A1.7 1.7 0 0 0 19.4 10a1.7 1.7 0 0 0 1.56 1.03H21v2.68h-.08A1.7 1.7 0 0 0 19.4 15Z"></path>
+          </svg>
+        </span>
+        Settings
+      </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <div class="connection" id="connectionStatus">
+        <span class="connection-dot"></span>
+        <span id="connectionText">Connecting...</span>
+      </div>
+
+      <button class="logout-btn" id="sideLogout">
+        Sign Out Securely
+      </button>
+
+    </div>
+
+  </aside>
+
+  <div id="sidebarOverlay"></div>
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="top-left">
+
+        <button class="mobile-menu" id="mobileMenu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+
+        <div class="top-title">
+          <h1 id="topClassName">Class Dashboard</h1>
+          <p id="topSubtitle">MIS-NEXUS™ School Management</p>
+        </div>
+
+      </div>
+
+      <div class="top-actions">
+
+        <div class="clock">
+          <div class="clock-time" id="clockTime">00:00:00 WAT</div>
+          <div class="clock-date" id="clockDate">Loading Nigerian time...</div>
+        </div>
+
+        <button class="icon-btn" id="refreshBtn" title="Refresh">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 5v4h4"></path>
+            <path d="M4 13a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" id="notificationBtn" title="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+            <path d="M10 21h4"></path>
+          </svg>
+        </button>
+
+        <button class="profile-btn" id="profileBtn">
+          <span class="profile-avatar" id="profileAvatar">M</span>
+          <span class="profile-meta">
+            <strong id="profileEmail">Loading...</strong>
+            <span>Authenticated Class Account</span>
+          </span>
+        </button>
+
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <!-- OVERVIEW -->
+      <section class="page active" id="page-overview">
+
+        <div class="page-heading">
+          <div class="heading-title">
+            <h2>Good day, <span id="welcomeClass">Class</span></h2>
+            <p>Your complete classroom management overview.</p>
+          </div>
+
+          <div class="heading-actions">
+            <button class="btn btn-secondary" id="overviewRefresh">
+              Refresh Data
+            </button>
+            <button class="btn btn-primary" id="overviewRegister">
+              + Register Student
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">Total Students</span>
+              <span class="stat-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </span>
+            </div>
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-foot">Registered in this class</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">Present Today</span>
+              <span class="stat-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m5 12 4 4L19 6"></path>
+                </svg>
+              </span>
+            </div>
+            <div class="stat-value" id="statPresent">0</div>
+            <div class="stat-foot" id="statPresentFoot">Attendance marked today</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">Absent Today</span>
+              <span class="stat-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 6l12 12M18 6 6 18"></path>
+                </svg>
+              </span>
+            </div>
+            <div class="stat-value" id="statAbsent">0</div>
+            <div class="stat-foot">Students marked absent</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">Late Today</span>
+              <span class="stat-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7v5l3 2"></path>
+                </svg>
+              </span>
+            </div>
+            <div class="stat-value" id="statLate">0</div>
+            <div class="stat-foot">Late arrivals recorded</div>
+          </div>
+
+        </div>
+
+        <div class="dashboard-grid">
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Attendance Trend</div>
+                <div class="card-subtitle">Last seven Nigerian school days</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" data-page-jump="analytics">View Analytics</button>
+            </div>
+            <div class="card-body">
+              <div class="chart-wrap">
+                <canvas class="chart-canvas" id="overviewChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Today's Attendance</div>
+                <div class="card-subtitle" id="overviewAttendanceDate">Loading...</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="attendance-summary">
+
+                <div class="summary-row">
+                  <label>Present</label>
+                  <div class="progress"><span id="presentProgress"></span></div>
+                  <strong id="presentPercent">0%</strong>
+                </div>
+
+                <div class="summary-row">
+                  <label>Absent</label>
+                  <div class="progress"><span id="absentProgress"></span></div>
+                  <strong id="absentPercent">0%</strong>
+                </div>
+
+                <div class="summary-row">
+                  <label>Late</label>
+                  <div class="progress"><span id="lateProgress"></span></div>
+                  <strong id="latePercent">0%</strong>
+                </div>
+
+                <div class="summary-row">
+                  <label>Marked</label>
+                  <div class="progress"><span id="markedProgress"></span></div>
+                  <strong id="markedPercent">0%</strong>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Quick Actions</div>
+                <div class="card-subtitle">Common classroom operations</div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="quick-grid">
+
+                <button class="quick-action" data-action="register">
+                  <span class="quick-icon">+</span>
+                  <strong>Register Student</strong>
+                  <span>Add a new student</span>
+                </button>
+
+                <button class="quick-action" data-action="attendance">
+                  <span class="quick-icon">✓</span>
+                  <strong>Take Attendance</strong>
+                  <span>Mark today's class</span>
+                </button>
+
+                <button class="quick-action" data-action="report">
+                  <span class="quick-icon">▤</span>
+                  <strong>Print Report</strong>
+                  <span>Generate official report</span>
+                </button>
+
+                <button class="quick-action" data-action="students">
+                  <span class="quick-icon">◎</span>
+                  <strong>Students</strong>
+                  <span>Manage class students</span>
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Class Snapshot</div>
+                <div class="card-subtitle">Current class status</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="attendance-summary">
+
+                <div class="summary-row">
+                  <label>Active</label>
+                  <div class="progress"><span id="activeProgress"></span></div>
+                  <strong id="activePercent">0%</strong>
+                </div>
+
+                <div class="summary-row">
+                  <label>Inactive</label>
+                  <div class="progress"><span id="inactiveProgress"></span></div>
+                  <strong id="inactivePercent">0%</strong>
+                </div>
+
+                <div class="summary-row">
+                  <label>Archived</label>
+                  <div class="progress"><span id="archivedProgress"></span></div>
+                  <strong id="archivedPercent">0%</strong>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- STUDENTS -->
+      <section class="page" id="page-students">
+
+        <div class="page-heading">
+          <div class="heading-title">
+            <h2>Students</h2>
+            <p>Register, search, update, archive and manage students.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="btn btn-secondary" id="studentsRefresh">Refresh</button>
+            <button class="btn btn-primary" id="studentRegisterBtn">+ Register Student</button>
+          </div>
+        </div>
+
+        <div class="card">
+
+          <div class="card-header">
+            <div>
+              <div class="card-title">Student Directory</div>
+              <div class="card-subtitle"><span id="studentDirectoryCount">0</span> students in this class</div>
+            </div>
+          </div>
+
+          <div class="card-body">
+
+            <div class="toolbar">
+
+              <div class="search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="m20 20-4-4"></path>
+                </svg>
+                <input id="studentSearch" type="search" placeholder="Search name, student ID, parent or email...">
+              </div>
+
+              <div class="filter-group">
+                <select class="select" id="studentStatusFilter">
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="archived">Archived</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Parent / Guardian</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Attendance</th>
+                    <th>Registered</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="pagination">
+              <span id="studentPageInfo">Showing 0 students</span>
+              <div class="page-buttons" id="studentPagination"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ATTENDANCE -->
+      <section class="page" id="page-attendance">
+
+        <div class="page-heading">
+          <div class="heading-title">
+            <h2>Attendance</h2>
+            <p>Record Present, Absent and Late attendance with exact Nigerian time.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="btn btn-secondary" id="attendanceRefresh">Refresh</button>
+            <button class="btn btn-success" id="markAllPresent">Mark All Present</button>
+            <button class="btn btn-danger" id="markAllAbsent">Mark All Absent</button>
+          </div>
+        </div>
+
+        <div class="attendance-stat-row">
+
+          <div class="mini-stat">
+            <span>Total Students</span>
+            <strong id="attTotal">0</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Present</span>
+            <strong id="attPresent">0</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Absent</span>
+            <strong id="attAbsent">0</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Late</span>
+            <strong id="attLate">0</strong>
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <div class="card-header">
+            <div>
+              <div class="card-title">Daily Attendance Register</div>
+              <div class="card-subtitle">Attendance is stored with the exact marked timestamp.</div>
+            </div>
+
+            <div class="attendance-controls">
+              <input class="attendance-date" id="attendanceDate" type="date">
+              <button class="btn btn-secondary btn-sm" id="attendanceToday">Today</button>
+              <button class="btn btn-primary btn-sm" id="saveAttendance">Save Changes</button>
+            </div>
+          </div>
+
+          <div class="card-body">
+
+            <div class="toolbar">
+              <div class="search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="m20 20-4-4"></path>
+                </svg>
+                <input id="attendanceSearch" type="search" placeholder="Search student...">
+              </div>
+            </div>
+
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Late</th>
+                    <th>Recorded Time</th>
+                    <th>Note</th>
+                  </tr>
+                </thead>
+                <tbody id="attendanceTableBody"></tbody>
+              </table>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- REPORTS -->
+      <section class="page" id="page-reports">
+
+        <div class="page-heading">
+          <div class="heading-title">
+            <h2>Reports</h2>
+            <p>Generate official class and student attendance reports.</p>
+          </div>
+        </div>
+
+        <div class="report-grid">
+
+          <button class="report-card" data-report="daily">
+            <span class="report-icon">▤</span>
+            <span>
+              <strong>Daily Report</strong>
+              <p>Complete attendance register for a selected day.</p>
+            </span>
+          </button>
+
+          <button class="report-card" data-report="weekly">
+            <span class="report-icon">▦</span>
+            <span>
+              <strong>Weekly Report</strong>
+              <p>Seven-day attendance summary for the class.</p>
+            </span>
+          </button>
+
+          <button class="report-card" data-report="monthly">
+            <span class="report-icon">▥</span>
+            <span>
+              <strong>Monthly Report</strong>
+              <p>Monthly attendance performance and records.</p>
+            </span>
+          </button>
+
+          <button class="report-card" data-report="yearly">
+            <span class="report-icon">▤</span>
+            <span>
+              <strong>Yearly Report</strong>
+              <p>Annual attendance overview for this class.</p>
+            </span>
+          </button>
+
+        </div>
+
+        <div class="card" style="margin-top:18px">
+
+          <div class="card-header">
+            <div>
+              <div class="card-title">Custom Report</div>
+              <div class="card-subtitle">Choose any date range and generate an official report.</div>
+            </div>
+          </div>
+
+          <div class="card-body">
+
+            <div class="form-grid">
+
+              <div class="field">
+                <label>From Date</label>
+                <input type="date" id="customFrom">
+              </div>
+
+              <div class="field">
+                <label>To Date</label>
+                <input type="date" id="customTo">
+              </div>
+
+              <div class="field">
+                <label>Report Type</label>
+                <select id="customReportType">
+                  <option value="class">Class Attendance</option>
+                  <option value="student">Student Attendance</option>
+                  <option value="summary">Attendance Summary</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Student</label>
+                <select id="customStudent">
+                  <option value="">All Students</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div style="margin-top:16px;display:flex;justify-content:flex-end">
+              <button class="btn btn-primary" id="customReportBtn">Generate Report</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="page" id="page-analytics">
+
+        <div class="page-heading">
+          <div class="heading-title">
+            <h2>Analytics</h2>
+            <p>Attendance performance and student statistics.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="btn btn-secondary" id="analyticsRefresh">Refresh Analytics</button>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Attendance Distribution</div>
+                <div class="card-subtitle">Current selected date</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="donut-area">
+                <div class="donut" id="attendanceDonut">
+                  <div class="donut-content">
+                    <strong id="donutValue">0%</strong>
+                    <span>Attendance</span>
+                  </div>
+                </div>
+
+                <div class="legend">
+
+                  <div class="legend-row">
+                    <span class="legend-dot" style="background:#42d98b"></span>
+                    <span>Present</span>
+                    <strong id="legendPresent">0</strong>
+                  </div>
+
+                  <div class="legend-row">
+                    <span class="legend-dot" style="background:#f1bc52"></span>
+                    <span>Late</span>
+                    <strong id="legendLate">0</strong>
+                  </div>
+
+                  <div class="legend-row">
+                    <span class="legend-dot" style="background:#ff6675"></span>
+                    <span>Absent</span>
+                    <strong id="legendAbsent">0</strong>
+                  </div>
+
+                  <div class="legend-row">
+                    <span class="legend-dot" style="background:#64756d"></span>
+                    <span>Unmarked</span>
+                    <strong id="legendUnmarked">0</strong>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Student Status</div>
+                <div class="card-subtitle">Current class population</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="attendance-summary">
+
+                <div class="summary-row">
+                  <label>Active</label>
+                  <div class="progress"><span id="analyticsActive"></span></div>
+                  <strong id="analyticsActiveText">0%</strong>
+                </div>
+
+                <div class="summary-row">
+                  <label>Inactive</label>
+                  <div class="progress"><span id="analyticsInactive"></span></div>
+                  <strong id="analyticsInactiveText">0%</strong>
+                </div>
+
+                <div class="summary-row">
+                  <label>Archived</label>
+                  <div class="progress"><span id="analyticsArchived"></span></div>
+                  <strong id="analyticsArchivedText">0%</strong>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="card analytics-wide">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Seven-Day Attendance Performance</div>
+                <div class="card-subtitle">Present, absent and late movement</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="chart-wrap">
+                <canvas class="chart-canvas" id="analyticsChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="card analytics-wide">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Student Attendance Ranking</div>
+                <div class="card-subtitle">Calculated from available attendance records.</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-shell">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Student</th>
+                      <th>Present</th>
+                      <th>Absent</th>
+                      <th>Late</th>
+                      <th>Attendance Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rankingBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ACTIVITY -->
+      <section class="page" id="page-activity">
+
+        <div class="page-heading">
+          <div class="heading-title">
+            <h2>Activity</h2>
+            <p>Recent MIS-NEXUS operations for this class.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="btn btn-secondary" id="activityRefresh">Refresh</button>
+          </div>
+        </div>
+
+        <div class="card">
+
+          <div class="card-header">
+            <div>
+              <div class="card-title">Activity Log</div>
+              <div class="card-subtitle">Student and attendance operations</div>
+            </div>
+          </div>
+
+          <div class="card-body">
+
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Student</th>
+                    <th>Details</th>
+                    <th>Performed By</th>
+                    <th>Date & Time</th>
+                  </tr>
+                </thead>
+                <tbody id="activityBody"></tbody>
+              </table>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="page" id="page-settings">
+
+        <div class="page-heading">
+          <div class="heading-title">
+            <h2>Settings</h2>
+            <p>Personalize the MIS-NEXUS dashboard experience.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Appearance</div>
+                <div class="card-subtitle">Choose your preferred dashboard theme.</div>
+              </div>
+            </div>
+
+            <div class="card-body">
+
+              <div class="theme-grid">
+
+                <button class="theme-btn theme-gold-preview" data-theme="theme-gold">
+                  <span>Gold</span>
+                </button>
+
+                <button class="theme-btn theme-blue-preview" data-theme="theme-blue">
+                  <span>Blue</span>
+                </button>
+
+                <button class="theme-btn theme-emerald-preview" data-theme="theme-emerald">
+                  <span>Emerald</span>
+                </button>
+
+                <button class="theme-btn theme-plum-preview" data-theme="theme-plum">
+                  <span>Plum</span>
+                </button>
+
+                <button class="theme-btn theme-slate-preview" data-theme="theme-slate">
+                  <span>Slate</span>
+                </button>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Class Account</div>
+                <div class="card-subtitle">Authenticated account information.</div>
+              </div>
+            </div>
+
+            <div class="card-body">
+
+              <div class="setting-list">
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Class</strong>
+                    <span>Current authenticated classroom.</span>
+                  </div>
+                  <strong id="settingsClass">—</strong>
+                </div>
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Email</strong>
+                    <span>Authenticated class account.</span>
+                  </div>
+                  <strong id="settingsEmail">—</strong>
+                </div>
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Timezone</strong>
+                    <span>Official dashboard clock timezone.</span>
+                  </div>
+                  <strong>Africa/Lagos</strong>
+                </div>
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Connection</strong>
+                    <span>Live database connection state.</span>
+                  </div>
+                  <strong id="settingsConnection">Checking...</strong>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Application</div>
+                <div class="card-subtitle">Dashboard controls.</div>
+              </div>
+            </div>
+
+            <div class="card-body">
+
+              <div class="setting-list">
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Install Dashboard</strong>
+                    <span>Install MIS-NEXUS as an application when supported.</span>
+                  </div>
+                  <button class="btn btn-primary btn-sm" id="installBtn">Install</button>
+                </div>
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Refresh All Data</strong>
+                    <span>Reload students, attendance, analytics and activity.</span>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" id="settingsRefresh">Refresh</button>
+                </div>
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Print Report</strong>
+                    <span>Generate an official school report.</span>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" id="settingsReport">Report</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">MIS-NEXUS™</div>
+                <div class="card-subtitle">Classroom management platform.</div>
+              </div>
+            </div>
+
+            <div class="card-body">
+
+              <div class="setting-list">
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Dashboard Version</strong>
+                    <span>Current interface build.</span>
+                  </div>
+                  <strong>4.0 Premium</strong>
+                </div>
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>School Time</strong>
+                    <span>West Africa Time.</span>
+                  </div>
+                  <strong>WAT +01:00</strong>
+                </div>
+
+                <div class="setting">
+                  <div class="setting-info">
+                    <strong>Data Isolation</strong>
+                    <span>Class-scoped database policies.</span>
+                  </div>
+                  <strong>Enabled</strong>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+</div>
+
+<div class="popover" id="profilePopover">
+
+  <div class="popover-user">
+    <div class="popover-avatar" id="popoverAvatar">M</div>
+    <div>
+      <strong id="popoverEmail">—</strong>
+      <span id="popoverClass">—</span>
+    </div>
+  </div>
+
+  <div class="popover-row">
+    <span>Account</span>
+    <strong>Authenticated</strong>
+  </div>
+
+  <div class="popover-row">
+    <span>Timezone</span>
+    <strong>Africa/Lagos</strong>
+  </div>
+
+  <div class="popover-row">
+    <span>Class ID</span>
+    <strong id="popoverClassId">—</strong>
+  </div>
+
+  <button class="popover-logout" id="popoverLogout">
+    Sign Out
+  </button>
+
+</div>
+
+<div class="notification-panel" id="notificationPanel">
+
+  <div class="notification-head">
+    <strong>Notifications</strong>
+    <button class="row-action" id="clearNotifications">×</button>
+  </div>
+
+  <div class="notification-list" id="notificationList">
+
+    <div class="notification-item">
+      <div class="notification-item-icon">✓</div>
+      <div>
+        <strong>MIS-NEXUS is ready</strong>
+        <span>Your class dashboard has loaded successfully.</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="toastStack"></div>
+
+<!-- STUDENT MODAL -->
+<div class="modal" id="studentModal">
+
+  <div class="modal-dialog">
+
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="studentModalTitle">Register Student</div>
+        <div class="modal-subtitle">Student records are restricted to the authenticated class.</div>
+      </div>
+      <button class="modal-close" data-close-modal="studentModal">×</button>
+    </div>
+
+    <form id="studentForm">
+
+      <div class="modal-body">
+
+        <input type="hidden" id="studentRecordId">
+
+        <div class="form-grid">
+
+          <div class="field full">
+            <label>Full Name *</label>
+            <input id="studentFullName" required autocomplete="name" placeholder="Enter student's full name">
+          </div>
+
+          <div class="field">
+            <label>Student ID</label>
+            <input id="studentId" placeholder="Automatic if left blank">
+          </div>
+
+          <div class="field">
+            <label>Student Email</label>
+            <input id="studentEmail" type="email" autocomplete="email" placeholder="student@example.com">
+          </div>
+
+          <div class="field">
+            <label>Parent / Guardian</label>
+            <input id="studentParent" placeholder="Parent or guardian name">
+          </div>
+
+          <div class="field">
+            <label>Parent Phone</label>
+            <input id="studentPhone" type="tel" autocomplete="tel" placeholder="+234...">
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select id="studentStatus">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Student Profile Photo</label>
+
+            <div class="photo-upload">
+
+              <div class="photo-preview" id="studentPhotoPreview">
+                <span>No photo</span>
+              </div>
+
+              <div style="flex:1">
+                <input id="studentPhoto" type="file" accept="image/*">
+                <div style="margin-top:7px;color:var(--muted);font-size:9px">
+                  The image is compressed before storage.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal="studentModal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="studentSaveBtn">Save Student</button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- STUDENT VIEW MODAL -->
+<div class="modal" id="studentViewModal">
+
+  <div class="modal-dialog large">
+
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Student Profile</div>
+        <div class="modal-subtitle">Complete student record and attendance overview.</div>
+      </div>
+      <button class="modal-close" data-close-modal="studentViewModal">×</button>
+    </div>
+
+    <div class="modal-body" id="studentViewBody"></div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close-modal="studentViewModal">Close</button>
+      <button class="btn btn-primary" id="studentViewReport">Student Report</button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal" id="confirmModal">
+
+  <div class="modal-dialog" style="max-width:500px">
+
+    <div class="modal-body">
+
+      <div class="confirm">
+
+        <div class="confirm-icon">!</div>
+
+        <h3 id="confirmTitle">Confirm Action</h3>
+
+        <p id="confirmText">Are you sure?</p>
+
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="confirmCancel">Cancel</button>
+      <button class="btn btn-danger" id="confirmProceed">Continue</button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- REPORT MODAL -->
+<div class="modal" id="reportModal">
+
+  <div class="modal-dialog large">
+
+    <div class="modal-header">
+
+      <div>
+        <div class="modal-title">Official Report</div>
+        <div class="modal-subtitle">MISBAHUL 'ILM SCHOOLS ABUJA</div>
+      </div>
+
+      <button class="modal-close" data-close-modal="reportModal">×</button>
+
+    </div>
+
+    <div class="modal-body">
+      <div class="report-preview" id="reportPreview"></div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close-modal="reportModal">Close</button>
+      <button class="btn btn-secondary" id="reportPrintBtn">Print</button>
+      <button class="btn btn-primary" id="reportPdfBtn">Download PDF</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import {
+  createClient
+} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const SUPABASE_URL =
+  "https://ysjugqdcnbpzrqnvowpl.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_4IiL5xK5zv8C-VG7kNW92g_v1ghHlqx";
+
+const supabase =
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+
+/* ============================================================
+   APPLICATION STATE
+============================================================ */
+
+const state = {
+
+  session:null,
+
+  user:null,
+
+  profile:null,
+
+  classId:null,
+
+  className:"",
+
+  email:"",
+
+  students:[],
+
+  attendance:[],
+
+  activity:[],
+
+  selectedStudent:null,
+
+  studentPage:1,
+
+  studentPageSize:10,
+
+  studentSearch:"",
+
+  studentStatus:"all",
+
+  attendanceSearch:"",
+
+  attendanceDate:"",
+
+  attendanceDraft:new Map(),
+
+  attendanceNotes:new Map(),
+
+  notifications:[],
+
+  theme:
+    localStorage.getItem(
+      "mis_nexus_theme"
+    ) ||
+    "theme-gold",
+
+  deferredInstall:null,
+
+  reportContext:null,
+
+  reportRows:[],
+
+  loading:false
+
+};
+
+/* ============================================================
+   DOM HELPERS
+============================================================ */
+
+const $ = selector =>
+  document.querySelector(selector);
+
+const $$ = selector =>
+  [...document.querySelectorAll(selector)];
+
+const DOM = {
+
+  app:$("#app"),
+
+  bootLoader:$("#bootLoader"),
+
+  bootText:$("#bootText"),
+
+  pageLoader:$("#pageLoader"),
+
+  loaderTitle:$("#loaderTitle"),
+
+  loaderText:$("#loaderText"),
+
+  authBlocked:$("#authBlocked"),
+
+  sidebar:$("#sidebar"),
+
+  sidebarOverlay:$("#sidebarOverlay"),
+
+  mobileMenu:$("#mobileMenu"),
+
+  topClassName:$("#topClassName"),
+
+  topSubtitle:$("#topSubtitle"),
+
+  sideClassName:$("#sideClassName"),
+
+  sideEmail:$("#sideEmail"),
+
+  profileEmail:$("#profileEmail"),
+
+  profileAvatar:$("#profileAvatar"),
+
+  welcomeClass:$("#welcomeClass"),
+
+  clockTime:$("#clockTime"),
+
+  clockDate:$("#clockDate"),
+
+  connectionStatus:$("#connectionStatus"),
+
+  connectionText:$("#connectionText"),
+
+  navStudentCount:$("#navStudentCount"),
+
+  navAttendanceCount:$("#navAttendanceCount"),
+
+  statTotal:$("#statTotal"),
+
+  statPresent:$("#statPresent"),
+
+  statAbsent:$("#statAbsent"),
+
+  statLate:$("#statLate"),
+
+  statPresentFoot:$("#statPresentFoot"),
+
+  overviewAttendanceDate:$("#overviewAttendanceDate"),
+
+  presentProgress:$("#presentProgress"),
+
+  absentProgress:$("#absentProgress"),
+
+  lateProgress:$("#lateProgress"),
+
+  markedProgress:$("#markedProgress"),
+
+  presentPercent:$("#presentPercent"),
+
+  absentPercent:$("#absentPercent"),
+
+  latePercent:$("#latePercent"),
+
+  markedPercent:$("#markedPercent"),
+
+  activeProgress:$("#activeProgress"),
+
+  inactiveProgress:$("#inactiveProgress"),
+
+  archivedProgress:$("#archivedProgress"),
+
+  activePercent:$("#activePercent"),
+
+  inactivePercent:$("#inactivePercent"),
+
+  archivedPercent:$("#archivedPercent"),
+
+  overviewChart:$("#overviewChart"),
+
+  analyticsChart:$("#analyticsChart"),
+
+  studentsTableBody:$("#studentsTableBody"),
+
+  studentDirectoryCount:$("#studentDirectoryCount"),
+
+  studentSearch:$("#studentSearch"),
+
+  studentStatusFilter:$("#studentStatusFilter"),
+
+  studentPageInfo:$("#studentPageInfo"),
+
+  studentPagination:$("#studentPagination"),
+
+  attendanceDate:$("#attendanceDate"),
+
+  attendanceTableBody:$("#attendanceTableBody"),
+
+  attendanceSearch:$("#attendanceSearch"),
+
+  attTotal:$("#attTotal"),
+
+  attPresent:$("#attPresent"),
+
+  attAbsent:$("#attAbsent"),
+
+  attLate:$("#attLate"),
+
+  attendanceDonut:$("#attendanceDonut"),
+
+  donutValue:$("#donutValue"),
+
+  legendPresent:$("#legendPresent"),
+
+  legendLate:$("#legendLate"),
+
+  legendAbsent:$("#legendAbsent"),
+
+  legendUnmarked:$("#legendUnmarked"),
+
+  analyticsActive:$("#analyticsActive"),
+
+  analyticsInactive:$("#analyticsInactive"),
+
+  analyticsArchived:$("#analyticsArchived"),
+
+  analyticsActiveText:$("#analyticsActiveText"),
+
+  analyticsInactiveText:$("#analyticsInactiveText"),
+
+  analyticsArchivedText:$("#analyticsArchivedText"),
+
+  rankingBody:$("#rankingBody"),
+
+  activityBody:$("#activityBody"),
+
+  settingsClass:$("#settingsClass"),
+
+  settingsEmail:$("#settingsEmail"),
+
+  settingsConnection:$("#settingsConnection"),
+
+  profilePopover:$("#profilePopover"),
+
+  notificationPanel:$("#notificationPanel"),
+
+  notificationList:$("#notificationList"),
+
+  toastStack:$("#toastStack"),
+
+  studentModal:$("#studentModal"),
+
+  studentForm:$("#studentForm"),
+
+  studentModalTitle:$("#studentModalTitle"),
+
+  studentRecordId:$("#studentRecordId"),
+
+  studentFullName:$("#studentFullName"),
+
+  studentId:$("#studentId"),
+
+  studentEmail:$("#studentEmail"),
+
+  studentParent:$("#studentParent"),
+
+  studentPhone:$("#studentPhone"),
+
+  studentStatus:$("#studentStatus"),
+
+  studentPhoto:$("#studentPhoto"),
+
+  studentPhotoPreview:$("#studentPhotoPreview"),
+
+  studentViewModal:$("#studentViewModal"),
+
+  studentViewBody:$("#studentViewBody"),
+
+  studentViewReport:$("#studentViewReport"),
+
+  confirmModal:$("#confirmModal"),
+
+  confirmTitle:$("#confirmTitle"),
+
+  confirmText:$("#confirmText"),
+
+  confirmCancel:$("#confirmCancel"),
+
+  confirmProceed:$("#confirmProceed"),
+
+  reportModal:$("#reportModal"),
+
+  reportPreview:$("#reportPreview"),
+
+  customFrom:$("#customFrom"),
+
+  customTo:$("#customTo"),
+
+  customReportType:$("#customReportType"),
+
+  customStudent:$("#customStudent")
+
+};
+
+/* ============================================================
+   SVG ICONS
+============================================================ */
+
+const Icons = {
+
+  check:
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>`,
+
+  x:
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
+
+  clock:
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
+
+  eye:
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+
+  edit:
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>`,
+
+  archive:
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1zM10 12h4"/></svg>`,
+
+  trash:
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 15H6L5 6M10 11v6M14 11v6"/></svg>`
+
+};
+
+/* ============================================================
+   BASIC UTILITIES
+============================================================ */
+
+function escapeHtml(value){
+
+  return String(
+    value ??
+    ""
+  )
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+
+}
+
+function safe(value){
+
+  return escapeHtml(value);
+
+}
+
+function initials(name){
+
+  return String(name || "Student")
+    .trim()
+    .split(/\s+/)
+    .slice(0,2)
+    .map(part => part.charAt(0).toUpperCase())
+    .join("") || "S";
+
+}
+
+function displayClassName(){
+
+  return state.className ||
+    "Class Dashboard";
+
+}
+
+function todayLagos(){
+
+  return new Intl.DateTimeFormat(
+    "en-CA",
+    {
+      timeZone:"Africa/Lagos"
+    }
+  ).format(
+    new Date()
+  );
+
+}
+
+function nowLagos(){
+
+  return new Intl.DateTimeFormat(
+    "en-NG",
+    {
+      timeZone:"Africa/Lagos",
+      year:"numeric",
+      month:"2-digit",
+      day:"2-digit",
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:true
+    }
+  ).format(
+    new Date()
+  );
+
+}
+
+function formatDate(date){
+
+  if(!date){
+    return "—";
+  }
+
+  const value =
+    new Date(
+      `${date}T12:00:00`
+    );
+
+  if(Number.isNaN(value.getTime())){
+    return String(date);
+  }
+
+  return new Intl.DateTimeFormat(
+    "en-NG",
+    {
+      timeZone:"Africa/Lagos",
+      day:"numeric",
+      month:"short",
+      year:"numeric"
+    }
+  ).format(value);
+
+}
+
+function formatDateTime(value){
+
+  if(!value){
+    return "—";
+  }
+
+  const date =
+    new Date(value);
+
+  if(Number.isNaN(date.getTime())){
+    return String(value);
+  }
+
+  return new Intl.DateTimeFormat(
+    "en-NG",
+    {
+      timeZone:"Africa/Lagos",
+      day:"2-digit",
+      month:"short",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:true
+    }
+  ).format(date);
+
+}
+
+function startOfRange(days){
+
+  const date =
+    new Date();
+
+  date.setDate(
+    date.getDate() -
+    days
+  );
+
+  return new Intl.DateTimeFormat(
+    "en-CA",
+    {
+      timeZone:"Africa/Lagos"
+    }
+  ).format(date);
+
+}
+
+function setLoading(
+  visible,
+  title="Please wait",
+  text="Processing securely..."
+){
+
+  state.loading =
+    visible;
+
+  DOM.loaderTitle.textContent =
+    title;
+
+  DOM.loaderText.textContent =
+    text;
+
+  DOM.pageLoader.classList.toggle(
+    "show",
+    visible
+  );
+
+}
+
+function bootText(text){
+
+  DOM.bootText.textContent =
+    text;
+
+}
+
+function toast(
+  title,
+  message="",
+  type="success"
+){
+
+  const node =
+    document.createElement("div");
+
+  node.className =
+    `toast ${type}`;
+
+  const icon =
+    type === "success"
+      ? Icons.check
+      : type === "error"
+      ? Icons.x
+      : type === "warning"
+      ? Icons.clock
+      : "i";
+
+  node.innerHTML = `
+    <div class="toast-icon">${icon}</div>
+    <div>
+      <strong>${safe(title)}</strong>
+      <span>${safe(message)}</span>
+    </div>
+    <button class="toast-close">×</button>
+  `;
+
+  DOM.toastStack.appendChild(node);
+
+  node
+    .querySelector(".toast-close")
+    .addEventListener(
+      "click",
+      () => removeToast(node)
+    );
+
+  setTimeout(
+    () => removeToast(node),
+    4800
+  );
+
+}
+
+function removeToast(node){
+
+  if(!node.isConnected){
+    return;
+  }
+
+  node.classList.add("out");
+
+  setTimeout(
+    () => node.remove(),
+    280
+  );
+
+}
+
+function setConnection(
+  status,
+  text
+){
+
+  DOM.connectionStatus
+    .classList.remove(
+      "online",
+      "offline"
+    );
+
+  if(status === "online"){
+    DOM.connectionStatus
+      .classList.add("online");
+  }
+
+  if(status === "offline"){
+    DOM.connectionStatus
+      .classList.add("offline");
+  }
+
+  DOM.connectionText.textContent =
+    text;
+
+  DOM.settingsConnection.textContent =
+    text;
+
+}
+
+function openModal(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(!modal){
+    return;
+  }
+
+  modal.classList.add("show");
+
+  document.body.classList.add(
+    "no-scroll"
+  );
+
+}
+
+function closeModal(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(!modal){
+    return;
+  }
+
+  modal.classList.remove("show");
+
+  if(!$$(".modal.show").length){
+    document.body.classList.remove(
+      "no-scroll"
+    );
+  }
+
+}
+
+function closeAllModals(){
+
+  $$(".modal.show")
+    .forEach(
+      modal =>
+        modal.classList.remove("show")
+    );
+
+  document.body.classList.remove(
+    "no-scroll"
+  );
+
+}
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+
+function navigate(page){
+
+  $$(".nav-btn")
+    .forEach(
+      button =>
+        button.classList.toggle(
+          "active",
+          button.dataset.page === page
+        )
+    );
+
+  $$(".page")
+    .forEach(
+      section =>
+        section.classList.toggle(
+          "active",
+          section.id ===
+          `page-${page}`
+        )
+    );
+
+  DOM.sidebar.classList.remove(
+    "open"
+  );
+
+  DOM.sidebarOverlay.classList.remove(
+    "show"
+  );
+
+  DOM.content?.scrollTo?.({
+    top:0,
+    behavior:"smooth"
+  });
+
+  if(page === "students"){
+    renderStudents();
+  }
+
+  if(page === "attendance"){
+    renderAttendance();
+  }
+
+  if(page === "analytics"){
+    renderAnalytics();
+  }
+
+  if(page === "activity"){
+    loadActivity();
+  }
+
+}
+
+/* ============================================================
+   THEME
+============================================================ */
+
+function applyTheme(){
+
+  DOM.app.classList.remove(
+    "theme-gold",
+    "theme-blue",
+    "theme-emerald",
+    "theme-plum",
+    "theme-slate"
+  );
+
+  DOM.app.classList.add(
+    state.theme
+  );
+
+  localStorage.setItem(
+    "mis_nexus_theme",
+    state.theme
+  );
+
+  $$(".theme-btn")
+    .forEach(
+      button =>
+        button.classList.toggle(
+          "active",
+          button.dataset.theme ===
+          state.theme
+        )
+    );
+
+}
+
+function setTheme(theme){
+
+  const allowed = [
+    "theme-gold",
+    "theme-blue",
+    "theme-emerald",
+    "theme-plum",
+    "theme-slate"
+  ];
+
+  if(!allowed.includes(theme)){
+    return;
+  }
+
+  state.theme =
+    theme;
+
+  applyTheme();
+
+}
+
+/* ============================================================
+   CLOCK
+============================================================ */
+
+function updateClock(){
+
+  const now =
+    new Date();
+
+  DOM.clockTime.textContent =
+    new Intl.DateTimeFormat(
+      "en-NG",
+      {
+        timeZone:"Africa/Lagos",
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit",
+        hour12:true
+      }
+    ).format(now)
+    + " WAT";
+
+  DOM.clockDate.textContent =
+    new Intl.DateTimeFormat(
+      "en-NG",
+      {
+        timeZone:"Africa/Lagos",
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    ).format(now);
+
+}
+
+setInterval(
+  updateClock,
+  1000
+);
+
+updateClock();
+
+/* ============================================================
+   AUTHENTICATION
+============================================================ */
+
+async function verifyAuthentication(){
+
+  bootText(
+    "Verifying secure session"
+  );
+
+  const {
+    data,
+    error
+  } =
+    await supabase.auth.getSession();
+
+  if(error){
+    throw error;
+  }
+
+  if(!data.session){
+    throw new Error(
+      "NO_SESSION"
+    );
+  }
+
+  state.session =
+    data.session;
+
+  state.user =
+    data.session.user;
+
+  state.email =
+    state.user.email ||
+    "";
+
+  return state.user;
+
+}
+
+async function loadProfile(){
+
+  bootText(
+    "Loading class account"
+  );
+
+  const {
+    data: classData,
+    error: classError
+  } =
+    await supabase
+      .from("mis_nexus_dashboard_my_class")
+      .select("*")
+      .maybeSingle();
+
+  if(classError){
+    throw classError;
+  }
+
+  if(!classData){
+    throw new Error(
+      "This authenticated account is not mapped to a MIS-NEXUS dashboard class. Expected nexus001@gmail.com through nexus020@gmail.com."
+    );
+  }
+
+  state.profile = classData;
+  state.classId = classData.class_key || null;
+  state.className = classData.class_name || "";
+
+  sessionStorage.setItem(
+    "MIS_NEXUS_CLASS_KEY",
+    state.classId || ""
+  );
+
+  sessionStorage.setItem(
+    "MIS_NEXUS_CLASS_NAME",
+    state.className || ""
+  );
+
+  if(!state.className){
+    throw new Error(
+      "No dashboard class has been assigned to this account."
+    );
+  }
+
+}
+
+function applyClassUI(){
+
+  const className =
+    displayClassName();
+
+  DOM.sideClassName.textContent =
+    className;
+
+  DOM.sideEmail.textContent =
+    state.email;
+
+  DOM.topClassName.textContent =
+    `${className} Dashboard`;
+
+  DOM.topSubtitle.textContent =
+    `MIS-NEXUS™ • ${state.email}`;
+
+  DOM.welcomeClass.textContent =
+    className;
+
+  DOM.profileEmail.textContent =
+    state.email;
+
+  DOM.profileAvatar.textContent =
+    initials(state.email);
+
+  DOM.settingsClass.textContent =
+    className;
+
+  DOM.settingsEmail.textContent =
+    state.email;
+
+  $("#popoverEmail").textContent =
+    state.email;
+
+  $("#popoverClass").textContent =
+    className;
+
+  $("#popoverClassId").textContent =
+    state.classId ||
+    "Session assigned";
+
+  $("#popoverAvatar").textContent =
+    initials(state.email);
+
+}
+
+/* ============================================================
+   CLASS FILTER
+============================================================ */
+
+function applyClassFilter(query){
+
+  return query.eq(
+    "class_key",
+    state.classId
+  );
+
+}
+
+/* ============================================================
+   STUDENT DATA
+============================================================ */
+
+async function loadStudents(){
+
+  bootText(
+    "Loading students"
+  );
+
+  let query =
+    supabase
+      .from("mis_nexus_dashboard_students")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+  query =
+    applyClassFilter(query);
+
+  const {
+    data,
+    error
+  } =
+    await query;
+
+  if(error){
+
+    console.error(
+      "Student load error",
+      error
+    );
+
+    throw error;
+
+  }
+
+  state.students =
+    data ||
+    [];
+
+  DOM.navStudentCount.textContent =
+    state.students.length;
+
+  DOM.studentDirectoryCount.textContent =
+    state.students.length;
+
+}
+
+function studentName(student){
+
+  return (
+    student.full_name ??
+    student.name ??
+    student.student_name ??
+    "Unnamed Student"
+  );
+
+}
+
+function studentId(student){
+
+  return (
+    student.student_id ??
+    student.studentId ??
+    student.id
+  );
+
+}
+
+function studentStatus(student){
+
+  return String(
+    student.status ??
+    "active"
+  ).toLowerCase();
+
+}
+
+function studentPhoto(student){
+
+  return (
+    student.profile_photo_url ??
+    student.photo_url ??
+    student.photo ??
+    ""
+  );
+
+}
+
+function studentClass(student){
+
+  return (
+    student.class_name ??
+    state.className
+  );
+
+}
+
+/* ============================================================
+   ATTENDANCE DATA
+============================================================ */
+
+async function loadAttendance(
+  date = state.attendanceDate ||
+  todayLagos()
+){
+
+  state.attendanceDate =
+    date;
+
+  let query =
+    supabase
+      .from("mis_nexus_dashboard_attendance")
+      .select("*")
+      .eq(
+        "attendance_date",
+        date
+      )
+      .order(
+        "marked_at",
+        {
+          ascending:true
+        }
+      );
+
+  query =
+    applyClassFilter(query);
+
+  const {
+    data,
+    error
+  } =
+    await query;
+
+  if(error){
+    throw error;
+  }
+
+  state.attendance =
+    data ||
+    [];
+
+  DOM.navAttendanceCount.textContent =
+    state.attendance.filter(
+      row =>
+        row.status === "present"
+    ).length;
+
+}
+
+function attendanceForStudent(
+  student
+){
+
+  const id =
+    student.id;
+
+  return state.attendance.find(
+    row =>
+      String(row.student_id) ===
+      String(id)
+  ) || null;
+
+}
+
+function attendanceStatus(row){
+
+  return String(
+    row?.status ||
+    ""
+  ).toLowerCase();
+
+}
+
+/* ============================================================
+   ACTIVITY
+============================================================ */
+
+async function loadActivity(){
+
+  let query =
+    supabase
+      .from("mis_nexus_dashboard_activity")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      )
+      .limit(100);
+
+  query =
+    applyClassFilterToActivity(
+      query
+    );
+
+  const {
+    data,
+    error
+  } =
+    await query;
+
+  if(error){
+
+    console.error(
+      "Activity error",
+      error
+    );
+
+    state.activity =
+      [];
+
+    renderActivity();
+
+    return;
+
+  }
+
+  state.activity =
+    data ||
+    [];
+
+  renderActivity();
+
+}
+
+function applyClassFilterToActivity(
+  query
+){
+
+  return query.eq(
+    "class_key",
+    state.classId
+  );
+
+}
+
+async function logActivity(
+  studentIdValue,
+  action,
+  details={}
+){
+
+  try{
+
+    await supabase
+      .from(
+        "mis_nexus_dashboard_activity"
+      )
+      .insert({
+        student_id:
+          studentIdValue,
+        class_key:
+          state.classId,
+        action,
+        performed_by:
+          state.user?.id ||
+          null,
+        details
+      });
+
+  }catch(error){
+
+    console.warn(
+      "Activity logging failed",
+      error
+    );
+
+  }
+
+}
+
+/* ============================================================
+   STATISTICS
+============================================================ */
+
+function calculateTodayStats(){
+
+  const total =
+    state.students.filter(
+      student =>
+        studentStatus(student) !==
+        "archived"
+    ).length;
+
+  let present = 0;
+
+  let absent = 0;
+
+  let late = 0;
+
+  let marked = 0;
+
+  state.attendance
+    .forEach(
+      row => {
+
+        const status =
+          attendanceStatus(row);
+
+        if(status === "present"){
+          present++;
+          marked++;
+        }
+
+        if(status === "absent"){
+          absent++;
+          marked++;
+        }
+
+        if(status === "late"){
+          late++;
+          marked++;
+        }
+
+      }
+    );
+
+  return {
+    total,
+    present,
+    absent,
+    late,
+    marked
+  };
+
+}
+
+function calculateStudentStats(){
+
+  const active =
+    state.students.filter(
+      student =>
+        studentStatus(student) ===
+        "active"
+    ).length;
+
+  const inactive =
+    state.students.filter(
+      student =>
+        studentStatus(student) ===
+        "inactive"
+    ).length;
+
+  const archived =
+    state.students.filter(
+      student =>
+        studentStatus(student) ===
+        "archived"
+    ).length;
+
+  return {
+    active,
+    inactive,
+    archived,
+    total:
+      state.students.length
+  };
+
+}
+
+function percent(
+  value,
+  total
+){
+
+  if(!total){
+    return 0;
+  }
+
+  return Math.round(
+    (value / total) * 100
+  );
+
+}
+
+/* ============================================================
+   OVERVIEW RENDER
+============================================================ */
+
+function renderOverview(){
+
+  const stats =
+    calculateTodayStats();
+
+  const status =
+    calculateStudentStats();
+
+  DOM.statTotal.textContent =
+    status.total;
+
+  DOM.statPresent.textContent =
+    stats.present;
+
+  DOM.statAbsent.textContent =
+    stats.absent;
+
+  DOM.statLate.textContent =
+    stats.late;
+
+  DOM.statPresentFoot.textContent =
+    `${stats.marked} of ${stats.total} attendance records marked`;
+
+  DOM.overviewAttendanceDate.textContent =
+    formatDate(
+      state.attendanceDate
+    );
+
+  const total =
+    Math.max(
+      stats.total,
+      1
+    );
+
+  const presentPct =
+    percent(
+      stats.present,
+      total
+    );
+
+  const absentPct =
+    percent(
+      stats.absent,
+      total
+    );
+
+  const latePct =
+    percent(
+      stats.late,
+      total
+    );
+
+  const markedPct =
+    percent(
+      stats.marked,
+      total
+    );
+
+  DOM.presentProgress.style.width =
+    `${presentPct}%`;
+
+  DOM.absentProgress.style.width =
+    `${absentPct}%`;
+
+  DOM.lateProgress.style.width =
+    `${latePct}%`;
+
+  DOM.markedProgress.style.width =
+    `${markedPct}%`;
+
+  DOM.presentPercent.textContent =
+    `${presentPct}%`;
+
+  DOM.absentPercent.textContent =
+    `${absentPct}%`;
+
+  DOM.latePercent.textContent =
+    `${latePct}%`;
+
+  DOM.markedPercent.textContent =
+    `${markedPct}%`;
+
+  DOM.activeProgress.style.width =
+    `${percent(status.active,status.total)}%`;
+
+  DOM.inactiveProgress.style.width =
+    `${percent(status.inactive,status.total)}%`;
+
+  DOM.archivedProgress.style.width =
+    `${percent(status.archived,status.total)}%`;
+
+  DOM.activePercent.textContent =
+    `${percent(status.active,status.total)}%`;
+
+  DOM.inactivePercent.textContent =
+    `${percent(status.inactive,status.total)}%`;
+
+  DOM.archivedPercent.textContent =
+    `${percent(status.archived,status.total)}%`;
+
+  drawOverviewChart();
+
+}
+
+/* ============================================================
+   CHART ENGINE
+============================================================ */
+
+function setupCanvas(canvas){
+
+  if(!canvas){
+    return null;
+  }
+
+  const rect =
+    canvas.getBoundingClientRect();
+
+  const ratio =
+    Math.min(
+      window.devicePixelRatio ||
+      1,
+      2
+    );
+
+  canvas.width =
+    Math.max(
+      1,
+      Math.floor(
+        rect.width *
+        ratio
+      )
+    );
+
+  canvas.height =
+    Math.max(
+      1,
+      Math.floor(
+        rect.height *
+        ratio
+      )
+    );
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+  ctx.setTransform(
+    ratio,
+    0,
+    0,
+    ratio,
+    0,
+    0
+  );
+
+  return {
+    ctx,
+    width:rect.width,
+    height:rect.height
+  };
+
+}
+
+function chartColors(){
+
+  const style =
+    getComputedStyle(
+      DOM.app
+    );
+
+  return {
+    accent:
+      style.getPropertyValue(
+        "--accent"
+      ).trim() ||
+      "#c9a451",
+
+    accent2:
+      style.getPropertyValue(
+        "--accent2"
+      ).trim() ||
+      "#f3d98e",
+
+    muted:
+      style.getPropertyValue(
+        "--muted2"
+      ).trim() ||
+      "#60756a",
+
+    grid:
+      "rgba(255,255,255,.07)",
+
+    text:
+      style.getPropertyValue(
+        "--muted"
+      ).trim() ||
+      "#91a59a"
+
+  };
+
+}
+
+function drawLineChart(
+  canvas,
+  labels,
+  datasets
+){
+
+  const setup =
+    setupCanvas(canvas);
+
+  if(!setup){
+    return;
+  }
+
+  const {
+    ctx,
+    width,
+    height
+  } =
+    setup;
+
+  const colors =
+    chartColors();
+
+  ctx.clearRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  const padding = {
+    top:20,
+    right:15,
+    bottom:34,
+    left:38
+  };
+
+  const chartWidth =
+    width -
+    padding.left -
+    padding.right;
+
+  const chartHeight =
+    height -
+    padding.top -
+    padding.bottom;
+
+  const maxValue =
+    Math.max(
+      1,
+      ...datasets.flatMap(
+        data =>
+          data.values
+      )
+    );
+
+  for(
+    let i=0;
+    i<=4;
+    i++
+  ){
+
+    const y =
+      padding.top +
+      chartHeight -
+      (chartHeight *
+      i /
+      4);
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      padding.left,
+      y
+    );
+
+    ctx.lineTo(
+      width -
+      padding.right,
+      y
+    );
+
+    ctx.strokeStyle =
+      colors.grid;
+
+    ctx.lineWidth =
+      1;
+
+    ctx.stroke();
+
+    ctx.fillStyle =
+      colors.text;
+
+    ctx.font =
+      "9px Inter,Arial";
+
+    ctx.textAlign =
+      "right";
+
+    ctx.fillText(
+      Math.round(
+        maxValue *
+        i /
+        4
+      ),
+      padding.left - 8,
+      y + 3
+    );
+
+  }
+
+  const step =
+    labels.length > 1
+      ? chartWidth /
+        (labels.length - 1)
+      : chartWidth;
+
+  labels.forEach(
+    (label,index) => {
+
+      const x =
+        padding.left +
+        step * index;
+
+      ctx.fillStyle =
+        colors.text;
+
+      ctx.font =
+        "9px Inter,Arial";
+
+      ctx.textAlign =
+        "center";
+
+      ctx.fillText(
+        label,
+        x,
+        height - 10
+      );
+
+    }
+  );
+
+  datasets.forEach(
+    (dataset,datasetIndex) => {
+
+      const points =
+        dataset.values.map(
+          (value,index) => {
+
+            const x =
+              padding.left +
+              step * index;
+
+            const y =
+              padding.top +
+              chartHeight -
+              (
+                value /
+                maxValue
+              ) *
+              chartHeight;
+
+            return {
+              x,
+              y
+            };
+
+          }
+        );
+
+      if(!points.length){
+        return;
+      }
+
+      ctx.beginPath();
+
+      points.forEach(
+        (point,index) => {
+
+          if(index === 0){
+            ctx.moveTo(
+              point.x,
+              point.y
+            );
+          }else{
+
+            const previous =
+              points[index - 1];
+
+            const controlX =
+              (
+                previous.x +
+                point.x
+              ) / 2;
+
+            ctx.bezierCurveTo(
+              controlX,
+              previous.y,
+              controlX,
+              point.y,
+              point.x,
+              point.y
+            );
+
+          }
+
+        }
+      );
+
+      ctx.strokeStyle =
+        dataset.color ||
+        colors.accent;
+
+      ctx.lineWidth =
+        2.5;
+
+      ctx.lineCap =
+        "round";
+
+      ctx.lineJoin =
+        "round";
+
+      ctx.stroke();
+
+      points.forEach(
+        point => {
+
+          ctx.beginPath();
+
+          ctx.arc(
+            point.x,
+            point.y,
+            3.2,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fillStyle =
+            dataset.color ||
+            colors.accent;
+
+          ctx.fill();
+
+          ctx.beginPath();
+
+          ctx.arc(
+            point.x,
+            point.y,
+            1.4,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fillStyle =
+            "#07110d";
+
+          ctx.fill();
+
+        }
+      );
+
+    }
+  );
+
+}
+
+function getLastDates(
+  count
+){
+
+  const result =
+    [];
+
+  const now =
+    new Date();
+
+  for(
+    let i=count-1;
+    i>=0;
+    i--
+  ){
+
+    const date =
+      new Date(now);
+
+    date.setDate(
+      now.getDate() -
+      i
+    );
+
+    const value =
+      new Intl.DateTimeFormat(
+        "en-CA",
+        {
+          timeZone:"Africa/Lagos"
+        }
+      ).format(date);
+
+    result.push(value);
+
+  }
+
+  return result;
+
+}
+
+function attendanceForDate(
+  date
+){
+
+  return state.attendance
+    .filter(
+      row =>
+        row.attendance_date ===
+        date
+    );
+
+}
+
+async function getAttendanceRange(
+  from,
+  to
+){
+
+  let query =
+    supabase
+      .from("mis_nexus_dashboard_attendance")
+      .select("*")
+      .gte(
+        "attendance_date",
+        from
+      )
+      .lte(
+        "attendance_date",
+        to
+      );
+
+  query =
+    applyClassFilter(query);
+
+  const {
+    data,
+    error
+  } =
+    await query;
+
+  if(error){
+    throw error;
+  }
+
+  return data ||
+    [];
+
+}
+
+async function drawOverviewChart(){
+
+  const dates =
+    getLastDates(7);
+
+  let rows =
+    [];
+
+  try{
+
+    rows =
+      await getAttendanceRange(
+        dates[0],
+        dates[dates.length - 1]
+      );
+
+  }catch(error){
+
+    console.warn(
+      "Chart data error",
+      error
+    );
+
+    rows =
+      [];
+
+  }
+
+  const present =
+    dates.map(
+      date =>
+        rows.filter(
+          row =>
+            row.attendance_date ===
+            date &&
+            row.status ===
+            "present"
+        ).length
+    );
+
+  const absent =
+    dates.map(
+      date =>
+        rows.filter(
+          row =>
+            row.attendance_date ===
+            date &&
+            row.status ===
+            "absent"
+        ).length
+    );
+
+  const labels =
+    dates.map(
+      date =>
+        new Intl.DateTimeFormat(
+          "en-NG",
+          {
+            timeZone:"Africa/Lagos",
+            day:"numeric",
+            month:"short"
+          }
+        ).format(
+          new Date(
+            `${date}T12:00:00`
+          )
+        )
+    );
+
+  const colors =
+    chartColors();
+
+  drawLineChart(
+    DOM.overviewChart,
+    labels,
+    [
+      {
+        values:present,
+        color:colors.accent
+      },
+      {
+        values:absent,
+        color:"#ff6675"
+      }
+    ]
+  );
+
+}
+
+async function drawAnalyticsChart(){
+
+  const dates =
+    getLastDates(7);
+
+  let rows =
+    [];
+
+  try{
+
+    rows =
+      await getAttendanceRange(
+        dates[0],
+        dates[dates.length - 1]
+      );
+
+  }catch(error){
+
+    rows =
+      [];
+
+  }
+
+  const present =
+    dates.map(
+      date =>
+        rows.filter(
+          row =>
+            row.attendance_date ===
+            date &&
+            row.status ===
+            "present"
+        ).length
+    );
+
+  const absent =
+    dates.map(
+      date =>
+        rows.filter(
+          row =>
+            row.attendance_date ===
+            date &&
+            row.status ===
+            "absent"
+        ).length
+    );
+
+  const late =
+    dates.map(
+      date =>
+        rows.filter(
+          row =>
+            row.attendance_date ===
+            date &&
+            row.status ===
+            "late"
+        ).length
+    );
+
+  const labels =
+    dates.map(
+      date =>
+        new Intl.DateTimeFormat(
+          "en-NG",
+          {
+            timeZone:"Africa/Lagos",
+            day:"numeric",
+            month:"short"
+          }
+        ).format(
+          new Date(
+            `${date}T12:00:00`
+          )
+        )
+    );
+
+  drawLineChart(
+    DOM.analyticsChart,
+    labels,
+    [
+      {
+        values:present,
+        color:chartColors().accent
+      },
+      {
+        values:absent,
+        color:"#ff6675"
+      },
+      {
+        values:late,
+        color:"#f1bc52"
+      }
+    ]
+  );
+
+}
+
+/* ============================================================
+   STUDENT RENDERING
+============================================================ */
+
+function filteredStudents(){
+
+  const search =
+    state.studentSearch
+      .trim()
+      .toLowerCase();
+
+  return state.students
+    .filter(
+      student => {
+
+        const status =
+          studentStatus(
+            student
+          );
+
+        if(
+          state.studentStatus !==
+          "all" &&
+          status !==
+          state.studentStatus
+        ){
+
+          return false;
+
+        }
+
+        if(!search){
+          return true;
+        }
+
+        const haystack =
+          [
+            studentName(student),
+            studentId(student),
+            student.parent_name,
+            student.parent,
+            student.parent_phone,
+            student.student_email,
+            student.email
+          ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return haystack.includes(
+          search
+        );
+
+      }
+    );
+
+}
+
+function renderStudents(){
+
+  const rows =
+    filteredStudents();
+
+  const total =
+    rows.length;
+
+  const pages =
+    Math.max(
+      1,
+      Math.ceil(
+        total /
+        state.studentPageSize
+      )
+    );
+
+  if(
+    state.studentPage >
+    pages
+  ){
+
+    state.studentPage =
+      pages;
+
+  }
+
+  const start =
+    (
+      state.studentPage -
+      1
+    ) *
+    state.studentPageSize;
+
+  const visible =
+    rows.slice(
+      start,
+      start +
+      state.studentPageSize
+    );
+
+  DOM.studentsTableBody.innerHTML =
+    "";
+
+  if(!visible.length){
+
+    DOM.studentsTableBody.innerHTML =
+      `
+      <tr>
+        <td colspan="7">
+          <div class="empty">
+            <div class="empty-icon">◎</div>
+            <strong>No students found</strong>
+            <p>Try another search or register a new student.</p>
+          </div>
+        </td>
+      </tr>
+      `;
+
+  }else{
+
+    visible.forEach(
+      student => {
+
+        const photo =
+          studentPhoto(
+            student
+          );
+
+        const attendance =
+          getStudentAttendanceRate(
+            student
+          );
+
+        const status =
+          studentStatus(
+            student
+          );
+
+        const tr =
+          document.createElement(
+            "tr"
+          );
+
+        tr.innerHTML = `
+          <td>
+            <div class="student-cell">
+              <div class="student-avatar">
+                ${
+                  photo
+                    ? `<img src="${safe(photo)}" alt="">`
+                    : safe(
+                        initials(
+                          studentName(student)
+                        )
+                      )
+                }
+              </div>
+              <div>
+                <div class="student-name">${safe(studentName(student))}</div>
+                <div class="student-id">${safe(studentId(student))}</div>
+              </div>
+            </div>
+          </td>
+
+          <td>${safe(
+            student.parent_name ??
+            student.parent ??
+            "—"
+          )}</td>
+
+          <td>${safe(
+            student.parent_phone ??
+            student.phone ??
+            "—"
+          )}</td>
+
+          <td>
+            <span class="badge badge-${safe(status)}">
+              ${safe(
+                status.charAt(0).toUpperCase() +
+                status.slice(1)
+              )}
+            </span>
+          </td>
+
+          <td>
+            <strong>${attendance}%</strong>
+          </td>
+
+          <td>
+            ${safe(
+              formatDate(
+                String(
+                  student.created_at ||
+                  ""
+                ).slice(0,10)
+              )
+            )}
+          </td>
+
+          <td>
+            <div class="row-actions">
+
+              <button
+                class="row-action"
+                title="View"
+                data-student-action="view"
+                data-id="${safe(student.id)}"
+              >${Icons.eye}</button>
+
+              <button
+                class="row-action"
+                title="Edit"
+                data-student-action="edit"
+                data-id="${safe(student.id)}"
+              >${Icons.edit}</button>
+
+              <button
+                class="row-action"
+                title="Archive"
+                data-student-action="archive"
+                data-id="${safe(student.id)}"
+              >${Icons.archive}</button>
+
+              <button
+                class="row-action"
+                title="Delete"
+                data-student-action="delete"
+                data-id="${safe(student.id)}"
+              >${Icons.trash}</button>
+
+            </div>
+          </td>
+        `;
+
+        DOM.studentsTableBody.appendChild(
+          tr
+        );
+
+      }
+    );
+
+  }
+
+  DOM.studentPageInfo.textContent =
+    total
+      ? `Showing ${start + 1}–${Math.min(
+          start + state.studentPageSize,
+          total
+        )} of ${total}`
+      : "Showing 0 students";
+
+  renderStudentPagination(
+    pages
+  );
+
+}
+
+function renderStudentPagination(
+  pages
+){
+
+  DOM.studentPagination.innerHTML =
+    "";
+
+  if(pages <= 1){
+    return;
+  }
+
+  for(
+    let page=1;
+    page<=pages;
+    page++
+  ){
+
+    if(
+      page > 5 &&
+      page !== pages &&
+      Math.abs(
+        page -
+        state.studentPage
+      ) > 1
+    ){
+
+      continue;
+
+    }
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+    button.className =
+      "page-btn" +
+      (
+        page ===
+        state.studentPage
+          ? " active"
+          : ""
+      );
+
+    button.textContent =
+      page;
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        state.studentPage =
+          page;
+
+        renderStudents();
+
+      }
+    );
+
+    DOM.studentPagination.appendChild(
+      button
+    );
+
+  }
+
+}
+
+/* ============================================================
+   STUDENT ATTENDANCE RATE
+============================================================ */
+
+function getStudentAttendanceRate(
+  student
+){
+
+  const studentRows =
+    state.attendanceHistoryCache?.[
+      student.id
+    ] || [];
+
+  if(!studentRows.length){
+    return 0;
+  }
+
+  const counted =
+    studentRows.filter(
+      row =>
+        ["present","absent","late"]
+          .includes(
+            attendanceStatus(row)
+          )
+    );
+
+  if(!counted.length){
+    return 0;
+  }
+
+  const good =
+    counted.filter(
+      row =>
+        ["present","late"]
+          .includes(
+            attendanceStatus(row)
+          )
+    ).length;
+
+  return percent(
+    good,
+    counted.length
+  );
+
+}
+
+state.attendanceHistoryCache =
+  {};
+
+async function loadAttendanceHistory(){
+
+  state.attendanceHistoryCache =
+    {};
+
+  if(!state.students.length){
+    return;
+  }
+
+  const from =
+    startOfRange(
+      365
+    );
+
+  const to =
+    todayLagos();
+
+  let query =
+    supabase
+      .from("mis_nexus_dashboard_attendance")
+      .select(
+        "student_id,status,attendance_date"
+      )
+      .gte(
+        "attendance_date",
+        from
+      )
+      .lte(
+        "attendance_date",
+        to
+      );
+
+  query =
+    applyClassFilter(query);
+
+  const {
+    data,
+    error
+  } =
+    await query;
+
+  if(error){
+    console.warn(
+      "Attendance history",
+      error
+    );
+    return;
+  }
+
+  (data || [])
+    .forEach(
+      row => {
+
+        if(
+          !state.attendanceHistoryCache[
+            row.student_id
+          ]
+        ){
+
+          state.attendanceHistoryCache[
+            row.student_id
+          ] =
+            [];
+
+        }
+
+        state.attendanceHistoryCache[
+          row.student_id
+        ].push(row);
+
+      }
+    );
+
+}
+
+/* ============================================================
+   STUDENT MODAL
+============================================================ */
+
+function resetStudentForm(){
+
+  DOM.studentForm.reset();
+
+  DOM.studentRecordId.value =
+    "";
+
+  DOM.studentStatus.value =
+    "active";
+
+  DOM.studentPhotoPreview.innerHTML =
+    "<span>No photo</span>";
+
+  DOM.studentModalTitle.textContent =
+    "Register Student";
+
+}
+
+function openStudentRegister(){
+
+  resetStudentForm();
+
+  openModal(
+    "studentModal"
+  );
+
+}
+
+function openStudentEdit(
+  student
+){
+
+  DOM.studentModalTitle.textContent =
+    "Edit Student";
+
+  DOM.studentRecordId.value =
+    student.id ||
+    "";
+
+  DOM.studentFullName.value =
+    studentName(student);
+
+  DOM.studentId.value =
+    student.student_id ||
+    "";
+
+  DOM.studentEmail.value =
+    student.student_email ||
+    student.email ||
+    "";
+
+  DOM.studentParent.value =
+    student.parent_name ||
+    student.parent ||
+    "";
+
+  DOM.studentPhone.value =
+    student.parent_phone ||
+    student.phone ||
+    "";
+
+  DOM.studentStatus.value =
+    studentStatus(student);
+
+  const photo =
+    studentPhoto(student);
+
+  DOM.studentPhotoPreview.innerHTML =
+    photo
+      ? `<img src="${safe(photo)}" alt="">`
+      : "<span>No photo</span>";
+
+  openModal(
+    "studentModal"
+  );
+
+}
+
+function compressImage(
+  file
+){
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        event => {
+
+          const image =
+            new Image();
+
+          image.onload =
+            () => {
+
+              const max =
+                500;
+
+              let width =
+                image.width;
+
+              let height =
+                image.height;
+
+              if(
+                width >
+                max ||
+                height >
+                max
+              ){
+
+                const ratio =
+                  Math.min(
+                    max /
+                    width,
+                    max /
+                    height
+                  );
+
+                width *=
+                  ratio;
+
+                height *=
+                  ratio;
+
+              }
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+              canvas.width =
+                Math.round(
+                  width
+                );
+
+              canvas.height =
+                Math.round(
+                  height
+                );
+
+              const context =
+                canvas.getContext(
+                  "2d"
+                );
+
+              context.drawImage(
+                image,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+              );
+
+              resolve(
+                canvas.toDataURL(
+                  "image/jpeg",
+                  .76
+                )
+              );
+
+            };
+
+          image.onerror =
+            reject;
+
+          image.src =
+            event.target.result;
+
+        };
+
+      reader.onerror =
+        reject;
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
+
+}
+
+async function saveStudent(
+event
+){
+
+  event.preventDefault();
+
+  const name =
+    DOM.studentFullName.value
+      .trim();
+
+  if(!name){
+
+    toast(
+      "Student name required",
+      "Please enter the student's full name.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+  const recordId =
+    DOM.studentRecordId.value;
+
+  const payload = {
+
+    full_name:
+      name,
+
+    student_id:
+      DOM.studentId.value
+        .trim() ||
+      null,
+
+    student_email:
+      DOM.studentEmail.value
+        .trim() ||
+      null,
+
+    parent_name:
+      DOM.studentParent.value
+        .trim() ||
+      null,
+
+    parent_phone:
+      DOM.studentPhone.value
+        .trim() ||
+      null,
+
+    status:
+      DOM.studentStatus.value,
+
+    class_key:
+      state.classId
+
+  };
+
+  const file =
+    DOM.studentPhoto.files?.[0];
+
+  if(file){
+
+    try{
+
+      setLoading(
+        true,
+        "Preparing student",
+        "Optimizing profile photograph..."
+      );
+
+      payload.profile_photo_url =
+        await compressImage(
+          file
+        );
+
+    }catch(error){
+
+      setLoading(false);
+
+      toast(
+        "Photo error",
+        "The selected photograph could not be processed.",
+        "error"
+      );
+
+      return;
+
+    }finally{
+
+      setLoading(false);
+
+    }
+
+  }
+
+  setLoading(
+    true,
+    recordId
+      ? "Updating student"
+      : "Registering student",
+    "Saving securely to the class database..."
+  );
+
+  try{
+
+    if(recordId){
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from(
+            "mis_nexus_dashboard_students"
+          )
+          .update(
+            payload
+          )
+          .eq(
+            "id",
+            recordId
+          )
+          .select()
+          .single();
+
+      if(error){
+        throw error;
+      }
+
+      await logActivity(
+        recordId,
+        "student_updated",
+        {
+          name
+        }
+      );
+
+      toast(
+        "Student updated",
+        `${name} has been updated successfully.`
+      );
+
+    }else{
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from(
+            "mis_nexus_dashboard_students"
+          )
+          .insert(
+            payload
+          )
+          .select()
+          .single();
+
+      if(error){
+        throw error;
+      }
+
+      await logActivity(
+        data.id,
+        "student_registered",
+        {
+          name,
+          student_id:
+            data.student_id
+        }
+      );
+
+      toast(
+        "Student registered",
+        `${name} is now available for attendance.`
+      );
+
+    }
+
+    closeModal(
+      "studentModal"
+    );
+
+    await refreshData();
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    toast(
+      "Unable to save",
+      error.message ||
+      "The student could not be saved.",
+      "error"
+    );
+
+  }finally{
+
+    setLoading(false);
+
+  }
+
+}
+
+/* ============================================================
+   STUDENT VIEW
+============================================================ */
+
+async function openStudentView(
+student
+){
+
+  state.selectedStudent =
+    student;
+
+  const photo =
+    studentPhoto(student);
+
+  const attendanceRows =
+    state.attendanceHistoryCache?.[
+      student.id
+    ] || [];
+
+  const present =
+    attendanceRows.filter(
+      row =>
+        row.status ===
+        "present"
+    ).length;
+
+  const absent =
+    attendanceRows.filter(
+      row =>
+        row.status ===
+        "absent"
+    ).length;
+
+  const late =
+    attendanceRows.filter(
+      row =>
+        row.status ===
+        "late"
+    ).length;
+
+  const total =
+    present +
+    absent +
+    late;
+
+  const rate =
+    total
+      ? percent(
+          present + late,
+          total
+        )
+      : 0;
+
+  DOM.studentViewBody.innerHTML = `
+
+    <div style="
+      display:grid;
+      grid-template-columns:180px 1fr;
+      gap:22px;
+      align-items:start;
+    ">
+
+      <div style="
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:12px;
+      ">
+
+        <div style="
+          width:150px;
+          height:150px;
+          overflow:hidden;
+          display:grid;
+          place-items:center;
+          border:1px solid var(--border);
+          border-radius:25px;
+          color:#111;
+          background:linear-gradient(135deg,var(--accent2),var(--accent));
+          font-size:35px;
+          font-weight:950;
+        ">
+
+          ${
+            photo
+              ? `<img
+                   src="${safe(photo)}"
+                   alt=""
+                   style="width:100%;height:100%;object-fit:cover"
+                 >`
+              : safe(
+                  initials(
+                    studentName(student)
+                  )
+                )
+          }
+
+        </div>
+
+        <span class="badge badge-${safe(
+          studentStatus(student)
+        )}">
+          ${safe(
+            studentStatus(student)
+          )}
+        </span>
+
+      </div>
+
+      <div>
+
+        <h2 style="
+          margin:0;
+          font-size:25px;
+        ">
+          ${safe(
+            studentName(student)
+          )}
+        </h2>
+
+        <div style="
+          margin-top:6px;
+          color:var(--muted);
+          font-size:11px;
+        ">
+          ${safe(
+            studentId(student)
+          )}
+        </div>
+
+        <div style="
+          display:grid;
+          grid-template-columns:repeat(2,minmax(0,1fr));
+          gap:10px;
+          margin-top:22px;
+        ">
+
+          <div class="mini-stat">
+            <span>Class</span>
+            <strong style="font-size:13px">
+              ${safe(
+                studentClass(student)
+              )}
+            </strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Attendance Rate</span>
+            <strong>${rate}%</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Present</span>
+            <strong>${present}</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Absent</span>
+            <strong>${absent}</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Late</span>
+            <strong>${late}</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Registered</span>
+            <strong style="font-size:13px">
+              ${safe(
+                formatDate(
+                  String(
+                    student.created_at ||
+                    ""
+                  ).slice(0,10)
+                )
+              )}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div style="
+      margin-top:25px;
+      padding-top:20px;
+      border-top:1px solid var(--border);
+    ">
+
+      <div class="card-title">
+        Student Information
+      </div>
+
+      <div style="
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+        margin-top:12px;
+      ">
+
+        <div class="mini-stat">
+          <span>Student Email</span>
+          <strong style="font-size:11px">
+            ${safe(
+              student.student_email ||
+              student.email ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div class="mini-stat">
+          <span>Parent / Guardian</span>
+          <strong style="font-size:11px">
+            ${safe(
+              student.parent_name ||
+              student.parent ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div class="mini-stat">
+          <span>Parent Phone</span>
+          <strong style="font-size:11px">
+            ${safe(
+              student.parent_phone ||
+              student.phone ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div class="mini-stat">
+          <span>Last Updated</span>
+          <strong style="font-size:11px">
+            ${safe(
+              formatDateTime(
+                student.updated_at
+              )
+            )}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div style="
+      margin-top:25px;
+      padding-top:20px;
+      border-top:1px solid var(--border);
+    ">
+
+      <div class="card-title">
+        Recent Attendance
+      </div>
+
+      <div class="table-shell" style="margin-top:12px">
+
+        <table style="min-width:0">
+
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Recorded</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            ${
+              attendanceRows
+                .slice()
+                .sort(
+                  (a,b) =>
+                    String(
+                      b.attendance_date
+                    )
+                    .localeCompare(
+                      String(
+                        a.attendance_date
+                      )
+                    )
+                )
+                .slice(0,10)
+                .map(
+                  row => `
+                    <tr>
+                      <td>${safe(
+                        formatDate(
+                          row.attendance_date
+                        )
+                      )}</td>
+                      <td>
+                        <span class="badge badge-${safe(
+                          row.status
+                        )}">
+                          ${safe(
+                            row.status
+                          )}
+                        </span>
+                      </td>
+                      <td>${safe(
+                        formatDateTime(
+                          row.marked_at
+                        )
+                      )}</td>
+                      <td>${safe(
+                        row.note ||
+                        "—"
+                      )}</td>
+                    </tr>
+                  `
+                )
+                .join("") ||
+              `
+                <tr>
+                  <td colspan="4">
+                    <div class="empty">
+                      <strong>No attendance history</strong>
+                      <p>No attendance records are available yet.</p>
+                    </div>
+                  </td>
+                </tr>
+              `
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  `;
+
+  openModal(
+    "studentViewModal"
+  );
+
+}
+
+/* ============================================================
+   ATTENDANCE RENDER
+============================================================ */
+
+function renderAttendance(){
+
+  DOM.attendanceDate.value =
+    state.attendanceDate;
+
+  const search =
+    state.attendanceSearch
+      .trim()
+      .toLowerCase();
+
+  const rows =
+    state.students
+      .filter(
+        student => {
+
+          if(!search){
+            return true;
+          }
+
+          return studentName(student)
+            .toLowerCase()
+            .includes(search) ||
+            String(
+              studentId(student)
+            )
+            .toLowerCase()
+            .includes(search);
+
+        }
+      );
+
+  DOM.attendanceTableBody.innerHTML =
+    "";
+
+  if(!rows.length){
+
+    DOM.attendanceTableBody.innerHTML =
+      `
+      <tr>
+        <td colspan="6">
+          <div class="empty">
+            <div class="empty-icon">✓</div>
+            <strong>No students available</strong>
+            <p>Register students first.</p>
+          </div>
+        </td>
+      </tr>
+      `;
+
+    updateAttendanceStats();
+
+    return;
+
+  }
+
+  rows.forEach(
+    student => {
+
+      const existing =
+        attendanceForStudent(
+          student
+        );
+
+      const draft =
+        state.attendanceDraft.get(
+          student.id
+        ) ||
+        attendanceStatus(
+          existing
+        ) ||
+        "";
+
+      const note =
+        state.attendanceNotes.get(
+          student.id
+        ) ??
+        existing?.note ??
+        "";
+
+      const tr =
+        document.createElement(
+          "tr"
+        );
+
+      tr.innerHTML = `
+
+        <td>
+          <div class="student-cell">
+            <div class="student-avatar">
+              ${
+                studentPhoto(student)
+                  ? `<img src="${safe(
+                      studentPhoto(student)
+                    )}" alt="">`
+                  : safe(
+                      initials(
+                        studentName(student)
+                      )
+                    )
+              }
+            </div>
+
+            <div>
+              <div class="student-name">
+                ${safe(
+                  studentName(student)
+                )}
+              </div>
+              <div class="student-id">
+                ${safe(
+                  studentId(student)
+                )}
+              </div>
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <button
+            class="att-btn present"
+            data-att-status="present"
+            data-student-id="${safe(student.id)}"
+            style="${
+              draft === "present"
+                ? "outline:2px solid var(--success)"
+                : ""
+            }"
+          >
+            Present
+          </button>
+        </td>
+
+        <td>
+          <button
+            class="att-btn absent"
+            data-att-status="absent"
+            data-student-id="${safe(student.id)}"
+            style="${
+              draft === "absent"
+                ? "outline:2px solid var(--danger)"
+                : ""
+            }"
+          >
+            Absent
+          </button>
+        </td>
+
+        <td>
+          <button
+            class="att-btn late"
+            data-att-status="late"
+            data-student-id="${safe(student.id)}"
+            style="${
+              draft === "late"
+                ? "outline:2px solid var(--warning)"
+                : ""
+            }"
+          >
+            Late
+          </button>
+        </td>
+
+        <td class="att-time">
+          ${
+            existing?.marked_at
+              ? safe(
+                  formatDateTime(
+                    existing.marked_at
+                  )
+                )
+              : "Not recorded"
+          }
+        </td>
+
+        <td>
+          <input
+            data-att-note
+            data-student-id="${safe(student.id)}"
+            value="${safe(note)}"
+            placeholder="Optional note"
+            style="
+              width:180px;
+              min-height:34px;
+              padding:7px 9px;
+              border:1px solid var(--border);
+              border-radius:9px;
+              outline:none;
+              color:#fff;
+              background:rgba(255,255,255,.025);
+            "
+          >
+        </td>
+
+      `;
+
+      DOM.attendanceTableBody.appendChild(
+        tr
+      );
+
+    }
+  );
+
+  updateAttendanceStats();
+
+}
+
+function updateAttendanceStats(){
+
+  const stats =
+    calculateTodayStats();
+
+  DOM.attTotal.textContent =
+    stats.total;
+
+  DOM.attPresent.textContent =
+    stats.present;
+
+  DOM.attAbsent.textContent =
+    stats.absent;
+
+  DOM.attLate.textContent =
+    stats.late;
+
+  const total =
+    Math.max(
+      stats.total,
+      1
+    );
+
+  const attendanceRate =
+    percent(
+      stats.present +
+      stats.late,
+      total
+    );
+
+  DOM.donutValue.textContent =
+    `${attendanceRate}%`;
+
+  DOM.legendPresent.textContent =
+    stats.present;
+
+  DOM.legendAbsent.textContent =
+    stats.absent;
+
+  DOM.legendLate.textContent =
+    stats.late;
+
+  DOM.legendUnmarked.textContent =
+    Math.max(
+      0,
+      stats.total -
+      stats.marked
+    );
+
+  const presentDeg =
+    (stats.present / total) *
+    360;
+
+  const lateDeg =
+    presentDeg +
+    (
+      stats.late /
+      total
+    ) *
+    360;
+
+  const absentDeg =
+    lateDeg +
+    (
+      stats.absent /
+      total
+    ) *
+    360;
+
+  DOM.attendanceDonut.style.background =
+    `conic-gradient(
+      #42d98b 0deg ${presentDeg}deg,
+      #f1bc52 ${presentDeg}deg ${lateDeg}deg,
+      #ff6675 ${lateDeg}deg ${absentDeg}deg,
+      rgba(255,255,255,.07) ${absentDeg}deg 360deg
+    )`;
+
+}
+
+/* ============================================================
+   SAVE ATTENDANCE
+============================================================ */
+
+async function saveAttendance(){
+
+  if(!state.attendanceDraft.size){
+
+    toast(
+      "No changes",
+      "Mark at least one attendance status before saving.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+  setLoading(
+    true,
+    "Saving attendance",
+    "Recording exact attendance time..."
+  );
+
+  try{
+
+    const operations =
+      [];
+
+    for(
+      const [
+        studentIdValue,
+        status
+      ]
+      of
+      state.attendanceDraft.entries()
+    ){
+
+      const existing =
+        state.attendance.find(
+          row =>
+            String(
+              row.student_id
+            ) ===
+            String(
+              studentIdValue
+            )
+        );
+
+      const note =
+        state.attendanceNotes.get(
+          studentIdValue
+        ) ??
+        existing?.note ??
+        null;
+
+      if(existing){
+
+        operations.push(
+          supabase
+            .from(
+              "mis_nexus_dashboard_attendance"
+            )
+            .update({
+              status,
+              note,
+              marked_at:
+                new Date()
+                  .toISOString(),
+              marked_by:
+                state.user.id
+            })
+            .eq(
+              "id",
+              existing.id
+            )
+        );
+
+      }else{
+
+        operations.push(
+          supabase
+            .from(
+              "mis_nexus_dashboard_attendance"
+            )
+            .insert({
+              student_id:
+                studentIdValue,
+              class_key:
+                state.classId,
+              attendance_date:
+                state.attendanceDate,
+              status,
+              note,
+              marked_at:
+                new Date()
+                  .toISOString(),
+              marked_by:
+                state.user.id
+            })
+        );
+
+      }
+
+    }
+
+    const results =
+      await Promise.all(
+        operations
+      );
+
+    const failure =
+      results.find(
+        result =>
+          result.error
+      );
+
+    if(failure){
+      throw failure.error;
+    }
+
+    for(
+      const [
+        studentIdValue,
+        status
+      ]
+      of
+      state.attendanceDraft.entries()
+    ){
+
+      await logActivity(
+        studentIdValue,
+        "attendance_marked",
+        {
+          status,
+          attendance_date:
+            state.attendanceDate
+        }
+      );
+
+    }
+
+    state.attendanceDraft.clear();
+
+    state.attendanceNotes.clear();
+
+    toast(
+      "Attendance saved",
+      "Attendance and exact recording time have been saved."
+    );
+
+    await refreshData();
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    toast(
+      "Attendance error",
+      error.message ||
+      "Attendance could not be saved.",
+      "error"
+    );
+
+  }finally{
+
+    setLoading(false);
+
+  }
+
+}
+
+/* ============================================================
+   BULK ATTENDANCE
+============================================================ */
+
+function markAllStatus(
+status
+){
+
+  state.students
+    .filter(
+      student =>
+        studentStatus(student) !==
+        "archived"
+    )
+    .forEach(
+      student => {
+
+        state.attendanceDraft.set(
+          student.id,
+          status
+        );
+
+      }
+    );
+
+  renderAttendance();
+
+}
+
+async function confirmBulkAttendance(
+status
+){
+
+  const label =
+    status === "present"
+      ? "Present"
+      : "Absent";
+
+  const confirmed =
+    await askConfirm(
+      `Mark all ${label}`,
+      `This will mark every non-archived student in ${displayClassName()} as ${label.toLowerCase()} for ${formatDate(state.attendanceDate)}. Continue?`,
+      status === "present"
+        ? "Continue"
+        : "Continue"
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  markAllStatus(
+    status
+  );
+
+  await saveAttendance();
+
+}
+
+/* ============================================================
+   ANALYTICS
+============================================================ */
+
+async function renderAnalytics(){
+
+  const stats =
+    calculateTodayStats();
+
+  const status =
+    calculateStudentStats();
+
+  const total =
+    Math.max(
+      1,
+      status.total
+    );
+
+  DOM.analyticsActive.style.width =
+    `${percent(status.active,total)}%`;
+
+  DOM.analyticsInactive.style.width =
+    `${percent(status.inactive,total)}%`;
+
+  DOM.analyticsArchived.style.width =
+    `${percent(status.archived,total)}%`;
+
+  DOM.analyticsActiveText.textContent =
+    `${percent(status.active,total)}%`;
+
+  DOM.analyticsInactiveText.textContent =
+    `${percent(status.inactive,total)}%`;
+
+  DOM.analyticsArchivedText.textContent =
+    `${percent(status.archived,total)}%`;
+
+  updateAttendanceStats();
+
+  await drawAnalyticsChart();
+
+  renderRanking();
+
+}
+
+function renderRanking(){
+
+  const rows =
+    state.students
+      .map(
+        student => {
+
+          const records =
+            state.attendanceHistoryCache?.[
+              student.id
+            ] || [];
+
+          const present =
+            records.filter(
+              row =>
+                row.status ===
+                "present"
+            ).length;
+
+          const absent =
+            records.filter(
+              row =>
+                row.status ===
+                "absent"
+            ).length;
+
+          const late =
+            records.filter(
+              row =>
+                row.status ===
+                "late"
+            ).length;
+
+          const total =
+            present +
+            absent +
+            late;
+
+          return {
+            student,
+            present,
+            absent,
+            late,
+            total,
+            rate:
+              total
+                ? percent(
+                    present +
+                    late,
+                    total
+                  )
+                : 0
+          };
+
+        }
+      )
+      .sort(
+        (a,b) =>
+          b.rate -
+          a.rate
+      );
+
+  DOM.rankingBody.innerHTML =
+    rows
+      .map(
+        (row,index) => `
+
+          <tr>
+
+            <td>
+              <strong>#${index + 1}</strong>
+            </td>
+
+            <td>
+              <div class="student-cell">
+                <div class="student-avatar">
+                  ${
+                    studentPhoto(
+                      row.student
+                    )
+                      ? `<img src="${safe(
+                          studentPhoto(
+                            row.student
+                          )
+                        )}" alt="">`
+                      : safe(
+                          initials(
+                            studentName(
+                              row.student
+                            )
+                          )
+                        )
+                  }
+                </div>
+
+                <div>
+                  <div class="student-name">
+                    ${safe(
+                      studentName(
+                        row.student
+                      )
+                    )}
+                  </div>
+                  <div class="student-id">
+                    ${safe(
+                      studentId(
+                        row.student
+                      )
+                    )}
+                  </div>
+                </div>
+
+              </div>
+            </td>
+
+            <td>${row.present}</td>
+
+            <td>${row.absent}</td>
+
+            <td>${row.late}</td>
+
+            <td>
+              <strong>${row.rate}%</strong>
+            </td>
+
+          </tr>
+
+        `
+      )
+      .join("") ||
+    `
+      <tr>
+        <td colspan="6">
+          <div class="empty">
+            <strong>No attendance data</strong>
+            <p>Attendance records will appear here.</p>
+          </div>
+        </td>
+      </tr>
+    `;
+
+}
+
+/* ============================================================
+   ACTIVITY RENDER
+============================================================ */
+
+function renderActivity(){
+
+  if(!state.activity.length){
+
+    DOM.activityBody.innerHTML =
+      `
+      <tr>
+        <td colspan="5">
+          <div class="empty">
+            <div class="empty-icon">◷</div>
+            <strong>No activity yet</strong>
+            <p>Student and attendance operations will appear here.</p>
+          </div>
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+  DOM.activityBody.innerHTML =
+    state.activity
+      .map(
+        row => {
+
+          let details =
+            row.details;
+
+          if(
+            typeof details ===
+            "object"
+          ){
+
+            details =
+              Object.entries(
+                details
+              )
+              .map(
+                ([key,value]) =>
+                  `${key}: ${value}`
+              )
+              .join(" • ");
+
+          }
+
+          const student =
+            state.students.find(
+              item =>
+                String(
+                  item.id
+                ) ===
+                String(
+                  row.student_id
+                )
+            );
+
+          return `
+            <tr>
+
+              <td>
+                <span class="badge badge-active">
+                  ${safe(
+                    String(
+                      row.action ||
+                      "activity"
+                    )
+                      .replaceAll(
+                        "_",
+                        " "
+                      )
+                  )}
+                </span>
+              </td>
+
+              <td>
+                ${safe(
+                  student
+                    ? studentName(
+                        student
+                      )
+                    : row.student_id ||
+                      "—"
+                )}
+              </td>
+
+              <td>
+                ${safe(
+                  details ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${safe(
+                  state.email
+                )}
+              </td>
+
+              <td>
+                ${safe(
+                  formatDateTime(
+                    row.created_at
+                  )
+                )}
+              </td>
+
+            </tr>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+/* ============================================================
+   CONFIRMATION
+============================================================ */
+
+let confirmResolver =
+  null;
+
+function askConfirm(
+  title,
+  text
+){
+
+  return new Promise(
+    resolve => {
+
+      confirmResolver =
+        resolve;
+
+      DOM.confirmTitle.textContent =
+        title;
+
+      DOM.confirmText.textContent =
+        text;
+
+      openModal(
+        "confirmModal"
+      );
+
+    }
+  );
+
+}
+
+DOM.confirmCancel
+  .addEventListener(
+    "click",
+    () => {
+
+      if(confirmResolver){
+
+        confirmResolver(
+          false
+        );
+
+        confirmResolver =
+          null;
+
+      }
+
+      closeModal(
+        "confirmModal"
+      );
+
+    }
+  );
+
+DOM.confirmProceed
+  .addEventListener(
+    "click",
+    () => {
+
+      if(confirmResolver){
+
+        confirmResolver(
+          true
+        );
+
+        confirmResolver =
+          null;
+
+      }
+
+      closeModal(
+        "confirmModal"
+      );
+
+    }
+  );
+
+/* ============================================================
+   STUDENT ACTIONS
+============================================================ */
+
+async function deleteStudent(
+student
+){
+
+  const confirmed =
+    await askConfirm(
+      "Delete Student",
+      `Permanently delete ${studentName(student)} (${studentId(student)})? This action removes the MIS-NEXUS student record and its attendance records.`
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  setLoading(
+    true,
+    "Deleting student",
+    "Removing the student securely..."
+  );
+
+  try{
+
+    const {
+      error
+    } =
+      await supabase
+        .from(
+          "mis_nexus_dashboard_students"
+        )
+        .delete()
+        .eq(
+          "id",
+          student.id
+        );
+
+    if(error){
+      throw error;
+    }
+
+    toast(
+      "Student deleted",
+      `${studentName(student)} has been removed.`
+    );
+
+    state.students =
+      state.students.filter(
+        item =>
+          item.id !==
+          student.id
+      );
+
+    await logActivity(
+      student.id,
+      "student_deleted",
+      {
+        name:
+          studentName(student),
+        student_id:
+          studentId(student)
+      }
+    );
+
+    await refreshData();
+
+  }catch(error){
+
+    toast(
+      "Delete failed",
+      error.message ||
+      "The student could not be deleted.",
+      "error"
+    );
+
+  }finally{
+
+    setLoading(false);
+
+  }
+
+}
+
+async function archiveStudent(
+student
+){
+
+  const confirmed =
+    await askConfirm(
+      "Archive Student",
+      `Archive ${studentName(student)}? The student will remain in the database but will no longer be treated as an active classroom student.`
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  setLoading(
+    true,
+    "Archiving student",
+    "Updating student status..."
+  );
+
+  try{
+
+    const {
+      error
+    } =
+      await supabase
+        .from(
+          "mis_nexus_dashboard_students"
+        )
+        .update({
+          status:
+            "archived",
+          archived_at:
+            new Date()
+              .toISOString()
+        })
+        .eq(
+          "id",
+          student.id
+        );
+
+    if(error){
+      throw error;
+    }
+
+    await logActivity(
+      student.id,
+      "student_archived",
+      {
+        name:
+          studentName(student)
+      }
+    );
+
+    toast(
+      "Student archived",
+      `${studentName(student)} has been archived.`
+    );
+
+    await refreshData();
+
+  }catch(error){
+
+    toast(
+      "Archive failed",
+      error.message ||
+      "The student could not be archived.",
+      "error"
+    );
+
+  }finally{
+
+    setLoading(false);
+
+  }
+
+}
+
+/* ============================================================
+   REPORT SYSTEM
+============================================================ */
+
+function reportRange(
+type
+){
+
+  const today =
+    todayLagos();
+
+  if(type === "daily"){
+
+    return {
+      from:today,
+      to:today,
+      title:"Daily Attendance Report"
+    };
+
+  }
+
+  if(type === "weekly"){
+
+    return {
+      from:startOfRange(6),
+      to:today,
+      title:"Weekly Attendance Report"
+    };
+
+  }
+
+  if(type === "monthly"){
+
+    const date =
+      new Date();
+
+    const first =
+      new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        1
+      );
+
+    const from =
+      new Intl.DateTimeFormat(
+        "en-CA",
+        {
+          timeZone:"Africa/Lagos"
+        }
+      ).format(first);
+
+    return {
+      from,
+      to:today,
+      title:"Monthly Attendance Report"
+    };
+
+  }
+
+  if(type === "yearly"){
+
+    const date =
+      new Date();
+
+    const from =
+      `${date.getFullYear()}-01-01`;
+
+    return {
+      from,
+      to:today,
+      title:"Yearly Attendance Report"
+    };
+
+  }
+
+  return {
+    from:today,
+    to:today,
+    title:"Attendance Report"
+  };
+
+}
+
+async function generateReport(
+options={}
+){
+
+  const type =
+    options.type ||
+    "daily";
+
+  let range =
+    reportRange(
+      type
+    );
+
+  if(type === "custom"){
+
+    range = {
+      from:
+        options.from ||
+        todayLagos(),
+      to:
+        options.to ||
+        todayLagos(),
+      title:
+        options.title ||
+        "Custom Attendance Report"
+    };
+
+  }
+
+  setLoading(
+    true,
+    "Generating report",
+    "Preparing official attendance records..."
+  );
+
+  try{
+
+    let rows =
+      await getAttendanceRange(
+        range.from,
+        range.to
+      );
+
+    const selectedStudent =
+      options.studentId
+        ? state.students.find(
+            student =>
+              String(
+                student.id
+              ) ===
+              String(
+                options.studentId
+              )
+          )
+        : null;
+
+    if(selectedStudent){
+
+      rows =
+        rows.filter(
+          row =>
+            String(
+              row.student_id
+            ) ===
+            String(
+              selectedStudent.id
+            )
+        );
+
+    }
+
+    state.reportContext = {
+      ...range,
+      type,
+      student:
+        selectedStudent
+    };
+
+    state.reportRows =
+      rows;
+
+    renderReport(
+      rows,
+      range,
+      selectedStudent
+    );
+
+    openModal(
+      "reportModal"
+    );
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    toast(
+      "Report error",
+      error.message ||
+      "The report could not be generated.",
+      "error"
+    );
+
+  }finally{
+
+    setLoading(false);
+
+  }
+
+}
+
+function renderReport(
+rows,
+range,
+selectedStudent=null
+){
+
+  const grouped =
+    {};
+
+  rows.forEach(
+    row => {
+
+      if(!grouped[
+        row.attendance_date
+      ]){
+
+        grouped[
+          row.attendance_date
+        ] =
+          [];
+
+      }
+
+      grouped[
+        row.attendance_date
+      ].push(row);
+
+    }
+  );
+
+  let reportRows =
+    [];
+
+  if(selectedStudent){
+
+    const studentRows =
+      rows
+        .filter(
+          row =>
+            String(
+              row.student_id
+            ) ===
+            String(
+              selectedStudent.id
+            )
+        )
+        .sort(
+          (a,b) =>
+            String(
+              b.attendance_date
+            )
+            .localeCompare(
+              String(
+                a.attendance_date
+              )
+            )
+        );
+
+    reportRows =
+      studentRows.map(
+        row => {
+
+          const student =
+            selectedStudent;
+
+          return `
+            <tr>
+              <td>${safe(
+                studentId(student)
+              )}</td>
+              <td>${safe(
+                studentName(student)
+              )}</td>
+              <td>${safe(
+                formatDate(
+                  row.attendance_date
+                )
+              )}</td>
+              <td>${safe(
+                row.status
+              )}</td>
+              <td>${safe(
+                formatDateTime(
+                  row.marked_at
+                )
+              )}</td>
+              <td>${safe(
+                row.note ||
+                "—"
+              )}</td>
+            </tr>
+          `;
+
+        }
+      );
+
+  }else{
+
+    reportRows =
+      state.students
+        .filter(
+          student =>
+            studentStatus(student) !==
+            "archived"
+        )
+        .map(
+          student => {
+
+            const studentRows =
+              rows.filter(
+                row =>
+                  String(
+                    row.student_id
+                  ) ===
+                  String(
+                    student.id
+                  )
+              );
+
+            const latest =
+              studentRows
+                .slice()
+                .sort(
+                  (a,b) =>
+                    String(
+                      b.marked_at ||
+                      ""
+                    )
+                    .localeCompare(
+                      String(
+                        a.marked_at ||
+                        ""
+                      )
+                    )
+                )[0];
+
+            const status =
+              latest?.status ||
+              "unmarked";
+
+            return `
+              <tr>
+                <td>${safe(
+                  studentId(student)
+                )}</td>
+                <td>${safe(
+                  studentName(student)
+                )}</td>
+                <td>${safe(
+                  student.parent_name ||
+                  "—"
+                )}</td>
+                <td>${safe(
+                  status
+                )}</td>
+                <td>${safe(
+                  latest
+                    ? formatDateTime(
+                        latest.marked_at
+                      )
+                    : "Not recorded"
+                )}</td>
+                <td>${safe(
+                  latest?.note ||
+                  "—"
+                )}</td>
+              </tr>
+            `;
+
+          }
+        );
+
+  }
+
+  const present =
+    rows.filter(
+      row =>
+        row.status ===
+        "present"
+    ).length;
+
+  const absent =
+    rows.filter(
+      row =>
+        row.status ===
+        "absent"
+    ).length;
+
+  const late =
+    rows.filter(
+      row =>
+        row.status ===
+        "late"
+    ).length;
+
+  const total =
+    present +
+    absent +
+    late;
+
+  const rate =
+    total
+      ? percent(
+          present +
+          late,
+          total
+        )
+      : 0;
+
+  DOM.reportPreview.innerHTML = `
+
+    <div class="report-head">
+
+      <img
+        class="report-logo"
+        src="logo.png"
+        alt="School Logo"
+      >
+
+      <div class="report-school">
+        <h2>MISBAHUL 'ILM SCHOOLS ABUJA</h2>
+        <p>MIS-NEXUS™ School Management System</p>
+        <p>
+          Class:
+          <strong>${safe(
+            state.className
+          )}</strong>
+        </p>
+      </div>
+
+      <div class="report-meta">
+        <div>
+          Generated:
+          ${safe(
+            nowLagos()
+          )}
+        </div>
+        <div>
+          Timezone:
+          Africa/Lagos
+        </div>
+        <div>
+          Account:
+          ${safe(
+            state.email
+          )}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="report-title">
+
+      <h3>
+        ${safe(
+          range.title
+        )}
+      </h3>
+
+      <p>
+        Period:
+        ${safe(
+          formatDate(
+            range.from
+          )
+        )}
+        —
+        ${safe(
+          formatDate(
+            range.to
+          )
+        )}
+      </p>
+
+      ${
+        selectedStudent
+          ? `
+            <p>
+              Student:
+              <strong>
+                ${safe(
+                  studentName(
+                    selectedStudent
+                  )
+                )}
+              </strong>
+            </p>
+          `
+          : ""
+      }
+
+    </div>
+
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      margin-bottom:18px;
+    ">
+
+      <div style="
+        padding:10px;
+        border:1px solid #d6dcd8;
+        text-align:center;
+      ">
+        <strong style="font-size:17px">
+          ${present}
+        </strong>
+        <div style="font-size:8px">
+          PRESENT
+        </div>
+      </div>
+
+      <div style="
+        padding:10px;
+        border:1px solid #d6dcd8;
+        text-align:center;
+      ">
+        <strong style="font-size:17px">
+          ${absent}
+        </strong>
+        <div style="font-size:8px">
+          ABSENT
+        </div>
+      </div>
+
+      <div style="
+        padding:10px;
+        border:1px solid #d6dcd8;
+        text-align:center;
+      ">
+        <strong style="font-size:17px">
+          ${late}
+        </strong>
+        <div style="font-size:8px">
+          LATE
+        </div>
+      </div>
+
+      <div style="
+        padding:10px;
+        border:1px solid #d6dcd8;
+        text-align:center;
+      ">
+        <strong style="font-size:17px">
+          ${rate}%
+        </strong>
+        <div style="font-size:8px">
+          ATTENDANCE
+        </div>
+      </div>
+
+    </div>
+
+    <table class="report-table">
+
+      <thead>
+
+        <tr>
+          <th>Student ID</th>
+          <th>Student Name</th>
+          ${
+            selectedStudent
+              ? "<th>Date</th>"
+              : "<th>Parent / Guardian</th>"
+          }
+          <th>Status</th>
+          <th>Recorded Time</th>
+          <th>Note</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${
+          reportRows.join("") ||
+          `
+            <tr>
+              <td colspan="6">
+                No records available.
+              </td>
+            </tr>
+          `
+        }
+
+      </tbody>
+
+    </table>
+
+    <div class="report-footer">
+
+      <div>
+        Prepared by:
+        ${safe(
+          state.email
+        )}
+      </div>
+
+      <div>
+        Class:
+        ${safe(
+          state.className
+        )}
+      </div>
+
+      <div>
+        Official School Record
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+/* ============================================================
+   REPORT PDF
+============================================================ */
+
+async function downloadPdf(){
+
+  if(!state.reportContext){
+    return;
+  }
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+  script.src =
+    "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+
+  script.onload =
+    () => {
+
+      if(
+        typeof window.html2pdf !==
+        "function"
+      ){
+
+        window.print();
+
+        return;
+
+      }
+
+      const element =
+        DOM.reportPreview;
+
+      const filename =
+        `MIS-NEXUS-${String(
+          state.className
+        )
+          .replace(
+            /[^a-z0-9]+/gi,
+            "-"
+          )
+          .replace(
+            /^-|-$/g,
+            ""
+          )}-${todayLagos()}.pdf`;
+
+      window
+        .html2pdf()
+        .set({
+          margin:8,
+          filename,
+          image:{
+            type:"jpeg",
+            quality:.96
+          },
+          html2canvas:{
+            scale:2,
+            useCORS:true,
+            backgroundColor:"#ffffff"
+          },
+          jsPDF:{
+            unit:"mm",
+            format:"a4",
+            orientation:"portrait"
+          }
+        })
+        .from(element)
+        .save();
+
+    };
+
+  script.onerror =
+    () => {
+
+      toast(
+        "PDF fallback",
+        "PDF library could not load. Opening the print dialog instead.",
+        "warning"
+      );
+
+      window.print();
+
+    };
+
+  document.head.appendChild(
+    script
+  );
+
+}
+
+/* ============================================================
+   REPORT STUDENT
+============================================================ */
+
+function openStudentReport(){
+
+  if(!state.selectedStudent){
+    return;
+  }
+
+  closeModal(
+    "studentViewModal"
+  );
+
+  generateReport({
+    type:"custom",
+    from:
+      startOfRange(
+        365
+      ),
+    to:
+      todayLagos(),
+    title:
+      "Student Attendance Report",
+    studentId:
+      state.selectedStudent.id
+  });
+
+}
+
+/* ============================================================
+   CUSTOM REPORT
+============================================================ */
+
+async function generateCustomReport(){
+
+  const from =
+    DOM.customFrom.value;
+
+  const to =
+    DOM.customTo.value;
+
+  if(!from || !to){
+
+    toast(
+      "Date range required",
+      "Select both the beginning and ending dates.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+  if(from > to){
+
+    toast(
+      "Invalid date range",
+      "The beginning date cannot be after the ending date.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+  const type =
+    DOM.customReportType.value;
+
+  const studentIdValue =
+    DOM.customStudent.value;
+
+  const title =
+    type === "student"
+      ? "Student Attendance Report"
+      : type === "summary"
+      ? "Attendance Summary Report"
+      : "Class Attendance Report";
+
+  await generateReport({
+    type:"custom",
+    from,
+    to,
+    title,
+    studentId:
+      studentIdValue ||
+      null
+  });
+
+}
+
+/* ============================================================
+   REFRESH
+============================================================ */
+
+async function refreshData(){
+
+  setLoading(
+    true,
+    "Refreshing dashboard",
+    "Loading students, attendance and analytics..."
+  );
+
+  try{
+
+    await loadStudents();
+
+    await loadAttendance(
+      state.attendanceDate ||
+      todayLagos()
+    );
+
+    await loadAttendanceHistory();
+
+    renderOverview();
+
+    renderStudents();
+
+    renderAttendance();
+
+    await renderAnalytics();
+
+    await loadActivity();
+
+    populateStudentSelect();
+
+    setConnection(
+      "online",
+      "Database connected"
+    );
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    setConnection(
+      "offline",
+      "Connection problem"
+    );
+
+    throw error;
+
+  }finally{
+
+    setLoading(false);
+
+  }
+
+}
+
+/* ============================================================
+   STUDENT SELECT
+============================================================ */
+
+function populateStudentSelect(){
+
+  DOM.customStudent.innerHTML =
+    `
+      <option value="">
+        All Students
+      </option>
+    `;
+
+  state.students
+    .filter(
+      student =>
+        studentStatus(student) !==
+        "archived"
+    )
+    .forEach(
+      student => {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value =
+          student.id;
+
+        option.textContent =
+          `${studentName(student)} — ${studentId(student)}`;
+
+        DOM.customStudent.appendChild(
+          option
+        );
+
+      }
+    );
+
+}
+
+/* ============================================================
+   PWA INSTALLATION
+============================================================ */
+
+window.addEventListener(
+  "beforeinstallprompt",
+  event => {
+
+    event.preventDefault();
+
+    state.deferredInstall =
+      event;
+
+    $("#installBtn").disabled =
+      false;
+
+  }
+);
+
+async function installApplication(){
+
+  if(
+    !state.deferredInstall
+  ){
+
+    toast(
+      "Installation unavailable",
+      "Use your browser menu and choose Add to Home screen or Install App.",
+      "info"
+    );
+
+    return;
+
+  }
+
+  state.deferredInstall
+    .prompt();
+
+  const result =
+    await state.deferredInstall
+      .userChoice;
+
+  if(
+    result.outcome ===
+    "accepted"
+  ){
+
+    toast(
+      "Installation started",
+      "MIS-NEXUS is being added to your device."
+    );
+
+  }
+
+  state.deferredInstall =
+    null;
+
+}
+
+/* ============================================================
+   NAVIGATION EVENTS
+============================================================ */
+
+$$(".nav-btn")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () =>
+          navigate(
+            button.dataset.page
+          )
+      );
+
+    }
+  );
+
+$$("[data-page-jump]")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () =>
+          navigate(
+            button.dataset.pageJump
+          )
+      );
+
+    }
+  );
+
+DOM.mobileMenu
+  .addEventListener(
+    "click",
+    () => {
+
+      DOM.sidebar.classList.add(
+        "open"
+      );
+
+      DOM.sidebarOverlay.classList.add(
+        "show"
+      );
+
+    }
+  );
+
+DOM.sidebarOverlay
+  .addEventListener(
+    "click",
+    () => {
+
+      DOM.sidebar.classList.remove(
+        "open"
+      );
+
+      DOM.sidebarOverlay.classList.remove(
+        "show"
+      );
+
+    }
+  );
+
+/* ============================================================
+   BUTTON EVENTS
+============================================================ */
+
+$("#overviewRegister")
+  .addEventListener(
+    "click",
+    openStudentRegister
+  );
+
+$("#studentRegisterBtn")
+  .addEventListener(
+    "click",
+    openStudentRegister
+  );
+
+$("#studentsRefresh")
+  .addEventListener(
+    "click",
+    async () => {
+
+      try{
+
+        await refreshData();
+
+        toast(
+          "Students refreshed",
+          "The student directory is up to date."
+        );
+
+      }catch(error){
+
+        toast(
+          "Refresh failed",
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+$("#overviewRefresh")
+  .addEventListener(
+    "click",
+    async () => {
+
+      try{
+
+        await refreshData();
+
+        toast(
+          "Dashboard refreshed",
+          "All current class data has been loaded."
+        );
+
+      }catch(error){
+
+        toast(
+          "Refresh failed",
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+$("#refreshBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      try{
+
+        await refreshData();
+
+        toast(
+          "Dashboard refreshed",
+          "All current data is available."
+        );
+
+      }catch(error){
+
+        toast(
+          "Refresh failed",
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+$("#attendanceRefresh")
+  .addEventListener(
+    "click",
+    async () => {
+
+      try{
+
+        await loadAttendance(
+          state.attendanceDate
+        );
+
+        renderAttendance();
+
+        toast(
+          "Attendance refreshed",
+          "The selected attendance date is up to date."
+        );
+
+      }catch(error){
+
+        toast(
+          "Refresh failed",
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+$("#analyticsRefresh")
+  .addEventListener(
+    "click",
+    async () => {
+
+      try{
+
+        await loadAttendanceHistory();
+
+        await renderAnalytics();
+
+        toast(
+          "Analytics refreshed",
+          "Attendance analytics have been recalculated."
+        );
+
+      }catch(error){
+
+        toast(
+          "Analytics failed",
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+$("#activityRefresh")
+  .addEventListener(
+    "click",
+    loadActivity
+  );
+
+$("#settingsRefresh")
+  .addEventListener(
+    "click",
+    async () => {
+
+      try{
+
+        await refreshData();
+
+        toast(
+          "Data refreshed",
+          "All dashboard data has been synchronized."
+        );
+
+      }catch(error){
+
+        toast(
+          "Refresh failed",
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+$("#settingsReport")
+  .addEventListener(
+    "click",
+    () =>
+      generateReport({
+        type:"daily"
+      })
+  );
+
+/* ============================================================
+   QUICK ACTIONS
+============================================================ */
+
+$$("[data-action]")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const action =
+            button.dataset.action;
+
+          if(action === "register"){
+            openStudentRegister();
+          }
+
+          if(action === "attendance"){
+            navigate(
+              "attendance"
+            );
+          }
+
+          if(action === "report"){
+            generateReport({
+              type:"daily"
+            });
+          }
+
+          if(action === "students"){
+            navigate(
+              "students"
+            );
+          }
+
+        }
+      );
+
+    }
+  );
+
+/* ============================================================
+   STUDENT SEARCH
+============================================================ */
+
+DOM.studentSearch
+  .addEventListener(
+    "input",
+    event => {
+
+      state.studentSearch =
+        event.target.value;
+
+      state.studentPage =
+        1;
+
+      renderStudents();
+
+    }
+  );
+
+DOM.studentStatusFilter
+  .addEventListener(
+    "change",
+    event => {
+
+      state.studentStatus =
+        event.target.value;
+
+      state.studentPage =
+        1;
+
+      renderStudents();
+
+    }
+  );
+
+/* ============================================================
+   STUDENT TABLE ACTIONS
+============================================================ */
+
+DOM.studentsTableBody
+  .addEventListener(
+    "click",
+    async event => {
+
+      const button =
+        event.target.closest(
+          "[data-student-action]"
+        );
+
+      if(!button){
+        return;
+      }
+
+      const id =
+        button.dataset.id;
+
+      const student =
+        state.students.find(
+          item =>
+            String(
+              item.id
+            ) ===
+            String(
+              id
+            )
+        );
+
+      if(!student){
+        return;
+      }
+
+      const action =
+        button.dataset.studentAction;
+
+      if(action === "view"){
+
+        openStudentView(
+          student
+        );
+
+      }
+
+      if(action === "edit"){
+
+        openStudentEdit(
+          student
+        );
+
+      }
+
+      if(action === "archive"){
+
+        await archiveStudent(
+          student
+        );
+
+      }
+
+      if(action === "delete"){
+
+        await deleteStudent(
+          student
+        );
+
+      }
+
+    }
+  );
+
+/* ============================================================
+   STUDENT FORM
+============================================================ */
+
+DOM.studentForm
+  .addEventListener(
+    "submit",
+    saveStudent
+  );
+
+DOM.studentPhoto
+  .addEventListener(
+    "change",
+    async event => {
+
+      const file =
+        event.target.files?.[0];
+
+      if(!file){
+        return;
+      }
+
+      try{
+
+        const preview =
+          await compressImage(
+            file
+          );
+
+        DOM.studentPhotoPreview.innerHTML =
+          `<img src="${safe(preview)}" alt="">`;
+
+      }catch(error){
+
+        DOM.studentPhotoPreview.innerHTML =
+          "<span>No photo</span>";
+
+      }
+
+    }
+  );
+
+/* ============================================================
+   ATTENDANCE EVENTS
+============================================================ */
+
+DOM.attendanceDate.value =
+  state.attendanceDate ||
+  todayLagos();
+
+DOM.attendanceDate
+  .addEventListener(
+    "change",
+    async event => {
+
+      state.attendanceDate =
+        event.target.value;
+
+      state.attendanceDraft.clear();
+
+      state.attendanceNotes.clear();
+
+      try{
+
+        await loadAttendance(
+          state.attendanceDate
+        );
+
+        renderAttendance();
+
+      }catch(error){
+
+        toast(
+          "Attendance error",
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+$("#attendanceToday")
+  .addEventListener(
+    "click",
+    async () => {
+
+      state.attendanceDate =
+        todayLagos();
+
+      DOM.attendanceDate.value =
+        state.attendanceDate;
+
+      try{
+
+        await loadAttendance(
+          state.attendanceDate
+        );
+
+        renderAttendance();
+
+      }catch(error){
+
+        toast(
+          "Attendance error",
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+DOM.attendanceSearch
+  .addEventListener(
+    "input",
+    event => {
+
+      state.attendanceSearch =
+        event.target.value;
+
+      renderAttendance();
+
+    }
+  );
+
+DOM.attendanceTableBody
+  .addEventListener(
+    "click",
+    event => {
+
+      const button =
+        event.target.closest(
+          "[data-att-status]"
+        );
+
+      if(!button){
+        return;
+      }
+
+      const studentIdValue =
+        button.dataset.studentId;
+
+      const status =
+        button.dataset.attStatus;
+
+      state.attendanceDraft.set(
+        studentIdValue,
+        status
+      );
+
+      renderAttendance();
+
+    }
+  );
+
+DOM.attendanceTableBody
+  .addEventListener(
+    "input",
+    event => {
+
+      const input =
+        event.target.closest(
+          "[data-att-note]"
+        );
+
+      if(!input){
+        return;
+      }
+
+      state.attendanceNotes.set(
+        input.dataset.studentId,
+        input.value
+      );
+
+    }
+  );
+
+$("#saveAttendance")
+  .addEventListener(
+    "click",
+    saveAttendance
+  );
+
+$("#markAllPresent")
+  .addEventListener(
+    "click",
+    () =>
+      confirmBulkAttendance(
+        "present"
+      )
+  );
+
+$("#markAllAbsent")
+  .addEventListener(
+    "click",
+    () =>
+      confirmBulkAttendance(
+        "absent"
+      )
+  );
+
+/* ============================================================
+   REPORT EVENTS
+============================================================ */
+
+$$("[data-report]")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () =>
+          generateReport({
+            type:
+              button.dataset.report
+          })
+      );
+
+    }
+  );
+
+$("#customReportBtn")
+  .addEventListener(
+    "click",
+    generateCustomReport
+  );
+
+$("#reportPrintBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      window.print();
+
+    }
+  );
+
+$("#reportPdfBtn")
+  .addEventListener(
+    "click",
+    downloadPdf
+  );
+
+DOM.studentViewReport
+  .addEventListener(
+    "click",
+    openStudentReport
+  );
+
+/* ============================================================
+   SETTINGS
+============================================================ */
+
+$$(".theme-btn")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () =>
+          setTheme(
+            button.dataset.theme
+          )
+      );
+
+    }
+  );
+
+$("#installBtn")
+  .addEventListener(
+    "click",
+    installApplication
+  );
+
+/* ============================================================
+   PROFILE
+============================================================ */
+
+$("#profileBtn")
+  .addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      DOM.notificationPanel
+        .classList.remove(
+          "show"
+        );
+
+      DOM.profilePopover
+        .classList.toggle(
+          "show"
+        );
+
+    }
+  );
+
+$("#notificationBtn")
+  .addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      DOM.profilePopover
+        .classList.remove(
+          "show"
+        );
+
+      DOM.notificationPanel
+        .classList.toggle(
+          "show"
+        );
+
+    }
+  );
+
+document.addEventListener(
+  "click",
+  event => {
+
+    if(
+      !event.target.closest(
+        "#profilePopover"
+      ) &&
+      !event.target.closest(
+        "#profileBtn"
+      )
+    ){
+
+      DOM.profilePopover
+        .classList.remove(
+          "show"
+        );
+
+    }
+
+    if(
+      !event.target.closest(
+        "#notificationPanel"
+      ) &&
+      !event.target.closest(
+        "#notificationBtn"
+      )
+    ){
+
+      DOM.notificationPanel
+        .classList.remove(
+          "show"
+        );
+
+    }
+
+  }
+);
+
+/* ============================================================
+   LOGOUT
+============================================================ */
+
+async function logout(){
+
+  const confirmed =
+    await askConfirm(
+      "Sign Out",
+      "Are you sure you want to securely sign out of this class dashboard?"
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  setLoading(
+    true,
+    "Signing out",
+    "Closing your authenticated session..."
+  );
+
+  try{
+
+    await supabase.auth.signOut();
+
+    window.location.href =
+      "classes.html";
+
+  }catch(error){
+
+    toast(
+      "Sign out failed",
+      error.message,
+      "error"
+    );
+
+    setLoading(false);
+
+  }
+
+}
+
+$("#sideLogout")
+  .addEventListener(
+    "click",
+    logout
+  );
+
+$("#popoverLogout")
+  .addEventListener(
+    "click",
+    logout
+  );
+
+$("#authLoginBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      window.location.href =
+        "classes.html";
+
+    }
+  );
+
+/* ============================================================
+   MODAL CLOSING
+============================================================ */
+
+$$("[data-close-modal]")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () =>
+          closeModal(
+            button.dataset.closeModal
+          )
+      );
+
+    }
+  );
+
+$$(".modal")
+  .forEach(
+    modal => {
+
+      modal.addEventListener(
+        "click",
+        event => {
+
+          if(
+            event.target ===
+            modal
+          ){
+
+            closeModal(
+              modal.id
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key ===
+      "Escape"
+    ){
+
+      closeAllModals();
+
+      DOM.profilePopover
+        .classList.remove(
+          "show"
+        );
+
+      DOM.notificationPanel
+        .classList.remove(
+          "show"
+        );
+
+    }
+
+  }
+);
+
+/* ============================================================
+   AUTH STATE MONITOR
+============================================================ */
+
+supabase.auth.onAuthStateChange(
+  async (
+    event,
+    session
+  ) => {
+
+    if(
+      event ===
+      "SIGNED_OUT"
+    ){
+
+      DOM.authBlocked
+        .classList.add(
+          "show"
+        );
+
+      return;
+
+    }
+
+    if(
+      session &&
+      !state.user
+    ){
+
+      state.session =
+        session;
+
+      state.user =
+        session.user;
+
+    }
+
+  }
+);
+
+/* ============================================================
+   NETWORK STATUS
+============================================================ */
+
+window.addEventListener(
+  "online",
+  () => {
+
+    setConnection(
+      "online",
+      "Internet connected"
+    );
+
+  }
+);
+
+window.addEventListener(
+  "offline",
+  () => {
+
+    setConnection(
+      "offline",
+      "Internet unavailable"
+    );
+
+    toast(
+      "Connection lost",
+      "Your dashboard is offline. Database changes require a connection.",
+      "warning"
+    );
+
+  }
+);
+
+/* ============================================================
+   RESIZE
+============================================================ */
+
+let resizeTimer =
+  null;
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    clearTimeout(
+      resizeTimer
+    );
+
+    resizeTimer =
+      setTimeout(
+        () => {
+
+          drawOverviewChart();
+
+          if(
+            $("#page-analytics")
+              .classList.contains(
+                "active"
+              )
+          ){
+
+            drawAnalyticsChart();
+
+          }
+
+        },
+        120
+      );
+
+  }
+);
+
+/* ============================================================
+   GLOBAL REFRESH
+============================================================ */
+
+window.addEventListener(
+  "focus",
+  () => {
+
+    if(
+      state.user &&
+      !state.loading
+    ){
+
+      loadAttendance(
+        state.attendanceDate ||
+        todayLagos()
+      )
+      .then(
+        () => {
+
+          renderOverview();
+
+          if(
+            $("#page-attendance")
+              .classList.contains(
+                "active"
+              )
+          ){
+
+            renderAttendance();
+
+          }
+
+        }
+      )
+      .catch(
+        error =>
+          console.warn(
+            "Focus refresh",
+            error
+          )
+      );
+
+    }
+
+  }
+);
+
+/* ============================================================
+   INITIALIZATION
+============================================================ */
+
+async function initialize(){
+
+  applyTheme();
+
+  state.attendanceDate =
+    todayLagos();
+
+  DOM.attendanceDate.value =
+    state.attendanceDate;
+
+  try{
+
+    bootText(
+      "Verifying secure session"
+    );
+
+    await verifyAuthentication();
+
+    bootText(
+      "Loading class profile"
+    );
+
+    await loadProfile();
+
+    applyClassUI();
+
+    bootText(
+      "Connecting to classroom data"
+    );
+
+    setConnection(
+      "online",
+      "Connected"
+    );
+
+    await loadStudents();
+
+    bootText(
+      "Loading today's attendance"
+    );
+
+    await loadAttendance(
+      state.attendanceDate
+    );
+
+    bootText(
+      "Preparing analytics"
+    );
+
+    await loadAttendanceHistory();
+
+    renderOverview();
+
+    renderStudents();
+
+    renderAttendance();
+
+    await renderAnalytics();
+
+    await loadActivity();
+
+    populateStudentSelect();
+
+    applyTheme();
+
+    setConnection(
+      "online",
+      "Database connected"
+    );
+
+    DOM.bootLoader.classList.add(
+      "hide"
+    );
+
+    setTimeout(
+      () => {
+
+        toast(
+          "Dashboard ready",
+          `${state.className} is ready for secure classroom management.`
+        );
+
+      },
+      500
+    );
+
+  }catch(error){
+
+    console.error(
+      "Dashboard initialization",
+      error
+    );
+
+    if(
+      error.message ===
+      "NO_SESSION"
+    ){
+
+      DOM.bootLoader.classList.add(
+        "hide"
+      );
+
+      DOM.authBlocked.classList.add(
+        "show"
+      );
+
+      return;
+
+    }
+
+    DOM.bootLoader.classList.add(
+      "hide"
+    );
+
+    toast(
+      "Dashboard startup problem",
+      error.message ||
+      "The dashboard could not initialize correctly.",
+      "error"
+    );
+
+    setConnection(
+      "offline",
+      "Initialization failed"
+    );
+
+  }
+
+}
+
+initialize();
+
+</script>
+
+</body>
+</html>

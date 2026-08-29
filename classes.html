@@ -1,0 +1,3128 @@
+<!DOCTYPE html>
+<html lang="en-NG">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#08090b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="application-name" content="MIS-NEXUS™">
+<meta name="apple-mobile-web-app-title" content="MIS-NEXUS™">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<title>MIS-NEXUS™ — Class Portal</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  margin:0;
+  overflow:hidden;
+  overscroll-behavior:none;
+  touch-action:manipulation;
+}
+
+body{
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background:#08090b;
+  color:#f4f5f7;
+  user-select:none;
+}
+
+button,input,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+#app{
+  --accent:#d7d9dc;
+  --accent-strong:#ffffff;
+  --accent-soft:rgba(220,224,228,.20);
+  --button-text:#101216;
+  --surface:rgba(20,23,27,.34);
+  --border:rgba(255,255,255,.13);
+  --muted:#858c95;
+  --background:#08090b;
+
+  width:100%;
+  height:100dvh;
+  min-height:520px;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  background:var(--background);
+  transition:
+    background .55s ease,
+    color .35s ease;
+}
+
+#app::before{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  z-index:-4;
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      var(--accent-soft),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 0 100%,
+      rgba(255,255,255,.035),
+      transparent 30%
+    );
+  transition:background .55s ease;
+}
+
+#app::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0 43%,
+      rgba(255,255,255,.018) 44%,
+      transparent 45%
+    ),
+    linear-gradient(
+      rgba(255,255,255,.014) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.014) 1px,
+      transparent 1px
+    );
+  background-size:auto,42px 42px,42px 42px;
+  mask-image:linear-gradient(
+    to bottom,
+    black,
+    transparent
+  );
+}
+
+.watermark{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:-2;
+}
+
+.watermark img{
+  width:min(78vw,680px);
+  opacity:.075;
+  filter:
+    grayscale(1)
+    brightness(1.65);
+  transform:rotate(-8deg);
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:76px;
+  padding:
+    max(12px,env(safe-area-inset-top))
+    max(16px,env(safe-area-inset-right))
+    10px
+    max(16px,env(safe-area-inset-left));
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  z-index:20;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-mark{
+  width:37px;
+  height:37px;
+  border-radius:11px;
+  object-fit:contain;
+  filter:
+    drop-shadow(0 8px 13px rgba(0,0,0,.55));
+}
+
+.brand-name{
+  line-height:1.05;
+}
+
+.brand-name strong{
+  display:block;
+  font-size:11px;
+  letter-spacing:.13em;
+}
+
+.brand-name span{
+  display:block;
+  margin-top:3px;
+  font-size:8px;
+  color:var(--muted);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.version{
+  color:#747b84;
+  font-size:8px;
+  letter-spacing:.12em;
+}
+
+/* =========================================================
+   THEME CONTROL
+========================================================= */
+
+.theme-panel{
+  position:absolute;
+  top:78px;
+  right:14px;
+  z-index:50;
+}
+
+.theme-button{
+  width:37px;
+  height:37px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:#dfe2e5;
+  background:rgba(20,23,27,.34);
+  backdrop-filter:blur(10px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 8px 20px rgba(0,0,0,.22);
+}
+
+.theme-menu{
+  position:absolute;
+  top:44px;
+  right:0;
+  width:174px;
+  padding:7px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:rgba(13,16,20,.42);
+  backdrop-filter:blur(18px);
+  box-shadow:0 20px 45px rgba(0,0,0,.42);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-6px) scale(.98);
+  transition:.2s ease;
+}
+
+.theme-panel.open .theme-menu{
+  opacity:1;
+  visibility:visible;
+  transform:none;
+}
+
+.theme-option{
+  width:100%;
+  min-height:39px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+  color:#bfc4ca;
+  text-align:left;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.05em;
+}
+
+.theme-option:hover,
+.theme-option.active{
+  background:rgba(255,255,255,.07);
+  color:#fff;
+}
+
+.theme-dot{
+  width:19px;
+  height:19px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:
+    inset 2px 2px 5px rgba(255,255,255,.2),
+    inset -2px -2px 5px rgba(0,0,0,.3);
+}
+
+.theme-dot.gold{
+  background:
+    linear-gradient(
+      135deg,
+      #080808 25%,
+      #bd8b2c 48%,
+      #e3c675 60%,
+      #111 82%
+    );
+}
+
+.theme-dot.green{
+  background:
+    linear-gradient(
+      135deg,
+      #063c2a,
+      #f4f4ef 48%,
+      #9ea5a9
+    );
+}
+
+.theme-dot.silver{
+  background:
+    linear-gradient(
+      135deg,
+      #22262b,
+      #eef0f2 50%,
+      #777e85
+    );
+}
+
+.theme-dot.blue{
+  background:
+    linear-gradient(
+      135deg,
+      #071a35,
+      #7ca8d5 50%,
+      #dce8f2
+    );
+}
+
+.theme-dot.plum{
+  background:
+    linear-gradient(
+      135deg,
+      #180c20,
+      #9c75ac 50%,
+      #e4d7e8
+    );
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:
+    80px
+    16px
+    max(18px,env(safe-area-inset-bottom));
+}
+
+.login-stage{
+  width:min(100%,470px);
+  max-height:calc(100dvh - 100px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =========================================================
+   3D LOGO
+========================================================= */
+
+.logo-orbit{
+  width:clamp(108px,24vw,150px);
+  aspect-ratio:1;
+  position:relative;
+  display:grid;
+  place-items:center;
+  margin-bottom:14px;
+  perspective:1000px;
+}
+
+.logo-orbit::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:
+    0 0 0 7px rgba(255,255,255,.018),
+    0 20px 55px rgba(0,0,0,.48),
+    inset 0 0 30px rgba(255,255,255,.05);
+}
+
+.logo-orbit::after{
+  content:"";
+  position:absolute;
+  inset:-9px;
+  border-radius:50%;
+  border:1px solid var(--accent-soft);
+  transform:rotateX(68deg);
+}
+
+.logo{
+  width:73%;
+  height:73%;
+  object-fit:contain;
+  border-radius:50%;
+  filter:
+    drop-shadow(0 17px 20px rgba(0,0,0,.6));
+  animation:
+    logoFloat 4.8s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+  0%,100%{
+    transform:
+      translateY(0)
+      rotateY(-3deg);
+  }
+
+  50%{
+    transform:
+      translateY(-5px)
+      rotateY(8deg);
+  }
+}
+
+/* =========================================================
+   SCHOOL IDENTITY
+========================================================= */
+
+.school-title{
+  text-align:center;
+  margin-bottom:16px;
+}
+
+.school-title h1{
+  margin:0;
+  font-size:clamp(15px,4vw,21px);
+  font-weight:850;
+  letter-spacing:.045em;
+}
+
+.school-title p{
+  margin:6px 0 0;
+  color:#7e858e;
+  font-size:7px;
+  letter-spacing:.23em;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   TIME / PRAYER
+========================================================= */
+
+.time-strip{
+  width:min(100%,390px);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.info-card{
+  min-width:0;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 10px 28px rgba(0,0,0,.2);
+  backdrop-filter:blur(9px);
+}
+
+.info-label{
+  color:#737a83;
+  font-size:7px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.info-value{
+  margin-top:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:10px;
+  font-weight:800;
+  color:#e8eaed;
+}
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card{
+  width:min(100%,390px);
+  padding:19px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:23px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(35,38,43,.34),
+      rgba(9,11,14,.34)
+    );
+  backdrop-filter:blur(12px);
+  box-shadow:
+    0 30px 70px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,255,255,.07),
+    inset 0 -1px 0 rgba(0,0,0,.55);
+}
+
+.login-card::before{
+  content:"";
+  position:absolute;
+  left:12%;
+  right:12%;
+  top:0;
+  height:1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--accent),
+      transparent
+    );
+  opacity:.6;
+}
+
+.mode-title{
+  text-align:center;
+  margin-bottom:14px;
+}
+
+.mode-title strong{
+  display:block;
+  font-size:14px;
+}
+
+.mode-title span{
+  display:block;
+  margin-top:4px;
+  color:#777e87;
+  font-size:8px;
+  letter-spacing:.07em;
+}
+
+/* =========================================================
+   CLASS SELECTOR
+========================================================= */
+
+.class-field{
+  margin-bottom:12px;
+}
+
+.class-select-wrap{
+  position:relative;
+}
+
+.class-select{
+  width:100%;
+  height:46px;
+  appearance:none;
+  -webkit-appearance:none;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.09);
+  outline:none;
+  padding:0 42px 0 13px;
+  color:#f2f3f5;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.045),
+      rgba(5,7,9,.48)
+    );
+  box-shadow:
+    inset 0 2px 8px rgba(0,0,0,.32);
+  transition:
+    border-color .2s,
+    box-shadow .2s;
+}
+
+.class-select:focus{
+  border-color:var(--accent-soft);
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.04),
+    inset 0 2px 8px rgba(0,0,0,.32);
+}
+
+.class-select option{
+  background:#101216;
+  color:#fff;
+}
+
+.select-arrow{
+  position:absolute;
+  right:13px;
+  top:50%;
+  transform:translateY(-50%);
+  pointer-events:none;
+  color:#7d858e;
+  font-size:12px;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.field{
+  margin-bottom:11px;
+}
+
+.field-label{
+  display:block;
+  margin:0 0 6px 3px;
+  color:#858c95;
+  font-size:8px;
+  font-weight:750;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.input-wrap{
+  position:relative;
+}
+
+.input{
+  width:100%;
+  height:46px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.09);
+  outline:none;
+  padding:0 42px 0 13px;
+  color:#f2f3f5;
+  background:rgba(5,7,9,.42);
+  box-shadow:
+    inset 0 2px 8px rgba(0,0,0,.32);
+  transition:
+    border-color .2s,
+    box-shadow .2s;
+  user-select:text;
+  -webkit-user-select:text;
+}
+
+.input:focus{
+  border-color:var(--accent-soft);
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.04),
+    inset 0 2px 8px rgba(0,0,0,.32);
+}
+
+.input::placeholder{
+  color:#4f555c;
+}
+
+.password-toggle{
+  position:absolute;
+  right:7px;
+  top:5px;
+  width:36px;
+  height:36px;
+  border:0;
+  border-radius:9px;
+  color:#737a83;
+  background:transparent;
+}
+
+.options{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:4px 2px 13px;
+}
+
+.remember{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#8d949c;
+  font-size:8px;
+}
+
+.remember input{
+  appearance:none;
+  width:14px;
+  height:14px;
+  margin:0;
+  border-radius:4px;
+  border:1px solid #4a5057;
+  background:#0a0c0f;
+  position:relative;
+}
+
+.remember input:checked{
+  background:var(--accent);
+  border-color:var(--accent);
+}
+
+.remember input:checked::after{
+  content:"";
+  position:absolute;
+  width:4px;
+  height:7px;
+  left:4px;
+  top:1px;
+  border:solid var(--button-text);
+  border-width:0 2px 2px 0;
+  transform:rotate(45deg);
+}
+
+.forgot{
+  border:0;
+  background:transparent;
+  color:#aeb4ba;
+  font-size:8px;
+}
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-btn{
+  width:100%;
+  height:48px;
+  border:0;
+  border-radius:14px;
+  color:var(--button-text);
+  background:
+    linear-gradient(
+      145deg,
+      var(--accent-strong),
+      var(--accent) 48%,
+      #858c93
+    );
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.42),
+    inset 0 1px 1px rgba(255,255,255,.9),
+    inset 0 -2px 4px rgba(0,0,0,.18);
+  transition:
+    transform .16s,
+    filter .16s;
+}
+
+.login-btn:active{
+  transform:translateY(2px) scale(.99);
+}
+
+.login-btn.loading{
+  pointer-events:none;
+  opacity:.72;
+}
+
+.spinner{
+  display:none;
+  width:16px;
+  height:16px;
+  margin:auto;
+  border:2px solid rgba(0,0,0,.18);
+  border-top-color:var(--button-text);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+
+.login-btn.loading .label{
+  display:none;
+}
+
+.login-btn.loading .spinner{
+  display:block;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.status{
+  min-height:18px;
+  margin:9px 2px 0;
+  text-align:center;
+  color:#777f88;
+  font-size:8px;
+}
+
+.status.error{
+  color:#df9c9c;
+}
+
+.status.success{
+  color:#b5c7b7;
+}
+
+/* =========================================================
+   ERROR SHAKE / VIBRATION
+========================================================= */
+
+.login-card.shake{
+  animation:
+    loginShake .46s
+    cubic-bezier(.36,.07,.19,.97)
+    both;
+}
+
+@keyframes loginShake{
+  10%,90%{
+    transform:translateX(-3px);
+  }
+
+  20%,80%{
+    transform:translateX(5px);
+  }
+
+  30%,50%,70%{
+    transform:translateX(-7px);
+  }
+
+  40%,60%{
+    transform:translateX(7px);
+  }
+
+  100%{
+    transform:translateX(0);
+  }
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  margin-top:11px;
+  text-align:center;
+}
+
+.footer p{
+  margin:0;
+  color:#555c64;
+  font-size:7px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.footer strong{
+  color:#777e86;
+}
+
+.shield{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-top:6px;
+  color:#50575f;
+  font-size:7px;
+}
+
+/* =========================================================
+   THEME DEFINITIONS
+========================================================= */
+
+#app.theme-gold{
+  --background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(183,134,43,.17),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #050505,
+      #11100d 54%,
+      #070707
+    );
+
+  --accent:#c9a451;
+  --accent-strong:#f0d991;
+  --accent-soft:rgba(201,164,81,.20);
+  --button-text:#15120b;
+  --surface:rgba(26,23,16,.34);
+}
+
+#app.theme-green{
+  --background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(50,145,106,.20),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      #06130f,
+      #0b2119 52%,
+      #06100d
+    );
+
+  --accent:#bfc6c9;
+  --accent-strong:#f4f5f5;
+  --accent-soft:rgba(185,218,203,.18);
+  --button-text:#101315;
+  --surface:rgba(8,35,26,.34);
+}
+
+#app.theme-silver{
+  --background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(220,225,230,.14),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #080a0d,
+      #181c20 52%,
+      #090b0e
+    );
+
+  --accent:#cdd1d5;
+  --accent-strong:#f4f5f6;
+  --accent-soft:rgba(215,220,225,.20);
+  --button-text:#111317;
+  --surface:rgba(26,30,35,.34);
+}
+
+#app.theme-blue{
+  --background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(69,120,171,.20),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      #06101d,
+      #0d1b2a 52%,
+      #070c14
+    );
+
+  --accent:#aebfd0;
+  --accent-strong:#e5edf4;
+  --accent-soft:rgba(147,184,218,.19);
+  --button-text:#101419;
+  --surface:rgba(12,31,51,.34);
+}
+
+#app.theme-plum{
+  --background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(132,87,150,.20),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      #110a15,
+      #211328 52%,
+      #0c080f
+    );
+
+  --accent:#cbb7d2;
+  --accent-strong:#eee5f0;
+  --accent-soft:rgba(201,171,211,.18);
+  --button-text:#171119;
+  --surface:rgba(35,18,42,.34);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-height:700px){
+
+  .main{
+    padding-top:70px;
+  }
+
+  .logo-orbit{
+    width:94px;
+    margin-bottom:7px;
+  }
+
+  .school-title{
+    margin-bottom:8px;
+  }
+
+  .school-title h1{
+    font-size:15px;
+  }
+
+  .time-strip{
+    margin-bottom:6px;
+  }
+
+  .info-card{
+    padding:7px 10px;
+  }
+
+  .login-card{
+    padding:13px 16px;
+    border-radius:19px;
+  }
+
+  .field{
+    margin-bottom:7px;
+  }
+
+  .input,
+  .class-select{
+    height:40px;
+  }
+
+  .login-btn{
+    height:43px;
+  }
+
+  .footer{
+    margin-top:6px;
+  }
+}
+
+@media(min-width:700px){
+
+  .login-stage{
+    width:500px;
+  }
+
+  .login-card{
+    width:430px;
+  }
+
+  .logo-orbit{
+    width:145px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app" class="theme-gold">
+
+  <div class="watermark">
+    <img src="institution.png" alt="">
+  </div>
+
+  <header class="topbar">
+
+    <div class="brand">
+
+      <img
+        class="brand-mark"
+        src="logo.png"
+        alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+      >
+
+      <div class="brand-name">
+        <strong>MIS-NEXUS™</strong>
+        <span>Class Attendance Portal</span>
+      </div>
+
+    </div>
+
+    <div class="version">
+      v3.1
+    </div>
+
+  </header>
+
+  <div
+    class="theme-panel"
+    id="themePanel"
+  >
+
+    <button
+      class="theme-button"
+      id="themeButton"
+      type="button"
+      aria-label="Change theme"
+      aria-expanded="false"
+    >
+      ◈
+    </button>
+
+    <div class="theme-menu">
+
+      <button
+        type="button"
+        class="theme-option active"
+        data-theme="theme-gold"
+      >
+        <span class="theme-dot gold"></span>
+        BLACK • GOLD • SILVER
+      </button>
+
+      <button
+        type="button"
+        class="theme-option"
+        data-theme="theme-green"
+      >
+        <span class="theme-dot green"></span>
+        GREEN • WHITE • SILVER
+      </button>
+
+      <button
+        type="button"
+        class="theme-option"
+        data-theme="theme-silver"
+      >
+        <span class="theme-dot silver"></span>
+        PREMIUM SILVER
+      </button>
+
+      <button
+        type="button"
+        class="theme-option"
+        data-theme="theme-blue"
+      >
+        <span class="theme-dot blue"></span>
+        INSTITUTIONAL BLUE
+      </button>
+
+      <button
+        type="button"
+        class="theme-option"
+        data-theme="theme-plum"
+      >
+        <span class="theme-dot plum"></span>
+        ROYAL PLUM
+      </button>
+
+    </div>
+
+  </div>
+
+  <main class="main">
+
+    <section class="login-stage">
+
+      <div class="logo-orbit">
+
+        <img
+          class="logo"
+          src="logo.png"
+          alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+        >
+
+      </div>
+
+      <div class="school-title">
+
+        <h1>
+          MISBAHUL 'ILM SCHOOLS ABUJA
+        </h1>
+
+        <p>
+          Institutional Class Attendance &amp; Student Record System
+        </p>
+
+      </div>
+
+      <div class="time-strip">
+
+        <div class="info-card">
+
+          <div class="info-label">
+            Abuja • Nigeria
+          </div>
+
+          <div
+            class="info-value"
+            id="liveClock"
+          >
+            --:--:--
+          </div>
+
+        </div>
+
+        <div class="info-card">
+
+          <div class="info-label">
+            Prayer Status
+          </div>
+
+          <div
+            class="info-value"
+            id="prayerStatus"
+          >
+            Loading...
+          </div>
+
+        </div>
+
+      </div>
+
+      <form
+        class="login-card"
+        id="classLoginForm"
+        autocomplete="on"
+        novalidate
+      >
+
+        <div class="mode-title">
+
+          <strong>
+            Class Portal
+          </strong>
+
+          <span>
+            Secure institutional attendance access
+          </span>
+
+        </div>
+
+        <div class="class-field">
+
+          <label
+            class="field-label"
+            for="classSelect"
+          >
+            Select Class
+          </label>
+
+          <div class="class-select-wrap">
+
+            <select
+              id="classSelect"
+              class="class-select"
+              required
+            >
+
+              <option value="">
+                Select your class
+              </option>
+
+              <option value="pre-nursery">
+                Pre-Nursery
+              </option>
+
+              <option value="nursery-1">
+                Nursery 1
+              </option>
+
+              <option value="nursery-2">
+                Nursery 2
+              </option>
+
+              <option value="nursery-3">
+                Nursery 3
+              </option>
+
+              <option value="primary-1">
+                Primary One
+              </option>
+
+              <option value="primary-2">
+                Primary Two
+              </option>
+
+              <option value="primary-3">
+                Primary Three
+              </option>
+
+              <option value="primary-4">
+                Primary Four
+              </option>
+
+              <option value="primary-5">
+                Primary Five
+              </option>
+
+              <option value="primary-6">
+                Primary Six
+              </option>
+
+              <option value="pre-js">
+                Pre-JS
+              </option>
+
+              <option value="jss-1">
+                JSS1
+              </option>
+
+              <option value="jss-2">
+                JSS2
+              </option>
+
+              <option value="jss-3">
+                JSS3
+              </option>
+
+              <option value="pre-ss">
+                Pre-SS
+              </option>
+
+              <option value="ss-1">
+                SS1
+              </option>
+
+              <option value="ss-2">
+                SS2
+              </option>
+
+              <option value="ss-3">
+                SS3
+              </option>
+
+              <option value="special-ict">
+                Special ICT Class
+              </option>
+
+              <option value="zan-darul-quran">
+                Zan Darul Quran
+              </option>
+
+            </select>
+
+            <span class="select-arrow">
+              ▾
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="field">
+
+          <label
+            class="field-label"
+            for="email"
+          >
+            Class Gmail
+          </label>
+
+          <div class="input-wrap">
+
+            <input
+              id="email"
+              name="email"
+              class="input"
+              type="email"
+              inputmode="email"
+              autocomplete="username"
+              placeholder="Enter your assigned Gmail"
+              required
+            >
+
+          </div>
+
+        </div>
+
+        <div class="field">
+
+          <label
+            class="field-label"
+            for="password"
+          >
+            Secure Password
+          </label>
+
+          <div class="input-wrap">
+
+            <input
+              id="password"
+              name="password"
+              class="input"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Enter secure password"
+              required
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordToggle"
+              aria-label="Show password"
+            >
+              ◉
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="options">
+
+          <label class="remember">
+
+            <input
+              type="checkbox"
+              id="rememberMe"
+            >
+
+            <span>
+              Remember me
+            </span>
+
+          </label>
+
+          <button
+            type="button"
+            class="forgot"
+            id="forgotPassword"
+          >
+            Forgot password?
+          </button>
+
+        </div>
+
+        <button
+          type="submit"
+          class="login-btn"
+          id="loginButton"
+        >
+
+          <span class="label">
+            ENTER MIS-NEXUS™
+          </span>
+
+          <span class="spinner"></span>
+
+        </button>
+
+        <div
+          class="status"
+          id="loginStatus"
+          aria-live="polite"
+        ></div>
+
+      </form>
+
+      <footer class="footer">
+
+        <p>
+          Protected Institutional Access •
+          <strong>MIS-NEXUS™</strong>
+        </p>
+
+        <div class="shield">
+          ● Secure Class Gateway
+        </div>
+
+      </footer>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script type="module">
+
+"use strict";
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://ysjugqdcnbpzrqnvowpl.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_4IiL5xK5zv8C-VG7kNW92g_v1ghHlqx";
+
+let supabase = null;
+
+async function initializeSupabase(){
+
+  try{
+
+    const module =
+      await import(
+        "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+      );
+
+    if(
+      !SUPABASE_URL ||
+      !SUPABASE_ANON_KEY
+    ){
+
+      throw new Error(
+        "Supabase credentials are missing."
+      );
+
+    }
+
+    supabase =
+      module.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+          auth:{
+            persistSession:true,
+            autoRefreshToken:true,
+            detectSessionInUrl:true
+          }
+        }
+      );
+
+    return supabase;
+
+  }catch(error){
+
+    console.error(
+      "Supabase initialization failed:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const DOM = {
+
+  app:
+    document.getElementById(
+      "app"
+    ),
+
+  form:
+    document.getElementById(
+      "classLoginForm"
+    ),
+
+  classSelect:
+    document.getElementById(
+      "classSelect"
+    ),
+
+  email:
+    document.getElementById(
+      "email"
+    ),
+
+  password:
+    document.getElementById(
+      "password"
+    ),
+
+  passwordToggle:
+    document.getElementById(
+      "passwordToggle"
+    ),
+
+  remember:
+    document.getElementById(
+      "rememberMe"
+    ),
+
+  loginButton:
+    document.getElementById(
+      "loginButton"
+    ),
+
+  loginStatus:
+    document.getElementById(
+      "loginStatus"
+    ),
+
+  liveClock:
+    document.getElementById(
+      "liveClock"
+    ),
+
+  prayerStatus:
+    document.getElementById(
+      "prayerStatus"
+    ),
+
+  forgot:
+    document.getElementById(
+      "forgotPassword"
+    ),
+
+  themePanel:
+    document.getElementById(
+      "themePanel"
+    ),
+
+  themeButton:
+    document.getElementById(
+      "themeButton"
+    )
+
+};
+
+/* =========================================================
+   EXACT 20 CLASS ACCOUNTS
+========================================================= */
+
+const CLASS_ACCOUNTS = [
+
+  {
+    classId:"pre-nursery",
+    className:"Pre-Nursery",
+    email:"nexus001@gmail.com"
+  },
+
+  {
+    classId:"nursery-1",
+    className:"Nursery 1",
+    email:"nexus002@gmail.com"
+  },
+
+  {
+    classId:"nursery-2",
+    className:"Nursery 2",
+    email:"nexus003@gmail.com"
+  },
+
+  {
+    classId:"nursery-3",
+    className:"Nursery 3",
+    email:"nexus004@gmail.com"
+  },
+
+  {
+    classId:"primary-1",
+    className:"Primary One",
+    email:"nexus005@gmail.com"
+  },
+
+  {
+    classId:"primary-2",
+    className:"Primary Two",
+    email:"nexus006@gmail.com"
+  },
+
+  {
+    classId:"primary-3",
+    className:"Primary Three",
+    email:"nexus007@gmail.com"
+  },
+
+  {
+    classId:"primary-4",
+    className:"Primary Four",
+    email:"nexus008@gmail.com"
+  },
+
+  {
+    classId:"primary-5",
+    className:"Primary Five",
+    email:"nexus009@gmail.com"
+  },
+
+  {
+    classId:"primary-6",
+    className:"Primary Six",
+    email:"nexus010@gmail.com"
+  },
+
+  {
+    classId:"pre-js",
+    className:"Pre-JS",
+    email:"nexus011@gmail.com"
+  },
+
+  {
+    classId:"jss-1",
+    className:"JSS1",
+    email:"nexus012@gmail.com"
+  },
+
+  {
+    classId:"jss-2",
+    className:"JSS2",
+    email:"nexus013@gmail.com"
+  },
+
+  {
+    classId:"jss-3",
+    className:"JSS3",
+    email:"nexus014@gmail.com"
+  },
+
+  {
+    classId:"pre-ss",
+    className:"Pre-SS",
+    email:"nexus015@gmail.com"
+  },
+
+  {
+    classId:"ss-1",
+    className:"SS1",
+    email:"nexus016@gmail.com"
+  },
+
+  {
+    classId:"ss-2",
+    className:"SS2",
+    email:"nexus017@gmail.com"
+  },
+
+  {
+    classId:"ss-3",
+    className:"SS3",
+    email:"nexus018@gmail.com"
+  },
+
+  {
+    classId:"special-ict",
+    className:"Special ICT Class",
+    email:"nexus019@gmail.com"
+  },
+
+  {
+    classId:"zan-darul-quran",
+    className:"Zan Darul Quran",
+    email:"nexus020@gmail.com"
+  }
+
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+
+const state = {
+
+  authenticating:false,
+
+  prayerData:null,
+
+  installPrompt:null,
+
+  selectedClass:null
+
+};
+
+/* =========================================================
+   CLASS LOOKUP
+========================================================= */
+
+function getClassById(
+  classId
+){
+
+  return CLASS_ACCOUNTS.find(
+    account =>
+      account.classId ===
+      classId
+  ) || null;
+
+}
+
+function getClassByEmail(
+  email
+){
+
+  const normalized =
+    String(email)
+      .trim()
+      .toLowerCase();
+
+  return CLASS_ACCOUNTS.find(
+    account =>
+      account.email ===
+      normalized
+  ) || null;
+
+}
+
+/* =========================================================
+   CLASS SELECTION
+========================================================= */
+
+DOM.classSelect.addEventListener(
+  "change",
+  () => {
+
+    const selected =
+      getClassById(
+        DOM.classSelect.value
+      );
+
+    state.selectedClass =
+      selected;
+
+    if(selected){
+
+      DOM.email.value =
+        selected.email;
+
+      clearStatus();
+
+    }else{
+
+      state.selectedClass =
+        null;
+
+    }
+
+  }
+);
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
+DOM.passwordToggle.addEventListener(
+  "click",
+  () => {
+
+    const visible =
+      DOM.password.type ===
+      "text";
+
+    DOM.password.type =
+      visible
+        ? "password"
+        : "text";
+
+    DOM.passwordToggle.textContent =
+      visible
+        ? "◉"
+        : "◌";
+
+  }
+);
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(
+  message,
+  type=""
+){
+
+  DOM.loginStatus.textContent =
+    message;
+
+  DOM.loginStatus.className =
+    "status " + type;
+
+}
+
+function clearStatus(){
+
+  setStatus("");
+
+}
+
+/* =========================================================
+   LOGIN SHAKE
+========================================================= */
+
+function shakeLogin(){
+
+  DOM.form.classList.remove(
+    "shake"
+  );
+
+  void DOM.form.offsetWidth;
+
+  DOM.form.classList.add(
+    "shake"
+  );
+
+  if(
+    "vibrate" in navigator
+  ){
+
+    try{
+
+      navigator.vibrate(
+        [80,40,80,40,120]
+      );
+
+    }catch{
+
+      /* Vibration unavailable. */
+
+    }
+
+  }
+
+  setTimeout(
+    () => {
+
+      DOM.form.classList.remove(
+        "shake"
+      );
+
+    },
+    520
+  );
+
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+function setLoading(
+  loading
+){
+
+  state.authenticating =
+    loading;
+
+  DOM.loginButton.classList.toggle(
+    "loading",
+    loading
+  );
+
+}
+
+/* =========================================================
+   REMEMBER ME
+========================================================= */
+
+const REMEMBER_KEY =
+  "MIS_NEXUS_CLASS_REMEMBER";
+
+function loadRememberedAccount(){
+
+  try{
+
+    const saved =
+      localStorage.getItem(
+        REMEMBER_KEY
+      );
+
+    if(!saved){
+
+      return;
+
+    }
+
+    const data =
+      JSON.parse(
+        saved
+      );
+
+    if(
+      data &&
+      data.email &&
+      data.classId
+    ){
+
+      const account =
+        getClassById(
+          data.classId
+        );
+
+      if(
+        account &&
+        account.email ===
+        data.email
+      ){
+
+        DOM.classSelect.value =
+          account.classId;
+
+        state.selectedClass =
+          account;
+
+        DOM.email.value =
+          account.email;
+
+        DOM.remember.checked =
+          true;
+
+      }
+
+    }
+
+  }catch{
+
+    localStorage.removeItem(
+      REMEMBER_KEY
+    );
+
+  }
+
+}
+
+function saveRememberedAccount(
+  account
+){
+
+  try{
+
+    if(
+      DOM.remember.checked
+    ){
+
+      localStorage.setItem(
+        REMEMBER_KEY,
+        JSON.stringify({
+
+          classId:
+            account.classId,
+
+          email:
+            account.email
+
+        })
+      );
+
+    }else{
+
+      localStorage.removeItem(
+        REMEMBER_KEY
+      );
+
+    }
+
+  }catch{
+
+    /* Storage unavailable. */
+
+  }
+
+}
+
+/* =========================================================
+   CLASS LOGIN
+========================================================= */
+
+DOM.form.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+    if(
+      state.authenticating
+    ){
+
+      return;
+
+    }
+
+    clearStatus();
+
+    const selectedClass =
+      getClassById(
+        DOM.classSelect.value
+      );
+
+    const email =
+      DOM.email.value
+        .trim()
+        .toLowerCase();
+
+    const password =
+      DOM.password.value;
+
+    if(!selectedClass){
+
+      setStatus(
+        "Select your class before continuing.",
+        "error"
+      );
+
+      shakeLogin();
+
+      DOM.classSelect.focus();
+
+      return;
+
+    }
+
+    if(!email){
+
+      setStatus(
+        "Enter your assigned Gmail address.",
+        "error"
+      );
+
+      shakeLogin();
+
+      DOM.email.focus();
+
+      return;
+
+    }
+
+    if(!password){
+
+      setStatus(
+        "Enter your secure password.",
+        "error"
+      );
+
+      shakeLogin();
+
+      DOM.password.focus();
+
+      return;
+
+    }
+
+    /*
+      The class/email pairing is checked locally
+      before authentication. Supabase remains
+      responsible for the actual password/session
+      authentication.
+    */
+
+    if(
+      email !==
+      selectedClass.email
+    ){
+
+      setStatus(
+        "The selected class and Gmail do not match.",
+        "error"
+      );
+
+      shakeLogin();
+
+      DOM.email.focus();
+
+      return;
+
+    }
+
+    const account =
+      getClassByEmail(
+        email
+      );
+
+    if(!account){
+
+      setStatus(
+        "This Gmail is not registered for MIS-NEXUS™.",
+        "error"
+      );
+
+      shakeLogin();
+
+      return;
+
+    }
+
+    setLoading(true);
+
+    setStatus(
+      "Authenticating class account..."
+    );
+
+    try{
+
+      const client =
+        supabase ||
+        await initializeSupabase();
+
+      if(!client){
+
+        throw new Error(
+          "Supabase authentication is unavailable."
+        );
+
+      }
+
+      const {
+        data,
+        error
+      } =
+        await client.auth.signInWithPassword({
+
+          email:
+            account.email,
+
+          password
+
+        });
+
+      if(error){
+
+        throw error;
+
+      }
+
+      if(
+        !data ||
+        !data.user
+      ){
+
+        throw new Error(
+          "Authentication failed."
+        );
+
+      }
+
+      /*
+        The database is the authoritative source
+        for class assignment.
+
+        Expected profiles columns:
+        id
+        email
+        full_name
+        class_id
+        class_name
+        status
+      */
+
+      let profile =
+        null;
+
+      const profileResult =
+        await client
+          .from("profiles")
+          .select(
+            "id,email,full_name,class_id,class_name,status"
+          )
+          .eq(
+            "id",
+            data.user.id
+          )
+          .maybeSingle();
+
+      if(
+        profileResult.error &&
+        profileResult.error.code !==
+        "PGRST116"
+      ){
+
+        console.warn(
+          "Profile lookup:",
+          profileResult.error
+        );
+
+      }
+
+      if(
+        !profileResult.error
+      ){
+
+        profile =
+          profileResult.data;
+
+      }
+
+      /*
+        If the profile exists, the database
+        determines the actual class.
+      */
+
+      let databaseClassId =
+        profile?.class_id ||
+        account.classId;
+
+      let databaseClassName =
+        profile?.class_name ||
+        account.className;
+
+      const databaseClass =
+        getClassById(
+          databaseClassId
+        );
+
+      if(databaseClass){
+
+        databaseClassId =
+          databaseClass.classId;
+
+        databaseClassName =
+          databaseClass.className;
+
+      }
+
+      if(
+        profile?.status &&
+        profile.status !==
+        "active"
+      ){
+
+        await client.auth.signOut();
+
+        throw new Error(
+          "This class account is inactive."
+        );
+
+      }
+
+      /*
+        Store only the authenticated class
+        context needed by the common dashboard.
+      */
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_CLASS_ID",
+        databaseClassId
+      );
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_CLASS_NAME",
+        databaseClassName
+      );
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_USER_EMAIL",
+        data.user.email ||
+        account.email
+      );
+
+      sessionStorage.setItem(
+        "MIS_NEXUS_USER_ID",
+        data.user.id
+      );
+
+      if(
+        profile?.full_name
+      ){
+
+        sessionStorage.setItem(
+          "MIS_NEXUS_USER_NAME",
+          profile.full_name
+        );
+
+      }
+
+      saveRememberedAccount(
+        account
+      );
+
+      setStatus(
+        `Welcome to MIS-NEXUS™ ${databaseClassName}. Opening your dashboard...`,
+        "success"
+      );
+
+      /*
+        ONE COMMON DASHBOARD.
+        The dashboard reads MIS_NEXUS_CLASS_ID
+        and loads the correct class information
+        from Supabase.
+      */
+
+      setTimeout(
+        () => {
+
+          window.location.assign(
+            "dashboard.html"
+          );
+
+        },
+        650
+      );
+
+    }catch(error){
+
+      console.error(
+        "MIS-NEXUS™ class authentication:",
+        error
+      );
+
+      let message =
+        "Authentication failed. Check your Gmail and password.";
+
+      if(
+        error?.message
+      ){
+
+        const raw =
+          String(
+            error.message
+          ).toLowerCase();
+
+        if(
+          raw.includes(
+            "invalid login credentials"
+          )
+        ){
+
+          message =
+            "Incorrect Gmail or password.";
+
+        }else if(
+          raw.includes(
+            "email not confirmed"
+          )
+        ){
+
+          message =
+            "This Gmail has not been confirmed.";
+
+        }else if(
+          raw.includes(
+            "inactive"
+          )
+        ){
+
+          message =
+            "This class account is inactive.";
+
+        }else if(
+          raw.includes(
+            "not configured"
+          ) ||
+          raw.includes(
+            "unavailable"
+          )
+        ){
+
+          message =
+            error.message;
+
+        }
+
+      }
+
+      setStatus(
+        message,
+        "error"
+      );
+
+      shakeLogin();
+
+    }finally{
+
+      setLoading(false);
+
+    }
+
+  }
+);
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+DOM.forgot.addEventListener(
+  "click",
+  async () => {
+
+    const selectedClass =
+      getClassById(
+        DOM.classSelect.value
+      );
+
+    const email =
+      DOM.email.value
+        .trim()
+        .toLowerCase();
+
+    const account =
+      getClassByEmail(
+        email
+      );
+
+    if(
+      !selectedClass
+    ){
+
+      setStatus(
+        "Select your class first.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    if(
+      !account ||
+      account.classId !==
+      selectedClass.classId
+    ){
+
+      setStatus(
+        "Enter the Gmail assigned to the selected class.",
+        "error"
+      );
+
+      shakeLogin();
+
+      return;
+
+    }
+
+    const client =
+      supabase ||
+      await initializeSupabase();
+
+    if(!client){
+
+      setStatus(
+        "Supabase authentication is unavailable.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    try{
+
+      const {
+        error
+      } =
+        await client.auth.resetPasswordForEmail(
+          account.email,
+          {
+            redirectTo:
+              window.location.origin +
+              "/reset-password.html"
+          }
+        );
+
+      if(error){
+
+        throw error;
+
+      }
+
+      setStatus(
+        "Password recovery instructions have been requested.",
+        "success"
+      );
+
+    }catch(error){
+
+      console.error(
+        "Password recovery:",
+        error
+      );
+
+      setStatus(
+        "Unable to process password recovery.",
+        "error"
+      );
+
+    }
+
+  }
+);
+
+/* =========================================================
+   NIGERIAN LIVE CLOCK
+========================================================= */
+
+function updateNigeriaClock(){
+
+  const now =
+    new Date();
+
+  const time =
+    new Intl.DateTimeFormat(
+      "en-NG",
+      {
+        timeZone:
+          "Africa/Lagos",
+
+        hour:
+          "2-digit",
+
+        minute:
+          "2-digit",
+
+        second:
+          "2-digit",
+
+        hour12:
+          true
+      }
+    ).format(now);
+
+  DOM.liveClock.textContent =
+    time + " WAT";
+
+}
+
+updateNigeriaClock();
+
+setInterval(
+  updateNigeriaClock,
+  1000
+);
+
+/* =========================================================
+   ADHAN PRAYER API
+========================================================= */
+
+const PRAYER_API =
+  "https://api.aladhan.com/v1/timingsByCity";
+
+async function loadPrayerTimes(){
+
+  try{
+
+    const query =
+      new URLSearchParams({
+
+        city:
+          "Abuja",
+
+        country:
+          "Nigeria",
+
+        method:
+          "2"
+
+      });
+
+    const response =
+      await fetch(
+        `${PRAYER_API}?${query}`,
+        {
+          cache:
+            "no-store"
+        }
+      );
+
+    if(!response.ok){
+
+      throw new Error(
+        "Prayer service unavailable"
+      );
+
+    }
+
+    const result =
+      await response.json();
+
+    state.prayerData =
+      result?.data?.timings ||
+      null;
+
+    updatePrayerStatus();
+
+  }catch(error){
+
+    console.error(
+      "Prayer timing:",
+      error
+    );
+
+    DOM.prayerStatus.textContent =
+      "Prayer unavailable";
+
+  }
+
+}
+
+function prayerMinutes(
+  time
+){
+
+  const clean =
+    String(time)
+      .split(" ")[0];
+
+  const parts =
+    clean
+      .split(":")
+      .map(Number);
+
+  return (
+    (parts[0] || 0) *
+    60 +
+    (parts[1] || 0)
+  );
+
+}
+
+function nigeriaMinutes(){
+
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-NG",
+      {
+        timeZone:
+          "Africa/Lagos",
+
+        hour:
+          "2-digit",
+
+        minute:
+          "2-digit",
+
+        hour12:
+          false
+      }
+    )
+      .formatToParts(
+        new Date()
+      );
+
+  const hour =
+    Number(
+      parts.find(
+        item =>
+          item.type === "hour"
+      )?.value || 0
+    );
+
+  const minute =
+    Number(
+      parts.find(
+        item =>
+          item.type === "minute"
+      )?.value || 0
+    );
+
+  return (
+    hour * 60 +
+    minute
+  );
+
+}
+
+function updatePrayerStatus(){
+
+  const timings =
+    state.prayerData;
+
+  if(!timings){
+
+    return;
+
+  }
+
+  const prayers = [
+
+    {
+      name:"Fajr",
+      time:timings.Fajr
+    },
+
+    {
+      name:"Dhuhr",
+      time:timings.Dhuhr
+    },
+
+    {
+      name:"Asr",
+      time:timings.Asr
+    },
+
+    {
+      name:"Maghrib",
+      time:timings.Maghrib
+    },
+
+    {
+      name:"Isha",
+      time:timings.Isha
+    }
+
+  ];
+
+  const now =
+    nigeriaMinutes();
+
+  let previous =
+    prayers[
+      prayers.length - 1
+    ];
+
+  let next =
+    prayers[0];
+
+  for(
+    const prayer
+    of prayers
+  ){
+
+    if(
+      prayerMinutes(
+        prayer.time
+      ) <= now
+    ){
+
+      previous =
+        prayer;
+
+    }
+
+    if(
+      prayerMinutes(
+        prayer.time
+      ) > now
+    ){
+
+      next =
+        prayer;
+
+      break;
+
+    }
+
+  }
+
+  DOM.prayerStatus.textContent =
+    `${previous.name} → ${next.name} ${String(next.time).split(" ")[0]}`;
+
+}
+
+loadPrayerTimes();
+
+setInterval(
+  loadPrayerTimes,
+  30 * 60 * 1000
+);
+
+/* =========================================================
+   FIVE THEMES
+========================================================= */
+
+const THEME_KEY =
+  "MIS_NEXUS_THEME";
+
+function applyTheme(
+  theme
+){
+
+  const themes = [
+
+    "theme-gold",
+    "theme-green",
+    "theme-silver",
+    "theme-blue",
+    "theme-plum"
+
+  ];
+
+  if(
+    !themes.includes(
+      theme
+    )
+  ){
+
+    theme =
+      "theme-gold";
+
+  }
+
+  DOM.app.classList.remove(
+    ...themes
+  );
+
+  DOM.app.classList.add(
+    theme
+  );
+
+  document
+    .querySelectorAll(
+      ".theme-option"
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.theme ===
+          theme
+        );
+
+      }
+    );
+
+  try{
+
+    localStorage.setItem(
+      THEME_KEY,
+      theme
+    );
+
+  }catch{
+
+    /* Storage unavailable. */
+
+  }
+
+}
+
+document
+  .querySelectorAll(
+    ".theme-option"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          applyTheme(
+            button.dataset.theme
+          );
+
+          DOM.themePanel.classList.remove(
+            "open"
+          );
+
+          DOM.themeButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+      );
+
+    }
+  );
+
+DOM.themeButton.addEventListener(
+  "click",
+  event => {
+
+    event.stopPropagation();
+
+    const open =
+      DOM.themePanel.classList.toggle(
+        "open"
+      );
+
+    DOM.themeButton.setAttribute(
+      "aria-expanded",
+      String(open)
+    );
+
+  }
+);
+
+document.addEventListener(
+  "click",
+  event => {
+
+    if(
+      !DOM.themePanel.contains(
+        event.target
+      )
+    ){
+
+      DOM.themePanel.classList.remove(
+        "open"
+      );
+
+      DOM.themeButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+    }
+
+  }
+);
+
+function loadTheme(){
+
+  try{
+
+    const saved =
+      localStorage.getItem(
+        THEME_KEY
+      );
+
+    if(
+      [
+        "theme-gold",
+        "theme-green",
+        "theme-silver",
+        "theme-blue",
+        "theme-plum"
+      ].includes(saved)
+    ){
+
+      applyTheme(
+        saved
+      );
+
+      return;
+
+    }
+
+  }catch{
+
+    /* Continue with default theme. */
+
+  }
+
+  applyTheme(
+    "theme-gold"
+  );
+
+}
+
+/* =========================================================
+   PWA INSTALLATION
+========================================================= */
+
+window.addEventListener(
+  "beforeinstallprompt",
+  event => {
+
+    event.preventDefault();
+
+    state.installPrompt =
+      event;
+
+  }
+);
+
+window.addEventListener(
+  "appinstalled",
+  () => {
+
+    state.installPrompt =
+      null;
+
+  }
+);
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+async function initialize(){
+
+  loadTheme();
+
+  loadRememberedAccount();
+
+  await initializeSupabase();
+
+}
+
+initialize();
+
+/* =========================================================
+   NO ZOOM
+========================================================= */
+
+document.addEventListener(
+  "gesturestart",
+  event => {
+
+    event.preventDefault();
+
+  },
+  {
+    passive:false
+  }
+);
+
+document.addEventListener(
+  "gesturechange",
+  event => {
+
+    event.preventDefault();
+
+  },
+  {
+    passive:false
+  }
+);
+
+document.addEventListener(
+  "gestureend",
+  event => {
+
+    event.preventDefault();
+
+  },
+  {
+    passive:false
+  }
+);
+
+document.addEventListener(
+  "wheel",
+  event => {
+
+    if(event.ctrlKey){
+
+      event.preventDefault();
+
+    }
+
+  },
+  {
+    passive:false
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      (event.ctrlKey ||
+       event.metaKey) &&
+      [
+        "+",
+        "-",
+        "=",
+        "0"
+      ].includes(
+        event.key
+      )
+    ){
+
+      event.preventDefault();
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>

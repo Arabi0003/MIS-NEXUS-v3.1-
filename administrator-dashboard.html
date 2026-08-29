@@ -1,0 +1,7052 @@
+<!DOCTYPE html>
+<html lang="en-NG">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1,
+             viewport-fit=cover"
+>
+
+<meta
+    name="theme-color"
+    content="#060806"
+>
+
+<meta
+    name="mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+>
+
+<meta
+    name="application-name"
+    content="MIS-NEXUS™ Administrator"
+>
+
+<meta
+    name="description"
+    content="MIS-NEXUS™ School Administrator Control Center"
+>
+
+<link
+    rel="manifest"
+    href="manifest.json"
+>
+
+<title>
+MIS-NEXUS™ — Administrator Control Center
+</title>
+
+
+<style>
+
+:root{
+
+    --bg:#050706;
+
+    --bg2:#090d0a;
+
+    --surface:rgba(18,24,20,.72);
+
+    --surface2:rgba(24,31,26,.66);
+
+    --surface3:rgba(255,255,255,.045);
+
+    --text:#f5f8f5;
+
+    --muted:#91a098;
+
+    --muted2:#64736b;
+
+    --border:rgba(255,255,255,.085);
+
+    --border2:rgba(255,255,255,.14);
+
+    --gold:#c9a451;
+
+    --gold2:#f1d88d;
+
+    --green:#46d995;
+
+    --red:#ff6978;
+
+    --orange:#f2bc55;
+
+    --blue:#68b4ee;
+
+    --purple:#c58be0;
+
+    --sidebar:285px;
+
+    --header:82px;
+
+    --radius:20px;
+
+    --ease:cubic-bezier(.2,.8,.2,1);
+
+    --shadow:
+        0 28px 80px rgba(0,0,0,.36);
+
+}
+
+
+*{
+
+    box-sizing:border-box;
+
+    -webkit-tap-highlight-color:
+        transparent;
+
+}
+
+
+html,
+body{
+
+    width:100%;
+
+    min-height:100%;
+
+    margin:0;
+
+    background:
+        #050706;
+
+    color:var(--text);
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+}
+
+
+body{
+
+    overflow:hidden;
+
+}
+
+
+button,
+input,
+select,
+textarea{
+
+    font:inherit;
+
+}
+
+
+button{
+
+    cursor:pointer;
+
+}
+
+
+img{
+
+    max-width:100%;
+
+}
+
+
+.hidden{
+
+    display:none!important;
+
+}
+
+
+/* ============================================================
+   BACKGROUND
+============================================================ */
+
+#app{
+
+    width:100%;
+
+    height:100dvh;
+
+    position:relative;
+
+    overflow:hidden;
+
+    isolation:isolate;
+
+    background:
+        radial-gradient(
+            circle at 76% -10%,
+            rgba(201,164,81,.14),
+            transparent 31%
+        ),
+        radial-gradient(
+            circle at -8% 108%,
+            rgba(50,160,110,.10),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #040605,
+            #0a100c 50%,
+            #040605
+        );
+
+}
+
+
+#app::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:-4;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent 0 40%,
+            rgba(255,255,255,.012) 41%,
+            transparent 42%
+        ),
+        linear-gradient(
+            rgba(255,255,255,.012) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.012) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        auto,
+        46px 46px,
+        46px 46px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent
+        );
+
+}
+
+
+#institutionWatermark{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:-2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    pointer-events:none;
+
+    overflow:hidden;
+
+}
+
+
+#institutionWatermark img{
+
+    width:
+        min(
+            78vw,
+            900px
+        );
+
+    opacity:.045;
+
+    filter:
+        grayscale(1)
+        brightness(1.65)
+        drop-shadow(
+            0 25px 55px
+            rgba(0,0,0,.8)
+        );
+
+    transform:
+        perspective(900px)
+        rotateX(7deg)
+        rotateY(-7deg)
+        rotateZ(-8deg);
+
+}
+
+
+/* ============================================================
+   BOOT LOADER
+============================================================ */
+
+#boot{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:100000;
+
+    display:grid;
+
+    place-items:center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(201,164,81,.12),
+            transparent 28%
+        ),
+        #040605;
+
+    transition:
+        opacity .55s ease,
+        visibility .55s ease;
+
+}
+
+
+#boot.hide{
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+}
+
+
+.boot-box{
+
+    width:min(
+        90vw,
+        430px
+    );
+
+    text-align:center;
+
+}
+
+
+.boot-logo{
+
+    width:105px;
+
+    height:105px;
+
+    margin:auto;
+
+    position:relative;
+
+    display:grid;
+
+    place-items:center;
+
+}
+
+
+.boot-logo::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(201,164,81,.45);
+
+    animation:
+        rotateBoot
+        2.1s
+        linear
+        infinite;
+
+}
+
+
+.boot-logo::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-12px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    animation:
+        rotateBootReverse
+        3.5s
+        linear
+        infinite;
+
+}
+
+
+.boot-logo img{
+
+    width:70px;
+
+    height:70px;
+
+    object-fit:contain;
+
+    border-radius:50%;
+
+    animation:
+        bootFloat
+        2.4s
+        ease-in-out
+        infinite;
+
+}
+
+
+.boot-title{
+
+    margin-top:27px;
+
+    font-size:19px;
+
+    font-weight:950;
+
+    letter-spacing:.13em;
+
+}
+
+
+.boot-sub{
+
+    margin-top:8px;
+
+    color:var(--muted);
+
+    font-size:10px;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+}
+
+
+.boot-line{
+
+    width:190px;
+
+    height:3px;
+
+    margin:25px auto 0;
+
+    overflow:hidden;
+
+    border-radius:30px;
+
+    background:
+        rgba(255,255,255,.06);
+
+}
+
+
+.boot-line span{
+
+    display:block;
+
+    width:45%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--gold),
+            var(--gold2)
+        );
+
+    animation:
+        bootProgress
+        1.35s
+        ease-in-out
+        infinite;
+
+}
+
+
+@keyframes rotateBoot{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+@keyframes rotateBootReverse{
+
+    to{
+        transform:rotate(-360deg);
+    }
+
+}
+
+
+@keyframes bootFloat{
+
+    0%,100%{
+        transform:
+            translateY(0);
+    }
+
+    50%{
+        transform:
+            translateY(-5px);
+    }
+
+}
+
+
+@keyframes bootProgress{
+
+    0%{
+        transform:
+            translateX(-140%);
+    }
+
+    100%{
+        transform:
+            translateX(340%);
+    }
+
+}
+
+
+/* ============================================================
+   PAGE LOADER
+============================================================ */
+
+#loader{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:90000;
+
+    display:none;
+
+    place-items:center;
+
+    background:
+        rgba(0,0,0,.52);
+
+    backdrop-filter:
+        blur(10px);
+
+}
+
+
+#loader.show{
+
+    display:grid;
+
+}
+
+
+.loader-card{
+
+    width:min(
+        90vw,
+        360px
+    );
+
+    padding:30px;
+
+    text-align:center;
+
+    border:
+        1px solid
+        var(--border2);
+
+    border-radius:25px;
+
+    background:
+        rgba(12,18,14,.92);
+
+    box-shadow:
+        var(--shadow);
+
+}
+
+
+.loader-ring{
+
+    width:48px;
+
+    height:48px;
+
+    margin:auto;
+
+    border:
+        3px solid
+        rgba(255,255,255,.09);
+
+    border-top-color:
+        var(--gold);
+
+    border-right-color:
+        var(--gold2);
+
+    border-radius:50%;
+
+    animation:
+        rotateBoot
+        .8s
+        linear
+        infinite;
+
+}
+
+
+.loader-title{
+
+    margin-top:18px;
+
+    font-size:14px;
+
+    font-weight:900;
+
+}
+
+
+.loader-message{
+
+    margin-top:7px;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+}
+
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+
+.sidebar{
+
+    position:absolute;
+
+    z-index:500;
+
+    inset:
+        0
+        auto
+        0
+        0;
+
+    width:var(--sidebar);
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:19px 15px;
+
+    border-right:
+        1px solid
+        var(--border);
+
+    background:
+        rgba(4,9,6,.88);
+
+    backdrop-filter:
+        blur(30px);
+
+    transition:
+        transform
+        .35s
+        var(--ease);
+
+}
+
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:
+        5px
+        8px
+        23px;
+
+}
+
+
+.brand img{
+
+    width:48px;
+
+    height:48px;
+
+    object-fit:contain;
+
+    border-radius:14px;
+
+    filter:
+        drop-shadow(
+            0 9px 20px
+            rgba(0,0,0,.5)
+        );
+
+}
+
+
+.brand strong{
+
+    display:block;
+
+    font-size:14px;
+
+    font-weight:950;
+
+    letter-spacing:.09em;
+
+}
+
+
+.brand span{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:var(--muted2);
+
+    font-size:8px;
+
+    font-weight:800;
+
+    letter-spacing:.15em;
+
+    text-transform:uppercase;
+
+}
+
+
+.admin-chip{
+
+    margin:
+        0
+        4px
+        18px;
+
+    padding:15px;
+
+    border:
+        1px solid
+        rgba(201,164,81,.20);
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(201,164,81,.11),
+            rgba(255,255,255,.025)
+        );
+
+}
+
+
+.admin-chip-label{
+
+    color:var(--muted2);
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:.13em;
+
+    text-transform:uppercase;
+
+}
+
+
+.admin-chip-name{
+
+    margin-top:7px;
+
+    font-size:13px;
+
+    font-weight:950;
+
+}
+
+
+.admin-chip-email{
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    font-size:9px;
+
+}
+
+
+.nav-title{
+
+    padding:
+        0
+        9px
+        8px;
+
+    color:var(--muted2);
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
+
+}
+
+
+.nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+    overflow:auto;
+
+}
+
+
+.nav-button{
+
+    width:100%;
+
+    min-height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    padding:
+        0
+        12px;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius:13px;
+
+    color:#899991;
+
+    background:transparent;
+
+    text-align:left;
+
+    font-size:11px;
+
+    font-weight:850;
+
+    transition:
+        .2s
+        var(--ease);
+
+}
+
+
+.nav-button:hover{
+
+    color:#fff;
+
+    background:
+        rgba(255,255,255,.045);
+
+}
+
+
+.nav-button.active{
+
+    color:#fff;
+
+    border-color:
+        rgba(201,164,81,.19);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(201,164,81,.15),
+            rgba(255,255,255,.025)
+        );
+
+    box-shadow:
+        inset
+        3px 0
+        0
+        var(--gold);
+
+}
+
+
+.nav-icon{
+
+    width:26px;
+
+    height:26px;
+
+    display:grid;
+
+    place-items:center;
+
+    flex:0 0 auto;
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.045);
+
+}
+
+
+.nav-count{
+
+    min-width:20px;
+
+    height:20px;
+
+    margin-left:auto;
+
+    display:grid;
+
+    place-items:center;
+
+    padding:
+        0
+        5px;
+
+    border-radius:20px;
+
+    color:#111;
+
+    background:
+        var(--gold);
+
+    font-size:9px;
+
+    font-weight:950;
+
+}
+
+
+.sidebar-bottom{
+
+    margin-top:auto;
+
+}
+
+
+.connection{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin:
+        0
+        4px
+        10px;
+
+    padding:10px 11px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:12px;
+
+    color:var(--muted);
+
+    background:
+        rgba(255,255,255,.025);
+
+    font-size:9px;
+
+}
+
+
+.connection-dot{
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+
+    background:var(--orange);
+
+}
+
+
+.connection.online
+.connection-dot{
+
+    background:var(--green);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(70,217,149,.08);
+
+}
+
+
+.logout{
+
+    width:100%;
+
+    min-height:43px;
+
+    border:
+        1px solid
+        rgba(255,105,120,.15);
+
+    border-radius:12px;
+
+    color:#ff9ba5;
+
+    background:
+        rgba(255,105,120,.05);
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+.main{
+
+    position:absolute;
+
+    inset:
+        0
+        0
+        0
+        var(--sidebar);
+
+    overflow:hidden;
+
+}
+
+
+.topbar{
+
+    height:var(--header);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:
+        0
+        27px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    background:
+        rgba(4,9,6,.63);
+
+    backdrop-filter:
+        blur(25px);
+
+}
+
+
+.top-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    min-width:0;
+
+}
+
+
+.mobile-menu{
+
+    display:none;
+
+    width:42px;
+
+    height:42px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:13px;
+
+    color:#fff;
+
+    background:
+        rgba(255,255,255,.045);
+
+}
+
+
+.page-title{
+
+    min-width:0;
+
+}
+
+
+.page-title h1{
+
+    margin:0;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    font-size:18px;
+
+    font-weight:950;
+
+}
+
+
+.page-title p{
+
+    margin:
+        4px
+        0
+        0;
+
+    color:var(--muted);
+
+    font-size:9px;
+
+}
+
+
+.top-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+.clock{
+
+    min-width:175px;
+
+    padding:
+        8px
+        12px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.03);
+
+    text-align:right;
+
+}
+
+
+.clock-time{
+
+    font-size:13px;
+
+    font-weight:950;
+
+    font-variant-numeric:
+        tabular-nums;
+
+}
+
+
+.clock-date{
+
+    margin-top:2px;
+
+    color:var(--muted);
+
+    font-size:8px;
+
+}
+
+
+.top-button{
+
+    width:41px;
+
+    height:41px;
+
+    display:grid;
+
+    place-items:center;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:12px;
+
+    color:#dce5df;
+
+    background:
+        rgba(255,255,255,.035);
+
+}
+
+
+.profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    min-height:41px;
+
+    padding:
+        4px
+        10px
+        4px
+        5px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:13px;
+
+    color:#fff;
+
+    background:
+        rgba(255,255,255,.035);
+
+}
+
+
+.profile-avatar{
+
+    width:31px;
+
+    height:31px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:10px;
+
+    color:#111;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold2),
+            var(--gold)
+        );
+
+    font-size:10px;
+
+    font-weight:950;
+
+}
+
+
+.profile-name{
+
+    max-width:130px;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+/* ============================================================
+   CONTENT
+============================================================ */
+
+.content{
+
+    height:
+        calc(
+            100dvh
+            -
+            var(--header)
+        );
+
+    overflow:auto;
+
+    padding:
+        27px;
+
+}
+
+
+.page{
+
+    display:none;
+
+    animation:
+        pageIn
+        .32s
+        var(--ease);
+
+}
+
+
+.page.active{
+
+    display:block;
+
+}
+
+
+@keyframes pageIn{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(8px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+
+/* ============================================================
+   HEADING
+============================================================ */
+
+.heading{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    gap:18px;
+
+    margin-bottom:23px;
+
+}
+
+
+.heading h2{
+
+    margin:0;
+
+    font-size:27px;
+
+    font-weight:950;
+
+    letter-spacing:-.035em;
+
+}
+
+
+.heading p{
+
+    margin:
+        7px
+        0
+        0;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+}
+
+
+.heading-actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+}
+
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+
+.btn{
+
+    min-height:41px;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    padding:
+        0
+        14px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:12px;
+
+    color:#e8eee9;
+
+    background:
+        rgba(255,255,255,.035);
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+
+.btn-primary{
+
+    border-color:transparent;
+
+    color:#111;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold2),
+            var(--gold)
+        );
+
+}
+
+
+.btn-danger{
+
+    color:#ff9ca6;
+
+    border-color:
+        rgba(255,105,120,.16);
+
+    background:
+        rgba(255,105,120,.06);
+
+}
+
+
+/* ============================================================
+   STAT GRID
+============================================================ */
+
+.stat-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0,1fr)
+        );
+
+    gap:13px;
+
+    margin-bottom:18px;
+
+}
+
+
+.stat-card{
+
+    min-height:139px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:18px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:19px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.055),
+            rgba(255,255,255,.014)
+        );
+
+    box-shadow:
+        0 15px 45px
+        rgba(0,0,0,.10);
+
+}
+
+
+.stat-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+
+    height:130px;
+
+    right:-55px;
+
+    top:-55px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(201,164,81,.16),
+            transparent 68%
+        );
+
+}
+
+
+.stat-label{
+
+    color:var(--muted);
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:.07em;
+
+    text-transform:uppercase;
+
+}
+
+
+.stat-value{
+
+    margin-top:17px;
+
+    font-size:31px;
+
+    font-weight:950;
+
+    letter-spacing:-.045em;
+
+    font-variant-numeric:
+        tabular-nums;
+
+}
+
+
+.stat-foot{
+
+    margin-top:7px;
+
+    color:var(--muted2);
+
+    font-size:8px;
+
+}
+
+
+/* ============================================================
+   CLASS CARDS
+============================================================ */
+
+.class-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            5,
+            minmax(0,1fr)
+        );
+
+    gap:10px;
+
+}
+
+
+.class-card{
+
+    min-height:120px;
+
+    padding:14px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:16px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    transition:
+        .22s
+        var(--ease);
+
+}
+
+
+.class-card:hover{
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(201,164,81,.25);
+
+    background:
+        rgba(201,164,81,.045);
+
+}
+
+
+.class-number{
+
+    color:var(--muted2);
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+.class-name{
+
+    margin-top:7px;
+
+    font-size:12px;
+
+    font-weight:950;
+
+}
+
+
+.class-count{
+
+    margin-top:13px;
+
+    font-size:25px;
+
+    font-weight:950;
+
+}
+
+
+.class-count span{
+
+    margin-left:3px;
+
+    color:var(--muted);
+
+    font-size:8px;
+
+    font-weight:700;
+
+}
+
+
+/* ============================================================
+   PANELS
+============================================================ */
+
+.grid-two{
+
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1.35fr)
+        minmax(300px,.75fr);
+
+    gap:17px;
+
+}
+
+
+.grid-wide{
+
+    grid-column:
+        1 / -1;
+
+}
+
+
+.panel{
+
+    overflow:hidden;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:19px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.043),
+            rgba(255,255,255,.012)
+        );
+
+}
+
+
+.panel-head{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:
+        18px
+        20px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+}
+
+
+.panel-title{
+
+    font-size:12px;
+
+    font-weight:950;
+
+}
+
+
+.panel-subtitle{
+
+    margin-top:4px;
+
+    color:var(--muted);
+
+    font-size:9px;
+
+}
+
+
+.panel-body{
+
+    padding:19px;
+
+}
+
+
+/* ============================================================
+   ATTENDANCE SUMMARY
+============================================================ */
+
+.attendance-summary{
+
+    display:grid;
+
+    gap:14px;
+
+}
+
+
+.attendance-row{
+
+    display:grid;
+
+    grid-template-columns:
+        82px
+        1fr
+        48px;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+.attendance-row label{
+
+    color:var(--muted);
+
+    font-size:9px;
+
+    font-weight:850;
+
+}
+
+
+.attendance-row strong{
+
+    text-align:right;
+
+    font-size:10px;
+
+}
+
+
+.progress{
+
+    width:100%;
+
+    height:8px;
+
+    overflow:hidden;
+
+    border-radius:30px;
+
+    background:
+        rgba(255,255,255,.065);
+
+}
+
+
+.progress span{
+
+    display:block;
+
+    width:0;
+
+    height:100%;
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--gold),
+            var(--gold2)
+        );
+
+    transition:
+        width
+        .8s
+        var(--ease);
+
+}
+
+
+/* ============================================================
+   TABLE
+============================================================ */
+
+.table-shell{
+
+    width:100%;
+
+    overflow:auto;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:15px;
+
+}
+
+
+table{
+
+    width:100%;
+
+    min-width:850px;
+
+    border-collapse:collapse;
+
+}
+
+
+th,
+td{
+
+    padding:
+        12px
+        13px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    text-align:left;
+
+    white-space:nowrap;
+
+}
+
+
+th{
+
+    color:var(--muted2);
+
+    font-size:8px;
+
+    font-weight:950;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+
+}
+
+
+td{
+
+    color:#e4ebe6;
+
+    font-size:9px;
+
+}
+
+
+tbody tr:hover{
+
+    background:
+        rgba(255,255,255,.025);
+
+}
+
+
+/* ============================================================
+   BADGES
+============================================================ */
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    min-height:24px;
+
+    padding:
+        0
+        8px;
+
+    border-radius:20px;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+}
+
+
+.badge-present{
+
+    color:#9af0c2;
+
+    background:
+        rgba(70,217,149,.08);
+
+}
+
+
+.badge-absent{
+
+    color:#ff9ba5;
+
+    background:
+        rgba(255,105,120,.08);
+
+}
+
+
+.badge-late{
+
+    color:#f4d381;
+
+    background:
+        rgba(242,188,85,.08);
+
+}
+
+
+.badge-unmarked{
+
+    color:#a8b1ac;
+
+    background:
+        rgba(255,255,255,.05);
+
+}
+
+
+/* ============================================================
+   SEARCH
+============================================================ */
+
+.toolbar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-bottom:15px;
+
+}
+
+
+.search{
+
+    flex:
+        1 1
+        280px;
+
+}
+
+
+.search input{
+
+    width:100%;
+
+    min-height:43px;
+
+    padding:
+        0
+        13px;
+
+    outline:none;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:12px;
+
+    color:#fff;
+
+    background:
+        rgba(255,255,255,.035);
+
+}
+
+
+.search input:focus{
+
+    border-color:
+        rgba(201,164,81,.40);
+
+}
+
+
+.filter{
+
+    min-height:43px;
+
+    padding:
+        0
+        11px;
+
+    outline:none;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:12px;
+
+    color:#fff;
+
+    background:
+        #0b120e;
+
+}
+
+
+/* ============================================================
+   NOTIFICATION COMPOSER
+============================================================ */
+
+.notification-form{
+
+    display:grid;
+
+    gap:12px;
+
+}
+
+
+.form-input{
+
+    width:100%;
+
+    min-height:43px;
+
+    padding:
+        11px
+        13px;
+
+    outline:none;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:12px;
+
+    color:#fff;
+
+    background:
+        rgba(255,255,255,.035);
+
+}
+
+
+textarea.form-input{
+
+    min-height:145px;
+
+    resize:vertical;
+
+}
+
+
+.form-input:focus{
+
+    border-color:
+        rgba(201,164,81,.40);
+
+}
+
+
+.notification-preview{
+
+    padding:16px;
+
+    border:
+        1px solid
+        rgba(201,164,81,.16);
+
+    border-radius:15px;
+
+    background:
+        rgba(201,164,81,.045);
+
+}
+
+
+.notification-preview-title{
+
+    font-size:11px;
+
+    font-weight:950;
+
+}
+
+
+.notification-preview-message{
+
+    margin-top:7px;
+
+    color:var(--muted);
+
+    line-height:1.65;
+
+    font-size:10px;
+
+}
+
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+#toast{
+
+    position:fixed;
+
+    right:20px;
+
+    bottom:20px;
+
+    z-index:110000;
+
+    width:min(
+        calc(100vw - 40px),
+        360px
+    );
+
+    padding:15px 16px;
+
+    border:
+        1px solid
+        var(--border2);
+
+    border-radius:15px;
+
+    background:
+        rgba(9,14,11,.94);
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.45);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:
+        translateY(10px);
+
+    transition:
+        .25s
+        var(--ease);
+
+}
+
+
+#toast.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:none;
+
+}
+
+
+.toast-title{
+
+    font-size:10px;
+
+    font-weight:950;
+
+}
+
+
+.toast-message{
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:9px;
+
+    line-height:1.5;
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+#sidebarOverlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:400;
+
+    display:none;
+
+    background:
+        rgba(0,0,0,.57);
+
+    backdrop-filter:
+        blur(2px);
+
+}
+
+
+#sidebarOverlay.show{
+
+    display:block;
+
+}
+
+
+@media(max-width:1250px){
+
+    :root{
+
+        --sidebar:250px;
+
+    }
+
+
+    .class-grid{
+
+        grid-template-columns:
+            repeat(
+                4,
+                minmax(0,1fr)
+            );
+
+    }
+
+
+}
+
+
+@media(max-width:1050px){
+
+    .stat-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+    }
+
+
+    .grid-two{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .class-grid{
+
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0,1fr)
+            );
+
+    }
+
+}
+
+
+@media(max-width:900px){
+
+    :root{
+
+        --sidebar:0px;
+
+    }
+
+
+    .sidebar{
+
+        width:min(
+            86vw,
+            315px
+        );
+
+        transform:
+            translateX(-105%);
+
+        box-shadow:
+            30px 0 80px
+            rgba(0,0,0,.5);
+
+    }
+
+
+    .sidebar.open{
+
+        transform:none;
+
+    }
+
+
+    .main{
+
+        inset:0;
+
+    }
+
+
+    .mobile-menu{
+
+        display:grid;
+
+        place-items:center;
+
+    }
+
+
+    .content{
+
+        padding:
+            20px
+            16px
+            35px;
+
+    }
+
+
+}
+
+
+@media(max-width:680px){
+
+    .topbar{
+
+        height:70px;
+
+        padding:
+            0
+            12px;
+
+    }
+
+
+    .content{
+
+        height:
+            calc(
+                100dvh
+                -
+                70px
+            );
+
+        padding:
+            16px
+            12px
+            30px;
+
+    }
+
+
+    .clock{
+
+        display:none;
+
+    }
+
+
+    .profile-name{
+
+        display:none;
+
+    }
+
+
+    .heading{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+
+        margin-bottom:17px;
+
+    }
+
+
+    .heading h2{
+
+        font-size:23px;
+
+    }
+
+
+    .heading-actions{
+
+        width:100%;
+
+    }
+
+
+    .heading-actions .btn{
+
+        flex:1;
+
+    }
+
+
+    .stat-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+        gap:8px;
+
+    }
+
+
+    .stat-card{
+
+        min-height:120px;
+
+        padding:14px;
+
+        border-radius:16px;
+
+    }
+
+
+    .stat-value{
+
+        margin-top:13px;
+
+        font-size:25px;
+
+    }
+
+
+    .class-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+        gap:8px;
+
+    }
+
+
+    .class-card{
+
+        min-height:105px;
+
+        padding:12px;
+
+    }
+
+
+    .class-count{
+
+        font-size:22px;
+
+    }
+
+
+}
+
+
+@media(prefers-reduced-motion:reduce){
+
+    *{
+
+        animation-duration:.01ms!important;
+
+        animation-iteration-count:1!important;
+
+        transition-duration:.01ms!important;
+
+        scroll-behavior:auto!important;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div id="app">
+
+
+<div id="institutionWatermark">
+
+    <img
+        src="institution.png"
+        alt=""
+    >
+
+</div>
+
+
+<!-- =========================================================
+     BOOT
+========================================================= -->
+
+<div id="boot">
+
+    <div class="boot-box">
+
+        <div class="boot-logo">
+
+            <img
+                src="logo.png"
+                alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+            >
+
+        </div>
+
+        <div class="boot-title">
+            MIS-NEXUS™
+        </div>
+
+        <div class="boot-sub">
+            Administrator Control Center
+        </div>
+
+        <div class="boot-line">
+            <span></span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     LOADER
+========================================================= -->
+
+<div id="loader">
+
+    <div class="loader-card">
+
+        <div class="loader-ring"></div>
+
+        <div
+            id="loaderTitle"
+            class="loader-title"
+        >
+            Synchronizing School Data
+        </div>
+
+        <div
+            id="loaderMessage"
+            class="loader-message"
+        >
+            Please wait...
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SIDEBAR OVERLAY
+========================================================= -->
+
+<div id="sidebarOverlay"></div>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+
+    <div class="brand">
+
+        <img
+            src="logo.png"
+            alt="MISBAHUL 'ILM SCHOOLS ABUJA"
+        >
+
+        <div>
+
+            <strong>
+                MIS-NEXUS™
+            </strong>
+
+            <span>
+                Administrator
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="admin-chip">
+
+        <div class="admin-chip-label">
+            Authorized Control
+        </div>
+
+        <div
+            id="sidebarAdminName"
+            class="admin-chip-name"
+        >
+            Main Administrator
+        </div>
+
+        <div
+            id="sidebarAdminEmail"
+            class="admin-chip-email"
+        >
+            misnexus@gmail.com
+        </div>
+
+    </div>
+
+
+    <div class="nav-title">
+        School Control
+    </div>
+
+
+    <nav class="nav">
+
+
+        <button
+            class="nav-button active"
+            data-page="overview"
+        >
+
+            <span class="nav-icon">
+                ◈
+            </span>
+
+            Overview
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="classes"
+        >
+
+            <span class="nav-icon">
+                ▦
+            </span>
+
+            All Classes
+
+            <span
+                class="nav-count"
+                id="navClassCount"
+            >
+                20
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="students"
+        >
+
+            <span class="nav-icon">
+                ●
+            </span>
+
+            All Students
+
+            <span
+                class="nav-count"
+                id="navStudentCount"
+            >
+                0
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="attendance"
+        >
+
+            <span class="nav-icon">
+                ✓
+            </span>
+
+            Today's Attendance
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="teachers"
+        >
+
+            <span class="nav-icon">
+                ◎
+            </span>
+
+            Teachers / Classes
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="activity"
+        >
+
+            <span class="nav-icon">
+                ◷
+            </span>
+
+            Activity Monitor
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="notifications"
+        >
+
+            <span class="nav-icon">
+                ◉
+            </span>
+
+            Notifications
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="analytics"
+        >
+
+            <span class="nav-icon">
+                ◌
+            </span>
+
+            Analytics
+
+        </button>
+
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+
+        <div
+            class="connection"
+            id="connection"
+        >
+
+            <span
+                class="connection-dot"
+                id="connectionDot"
+            ></span>
+
+            <span id="connectionText">
+                Connecting...
+            </span>
+
+        </div>
+
+
+        <button
+            class="logout"
+            id="logoutButton"
+            type="button"
+        >
+            SIGN OUT ADMINISTRATOR
+        </button>
+
+
+    </div>
+
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+
+    <div class="top-left">
+
+
+        <button
+            class="mobile-menu"
+            id="mobileMenu"
+            type="button"
+            aria-label="Open administrator menu"
+        >
+            ☰
+        </button>
+
+
+        <div class="page-title">
+
+            <h1 id="pageTitle">
+                Administrator Control Center
+            </h1>
+
+            <p id="pageSubtitle">
+                MIS-NEXUS™ · Complete School Overview
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="top-actions">
+
+
+        <div class="clock">
+
+            <div
+                id="clockTime"
+                class="clock-time"
+            >
+                --:--:--
+            </div>
+
+            <div
+                id="clockDate"
+                class="clock-date"
+            >
+                Abuja, Nigeria
+            </div>
+
+        </div>
+
+
+        <button
+            class="top-button"
+            id="refreshButton"
+            type="button"
+            aria-label="Refresh"
+        >
+            ↻
+        </button>
+
+
+        <div class="profile">
+
+            <div
+                id="profileAvatar"
+                class="profile-avatar"
+            >
+                MA
+            </div>
+
+            <div
+                id="profileName"
+                class="profile-name"
+            >
+                Administrator
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</header>
+
+
+<section
+    class="content"
+    id="content"
+>
+
+
+<!-- =========================================================
+     OVERVIEW
+========================================================= -->
+
+<section
+    class="page active"
+    id="page-overview"
+>
+
+
+    <div class="heading">
+
+        <div>
+
+            <h2>
+                School Overview
+            </h2>
+
+            <p>
+                Complete real-time administrative picture of MISBAHUL 'ILM SCHOOLS ABUJA.
+            </p>
+
+        </div>
+
+
+        <div class="heading-actions">
+
+            <button
+                class="btn btn-primary"
+                data-page-action="attendance"
+            >
+                ✓ Today's Attendance
+            </button>
+
+            <button
+                class="btn"
+                data-page-action="notifications"
+            >
+                ◉ Notify Teachers
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-grid">
+
+
+        <article class="stat-card">
+
+            <div class="stat-label">
+                Total Students
+            </div>
+
+            <div
+                id="totalStudents"
+                class="stat-value"
+            >
+                0
+            </div>
+
+            <div class="stat-foot">
+                Entire school population
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-label">
+                Present Today
+            </div>
+
+            <div
+                id="presentToday"
+                class="stat-value"
+            >
+                0
+            </div>
+
+            <div class="stat-foot">
+                Attendance recorded today
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-label">
+                Absent Today
+            </div>
+
+            <div
+                id="absentToday"
+                class="stat-value"
+            >
+                0
+            </div>
+
+            <div class="stat-foot">
+                Marked absent
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-label">
+                Late Today
+            </div>
+
+            <div
+                id="lateToday"
+                class="stat-value"
+            >
+                0
+            </div>
+
+            <div class="stat-foot">
+                Late attendance
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+    <div class="grid-two">
+
+
+        <article class="panel">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <div class="panel-title">
+                        School Attendance
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Today's attendance status across every class
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                <div class="attendance-summary">
+
+
+                    <div class="attendance-row">
+
+                        <label>
+                            Present
+                        </label>
+
+                        <div class="progress">
+                            <span id="presentProgress"></span>
+                        </div>
+
+                        <strong id="presentPercent">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="attendance-row">
+
+                        <label>
+                            Late
+                        </label>
+
+                        <div class="progress">
+                            <span id="lateProgress"></span>
+                        </div>
+
+                        <strong id="latePercent">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="attendance-row">
+
+                        <label>
+                            Absent
+                        </label>
+
+                        <div class="progress">
+                            <span id="absentProgress"></span>
+                        </div>
+
+                        <strong id="absentPercent">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="attendance-row">
+
+                        <label>
+                            Unmarked
+                        </label>
+
+                        <div class="progress">
+                            <span id="unmarkedProgress"></span>
+                        </div>
+
+                        <strong id="unmarkedPercent">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article class="panel">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <div class="panel-title">
+                        Administrator Status
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Secure system session
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                <div
+                    id="adminStatus"
+                    style="
+                        display:grid;
+                        gap:12px;
+                    "
+                >
+
+                    <div>
+                        <small
+                            style="
+                                color:var(--muted2);
+                                font-size:8px;
+                            "
+                        >
+                            ACCESS
+                        </small>
+
+                        <div
+                            style="
+                                margin-top:4px;
+                                font-weight:900;
+                                font-size:12px;
+                            "
+                        >
+                            Administrator
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <small
+                            style="
+                                color:var(--muted2);
+                                font-size:8px;
+                            "
+                        >
+                            LOCATION
+                        </small>
+
+                        <div
+                            style="
+                                margin-top:4px;
+                                font-size:10px;
+                            "
+                        >
+                            Abuja, Nigeria
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <small
+                            style="
+                                color:var(--muted2);
+                                font-size:8px;
+                            "
+                        >
+                            TIME ZONE
+                        </small>
+
+                        <div
+                            style="
+                                margin-top:4px;
+                                font-size:10px;
+                            "
+                        >
+                            Africa/Lagos · WAT
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+    <article
+        class="panel"
+        style="margin-top:17px"
+    >
+
+        <div class="panel-head">
+
+            <div>
+
+                <div class="panel-title">
+                    Student Population by Class
+                </div>
+
+                <div class="panel-subtitle">
+                    Every registered class account
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div
+                id="overviewClassGrid"
+                class="class-grid"
+            ></div>
+
+        </div>
+
+    </article>
+
+
+</section>
+
+
+<!-- =========================================================
+     CLASSES
+========================================================= -->
+
+<section
+    class="page"
+    id="page-classes"
+>
+
+
+    <div class="heading">
+
+        <div>
+
+            <h2>
+                All Classes
+            </h2>
+
+            <p>
+                Complete school-wide class population and attendance overview.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn"
+            id="classesRefresh"
+            type="button"
+        >
+            ↻ Refresh
+        </button>
+
+    </div>
+
+
+    <div
+        id="classesGrid"
+        class="class-grid"
+    ></div>
+
+
+</section>
+
+
+<!-- =========================================================
+     STUDENTS
+========================================================= -->
+
+<section
+    class="page"
+    id="page-students"
+>
+
+
+    <div class="heading">
+
+        <div>
+
+            <h2>
+                All Students
+            </h2>
+
+            <p>
+                School-wide student directory.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+
+        <div class="panel-body">
+
+
+            <div class="toolbar">
+
+
+                <div class="search">
+
+                    <input
+                        id="studentSearch"
+                        type="search"
+                        placeholder="Search student name or ID..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <select
+                    id="studentClassFilter"
+                    class="filter"
+                >
+
+                    <option value="">
+                        All Classes
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="studentStatusFilter"
+                    class="filter"
+                >
+
+                    <option value="">
+                        All Statuses
+                    </option>
+
+                    <option value="active">
+                        Active
+                    </option>
+
+                    <option value="inactive">
+                        Inactive
+                    </option>
+
+                    <option value="archived">
+                        Archived
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+            <div class="table-shell">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Class
+                            </th>
+
+                            <th>
+                                Parent
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="studentsBody"
+                    >
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
+     ATTENDANCE
+========================================================= -->
+
+<section
+    class="page"
+    id="page-attendance"
+>
+
+
+    <div class="heading">
+
+        <div>
+
+            <h2>
+                Today's Attendance
+            </h2>
+
+            <p id="attendanceDateLabel">
+                School-wide attendance register
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn"
+            id="attendanceRefresh"
+            type="button"
+        >
+            ↻ Refresh
+        </button>
+
+    </div>
+
+
+    <div class="stat-grid">
+
+
+        <article class="stat-card">
+
+            <div class="stat-label">
+                Present
+            </div>
+
+            <div
+                id="attendancePresent"
+                class="stat-value"
+            >
+                0
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-label">
+                Absent
+            </div>
+
+            <div
+                id="attendanceAbsent"
+                class="stat-value"
+            >
+                0
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-label">
+                Late
+            </div>
+
+            <div
+                id="attendanceLate"
+                class="stat-value"
+            >
+                0
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-label">
+                Marked
+            </div>
+
+            <div
+                id="attendanceMarked"
+                class="stat-value"
+            >
+                0
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+    <article class="panel">
+
+        <div class="panel-body">
+
+            <div class="toolbar">
+
+                <div class="search">
+
+                    <input
+                        id="attendanceSearch"
+                        type="search"
+                        placeholder="Search student or class..."
+                    >
+
+                </div>
+
+
+                <select
+                    id="attendanceClassFilter"
+                    class="filter"
+                >
+
+                    <option value="">
+                        All Classes
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+            <div class="table-shell">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Class
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Time
+                            </th>
+
+                            <th>
+                                Marked By
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="attendanceBody"
+                    ></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </article>
+
+
+</section>
+
+
+<!-- =========================================================
+     TEACHERS
+========================================================= -->
+
+<section
+    class="page"
+    id="page-teachers"
+>
+
+
+    <div class="heading">
+
+        <div>
+
+            <h2>
+                Teachers & Class Accounts
+            </h2>
+
+            <p>
+                Administrative overview of every MIS-NEXUS class gateway.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <article class="panel">
+
+        <div class="panel-body">
+
+            <div class="table-shell">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Class
+                            </th>
+
+                            <th>
+                                Account
+                            </th>
+
+                            <th>
+                                Students
+                            </th>
+
+                            <th>
+                                State
+                            </th>
+
+                            <th>
+                                Last Activity
+                            </th>
+
+                            <th>
+                                Device / IP
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="teachersBody"
+                    ></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </article>
+
+
+</section>
+
+
+<!-- =========================================================
+     ACTIVITY
+========================================================= -->
+
+<section
+    class="page"
+    id="page-activity"
+>
+
+
+    <div class="heading">
+
+        <div>
+
+            <h2>
+                Activity Monitor
+            </h2>
+
+            <p>
+                Recent school data-layer activity.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn"
+            id="activityRefresh"
+            type="button"
+        >
+            ↻ Refresh
+        </button>
+
+    </div>
+
+
+    <article class="panel">
+
+        <div class="panel-body">
+
+            <div class="table-shell">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Time
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Class
+                            </th>
+
+                            <th>
+                                Performed By
+                            </th>
+
+                            <th>
+                                Device / IP
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="activityBody"
+                    ></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </article>
+
+
+</section>
+
+
+<!-- =========================================================
+     NOTIFICATIONS
+========================================================= -->
+
+<section
+    class="page"
+    id="page-notifications"
+>
+
+
+    <div class="heading">
+
+        <div>
+
+            <h2>
+                Teacher Notifications
+            </h2>
+
+            <p>
+                Send one institutional message to all teacher/class accounts.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="grid-two">
+
+
+        <article class="panel">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <div class="panel-title">
+                        New School Notification
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Target: All Teachers
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                <form
+                    id="notificationForm"
+                    class="notification-form"
+                >
+
+
+                    <input
+                        id="notificationTitle"
+                        class="form-input"
+                        type="text"
+                        maxlength="150"
+                        placeholder="Notification title"
+                        required
+                    >
+
+
+                    <select
+                        id="notificationType"
+                        class="filter"
+                    >
+
+                        <option value="general">
+                            General
+                        </option>
+
+                        <option value="important">
+                            Important
+                        </option>
+
+                        <option value="attendance">
+                            Attendance
+                        </option>
+
+                        <option value="academic">
+                            Academic
+                        </option>
+
+                        <option value="emergency">
+                            Emergency
+                        </option>
+
+                    </select>
+
+
+                    <textarea
+                        id="notificationMessage"
+                        class="form-input"
+                        maxlength="5000"
+                        placeholder="Write your message to all teachers..."
+                        required
+                    ></textarea>
+
+
+                    <button
+                        class="btn btn-primary"
+                        type="submit"
+                    >
+                        SEND TO ALL TEACHERS
+                    </button>
+
+
+                </form>
+
+            </div>
+
+        </article>
+
+
+        <article class="panel">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <div class="panel-title">
+                        Live Preview
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Teacher notification appearance
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                <div class="notification-preview">
+
+                    <div
+                        id="notificationPreviewTitle"
+                        class="notification-preview-title"
+                    >
+                        Notification title
+                    </div>
+
+                    <div
+                        id="notificationPreviewMessage"
+                        class="notification-preview-message"
+                    >
+                        Your notification message will appear here.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+    <article
+        class="panel"
+        style="margin-top:17px"
+    >
+
+        <div class="panel-head">
+
+            <div>
+
+                <div class="panel-title">
+                    Notification History
+                </div>
+
+                <div class="panel-subtitle">
+                    Messages previously issued by administration
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div
+                id="notificationHistory"
+            ></div>
+
+        </div>
+
+    </article>
+
+
+</section>
+
+
+<!-- =========================================================
+     ANALYTICS
+========================================================= -->
+
+<section
+    class="page"
+    id="page-analytics"
+>
+
+
+    <div class="heading">
+
+        <div>
+
+            <h2>
+                School Analytics
+            </h2>
+
+            <p>
+                Administrative statistics generated from the MIS-NEXUS data layer.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="analyticsClasses"
+        class="class-grid"
+    ></div>
+
+
+</section>
+
+
+</section>
+
+</main>
+
+
+<div id="toast">
+
+    <div
+        id="toastTitle"
+        class="toast-title"
+    >
+        MIS-NEXUS™
+    </div>
+
+    <div
+        id="toastMessage"
+        class="toast-message"
+    ></div>
+
+</div>
+
+
+</div>
+
+
+<script type="module">
+
+"use strict";
+
+
+/* ============================================================
+   MIS-NEXUS™ ADMINISTRATOR ENGINE
+============================================================ */
+
+
+const SUPABASE_URL =
+    "https://ysjugqdcnbpzrqnvowpl.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_4IiL5xK5zv8C-VG7kNW92g_v1ghHlqx";
+
+
+let supabase = null;
+
+
+const state = {
+
+    profile:null,
+
+    dashboard:null,
+
+    students:[],
+
+    classes:[],
+
+    attendance:[],
+
+    teachers:[],
+
+    activity:[],
+
+    notifications:[],
+
+    currentPage:"overview",
+
+    loading:false
+
+};
+
+
+/* ============================================================
+   DOM
+============================================================ */
+
+const $ =
+    id =>
+        document.getElementById(id);
+
+
+const DOM = {
+
+    boot:$("boot"),
+
+    loader:$("loader"),
+
+    loaderTitle:$("loaderTitle"),
+
+    loaderMessage:$("loaderMessage"),
+
+    sidebar:$("sidebar"),
+
+    overlay:$("sidebarOverlay"),
+
+    content:$("content"),
+
+    connection:$("connection"),
+
+    connectionDot:$("connectionDot"),
+
+    connectionText:$("connectionText"),
+
+    pageTitle:$("pageTitle"),
+
+    pageSubtitle:$("pageSubtitle"),
+
+    clockTime:$("clockTime"),
+
+    clockDate:$("clockDate"),
+
+    profileAvatar:$("profileAvatar"),
+
+    profileName:$("profileName"),
+
+    sidebarAdminName:$("sidebarAdminName"),
+
+    sidebarAdminEmail:$("sidebarAdminEmail"),
+
+    totalStudents:$("totalStudents"),
+
+    presentToday:$("presentToday"),
+
+    absentToday:$("absentToday"),
+
+    lateToday:$("lateToday"),
+
+    presentProgress:$("presentProgress"),
+
+    lateProgress:$("lateProgress"),
+
+    absentProgress:$("absentProgress"),
+
+    unmarkedProgress:$("unmarkedProgress"),
+
+    presentPercent:$("presentPercent"),
+
+    latePercent:$("latePercent"),
+
+    absentPercent:$("absentPercent"),
+
+    unmarkedPercent:$("unmarkedPercent"),
+
+    overviewClassGrid:$("overviewClassGrid"),
+
+    classesGrid:$("classesGrid"),
+
+    studentsBody:$("studentsBody"),
+
+    studentSearch:$("studentSearch"),
+
+    studentClassFilter:$("studentClassFilter"),
+
+    studentStatusFilter:$("studentStatusFilter"),
+
+    attendanceBody:$("attendanceBody"),
+
+    attendanceSearch:$("attendanceSearch"),
+
+    attendanceClassFilter:$("attendanceClassFilter"),
+
+    attendancePresent:$("attendancePresent"),
+
+    attendanceAbsent:$("attendanceAbsent"),
+
+    attendanceLate:$("attendanceLate"),
+
+    attendanceMarked:$("attendanceMarked"),
+
+    teachersBody:$("teachersBody"),
+
+    activityBody:$("activityBody"),
+
+    notificationForm:$("notificationForm"),
+
+    notificationTitle:$("notificationTitle"),
+
+    notificationType:$("notificationType"),
+
+    notificationMessage:$("notificationMessage"),
+
+    notificationPreviewTitle:$("notificationPreviewTitle"),
+
+    notificationPreviewMessage:$("notificationPreviewMessage"),
+
+    notificationHistory:$("notificationHistory"),
+
+    analyticsClasses:$("analyticsClasses"),
+
+    toast:$("toast"),
+
+    toastTitle:$("toastTitle"),
+
+    toastMessage:$("toastMessage")
+
+};
+
+
+/* ============================================================
+   SUPABASE INITIALIZATION
+============================================================ */
+
+async function initSupabase(){
+
+    try{
+
+        const module =
+            await import(
+                "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+            );
+
+
+        supabase =
+            module.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY,
+                {
+
+                    auth:{
+                        persistSession:true,
+
+                        autoRefreshToken:true,
+
+                        detectSessionInUrl:true
+
+                    }
+
+                }
+            );
+
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "MIS-NEXUS authentication client error",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+function showLoader(
+    title,
+    message
+){
+
+    DOM.loaderTitle.textContent =
+        title ||
+        "Synchronizing School Data";
+
+
+    DOM.loaderMessage.textContent =
+        message ||
+        "Please wait...";
+
+
+    DOM.loader.classList.add(
+        "show"
+    );
+
+}
+
+
+function hideLoader(){
+
+    DOM.loader.classList.remove(
+        "show"
+    );
+
+}
+
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+let toastTimer = null;
+
+
+function toast(
+    title,
+    message
+){
+
+    DOM.toastTitle.textContent =
+        title;
+
+
+    DOM.toastMessage.textContent =
+        message;
+
+
+    DOM.toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                DOM.toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3800
+        );
+
+}
+
+
+/* ============================================================
+   AUTHENTICATION
+============================================================ */
+
+async function requireAdministrator(){
+
+    const {
+        data,
+        error
+    } =
+        await supabase.auth.getSession();
+
+
+    if(error){
+
+        throw error;
+
+    }
+
+
+    if(
+        !data?.session
+    ){
+
+        window.location.replace(
+            "administrator-login.html"
+        );
+
+        throw new Error(
+            "Administrator session required."
+        );
+
+    }
+
+
+    const {
+        data:profile,
+        error:profileError
+    } =
+        await supabase.rpc(
+            "mis_nexus_admin_profile"
+        );
+
+
+    if(profileError){
+
+        console.error(
+            profileError
+        );
+
+        await supabase.auth.signOut();
+
+        window.location.replace(
+            "administrator-login.html"
+        );
+
+        throw new Error(
+            "Administrator authorization could not be verified."
+        );
+
+    }
+
+
+    if(
+        !profile ||
+        profile.status !==
+        "active"
+    ){
+
+        await supabase.auth.signOut();
+
+        window.location.replace(
+            "administrator-login.html"
+        );
+
+        throw new Error(
+            "Administrator access is inactive."
+        );
+
+    }
+
+
+    state.profile =
+        profile;
+
+}
+
+
+/* ============================================================
+   DASHBOARD DATA
+============================================================ */
+
+async function loadDashboard(){
+
+    if(
+        state.loading
+    ){
+
+        return;
+
+    }
+
+
+    state.loading =
+        true;
+
+
+    showLoader(
+        "Synchronizing School Data",
+        "Reading the protected administrator data bridge..."
+    );
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabase.rpc(
+                "mis_nexus_admin_dashboard"
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(!data){
+
+            throw new Error(
+                "Administrator dashboard returned no data."
+            );
+
+        }
+
+
+        state.dashboard =
+            data;
+
+
+        state.profile =
+            data.administrator ||
+            state.profile;
+
+
+        state.classes =
+            data.classes ||
+            [];
+
+
+        state.attendance =
+            data.today_register ||
+            [];
+
+
+        state.teachers =
+            data.teachers ||
+            [];
+
+
+        state.notifications =
+            data.notifications ||
+            [];
+
+
+        renderAll();
+
+
+        setConnection(
+            true
+        );
+
+
+        toast(
+            "Dashboard synchronized",
+            `${studentTotal()} students loaded across ${state.classes.length} classes.`
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Administrator dashboard:",
+            error
+        );
+
+
+        setConnection(
+            false
+        );
+
+
+        toast(
+            "Dashboard synchronization failed",
+            error?.message ||
+            "Unable to retrieve administrator data."
+        );
+
+
+        throw error;
+
+    }finally{
+
+        state.loading =
+            false;
+
+        hideLoader();
+
+    }
+
+}
+
+
+/* ============================================================
+   REFRESH ACTIVITY
+============================================================ */
+
+async function loadActivity(){
+
+    const {
+        data,
+        error
+    } =
+        await supabase.rpc(
+            "mis_nexus_admin_activity",
+            {
+                p_limit:500
+            }
+        );
+
+
+    if(error){
+
+        throw error;
+
+    }
+
+
+    state.activity =
+        data ||
+        [];
+
+
+    renderActivity();
+
+}
+
+
+/* ============================================================
+   STUDENT COUNT
+============================================================ */
+
+function studentTotal(){
+
+    return Number(
+        state.dashboard
+            ?.student_summary
+            ?.total_students
+            ||
+        0
+    );
+
+}
+
+
+/* ============================================================
+   CONNECTION
+============================================================ */
+
+function setConnection(
+    online
+){
+
+    DOM.connection.classList.toggle(
+        "online",
+        online
+    );
+
+
+    DOM.connectionText.textContent =
+        online
+            ? "Administrator data connected"
+            : "Connection unavailable";
+
+}
+
+
+/* ============================================================
+   CLOCK
+============================================================ */
+
+function updateClock(){
+
+    const now =
+        new Date();
+
+
+    DOM.clockTime.textContent =
+        new Intl.DateTimeFormat(
+            "en-NG",
+            {
+
+                timeZone:
+                    "Africa/Lagos",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                second:
+                    "2-digit",
+
+                hour12:
+                    true
+
+            }
+        ).format(now);
+
+
+    DOM.clockDate.textContent =
+        new Intl.DateTimeFormat(
+            "en-NG",
+            {
+
+                timeZone:
+                    "Africa/Lagos",
+
+                weekday:
+                    "short",
+
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+
+            }
+        ).format(now)
+        +
+        " · WAT";
+
+}
+
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+
+/* ============================================================
+   IDENTITY
+============================================================ */
+
+function renderIdentity(){
+
+    const profile =
+        state.profile ||
+        {};
+
+
+    const name =
+        profile.name ||
+        "MIS-NEXUS Administrator";
+
+
+    const email =
+        profile.email ||
+        "misnexus@gmail.com";
+
+
+    DOM.profileName.textContent =
+        name;
+
+
+    DOM.sidebarAdminName.textContent =
+        name;
+
+
+    DOM.sidebarAdminEmail.textContent =
+        email;
+
+
+    DOM.profileAvatar.textContent =
+        initials(
+            name
+        );
+
+}
+
+
+/* ============================================================
+   INITIALS
+============================================================ */
+
+function initials(
+    value
+){
+
+    return String(
+        value ||
+        "MA"
+    )
+        .trim()
+        .split(/\s+/)
+        .slice(0,2)
+        .map(
+            part =>
+                part[0] ||
+                ""
+        )
+        .join("")
+        .toUpperCase();
+
+}
+
+
+/* ============================================================
+   OVERVIEW
+============================================================ */
+
+function renderOverview(){
+
+    const summary =
+        state.dashboard
+            ?.student_summary ||
+        {};
+
+
+    const attendance =
+        state.dashboard
+            ?.attendance ||
+        {};
+
+
+    DOM.totalStudents.textContent =
+        summary.total_students ||
+        0;
+
+
+    DOM.presentToday.textContent =
+        attendance.present ||
+        0;
+
+
+    DOM.absentToday.textContent =
+        attendance.absent ||
+        0;
+
+
+    DOM.lateToday.textContent =
+        attendance.late ||
+        0;
+
+
+    const total =
+        Math.max(
+            Number(
+                summary.total_students
+            ) ||
+            0,
+            1
+        );
+
+
+    const present =
+        Number(
+            attendance.present
+        ) ||
+        0;
+
+
+    const late =
+        Number(
+            attendance.late
+        ) ||
+        0;
+
+
+    const absent =
+        Number(
+            attendance.absent
+        ) ||
+        0;
+
+
+    const marked =
+        Number(
+            attendance.marked
+        ) ||
+        0;
+
+
+    const unmarked =
+        Math.max(
+            0,
+            total - marked
+        );
+
+
+    setProgress(
+        DOM.presentProgress,
+        present,
+        total
+    );
+
+
+    setProgress(
+        DOM.lateProgress,
+        late,
+        total
+    );
+
+
+    setProgress(
+        DOM.absentProgress,
+        absent,
+        total
+    );
+
+
+    setProgress(
+        DOM.unmarkedProgress,
+        unmarked,
+        total
+    );
+
+
+    DOM.presentPercent.textContent =
+        percentage(
+            present,
+            total
+        )
+        +
+        "%";
+
+
+    DOM.latePercent.textContent =
+        percentage(
+            late,
+            total
+        )
+        +
+        "%";
+
+
+    DOM.absentPercent.textContent =
+        percentage(
+            absent,
+            total
+        )
+        +
+        "%";
+
+
+    DOM.unmarkedPercent.textContent =
+        percentage(
+            unmarked,
+            total
+        )
+        +
+        "%";
+
+
+    renderClassCards(
+        DOM.overviewClassGrid,
+        state.classes
+    );
+
+}
+
+
+/* ============================================================
+   PROGRESS
+============================================================ */
+
+function setProgress(
+    element,
+    value,
+    total
+){
+
+    if(!element){
+
+        return;
+
+    }
+
+
+    const width =
+        Math.min(
+            100,
+            Math.max(
+                0,
+                (
+                    value /
+                    Math.max(
+                        total,
+                        1
+                    )
+                ) *
+                100
+            )
+        );
+
+
+    requestAnimationFrame(
+        () => {
+
+            element.style.width =
+                width +
+                "%";
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   PERCENTAGE
+============================================================ */
+
+function percentage(
+    value,
+    total
+){
+
+    if(!total){
+
+        return 0;
+
+    }
+
+
+    return Math.round(
+        (
+            Number(value) /
+            Number(total)
+        ) *
+        100
+    );
+
+}
+
+
+/* ============================================================
+   CLASS CARDS
+============================================================ */
+
+function renderClassCards(
+    container,
+    classes
+){
+
+    if(!container){
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        "";
+
+
+    if(!classes.length){
+
+        container.innerHTML =
+            `
+            <div
+                style="
+                    grid-column:1/-1;
+                    padding:30px;
+                    color:var(--muted);
+                    text-align:center;
+                "
+            >
+                No class statistics available.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    classes.forEach(
+        item => {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+
+            card.className =
+                "class-card";
+
+
+            card.innerHTML =
+                `
+
+                <div class="class-number">
+                    CLASS ${escapeHtml(
+                        item.account_number
+                    )}
+                </div>
+
+                <div class="class-name">
+                    ${escapeHtml(
+                        item.class_name ||
+                        item.class_key
+                    )}
+                </div>
+
+                <div class="class-count">
+                    ${escapeHtml(
+                        item.total_students ||
+                        0
+                    )}
+
+                    <span>
+                        students
+                    </span>
+                </div>
+
+                `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   CLASSES
+============================================================ */
+
+function renderClasses(){
+
+    renderClassCards(
+        DOM.classesGrid,
+        state.classes
+    );
+
+}
+
+
+/* ============================================================
+   FILTER OPTIONS
+============================================================ */
+
+function populateClassFilters(){
+
+    const selects = [
+
+        DOM.studentClassFilter,
+
+        DOM.attendanceClassFilter
+
+    ];
+
+
+    selects.forEach(
+        select => {
+
+            if(!select){
+
+                return;
+
+            }
+
+
+            const existing =
+                select.value;
+
+
+            select.innerHTML =
+                `
+                <option value="">
+                    All Classes
+                </option>
+                `;
+
+
+            state.classes.forEach(
+                item => {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        item.class_key;
+
+
+                    option.textContent =
+                        item.class_name;
+
+
+                    select.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+
+            select.value =
+                existing;
+
+        }
+    );
+
+
+    $("navClassCount").textContent =
+        state.classes.length;
+
+
+    $("navStudentCount").textContent =
+        studentTotal();
+
+}
+
+
+/* ============================================================
+   STUDENTS
+============================================================ */
+
+function renderStudents(){
+
+    const search =
+        String(
+            DOM.studentSearch?.value ||
+            ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    const classKey =
+        DOM.studentClassFilter?.value ||
+        "";
+
+
+    const status =
+        DOM.studentStatusFilter?.value ||
+        "";
+
+
+    const students =
+        getStudents();
+
+
+    const filtered =
+        students.filter(
+            student => {
+
+                const name =
+                    String(
+                        student.full_name ||
+                        student.name ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const id =
+                    String(
+                        student.student_id ||
+                        student.id ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const studentClass =
+                    String(
+                        student.class_key ||
+                        ""
+                    );
+
+
+                const studentStatus =
+                    String(
+                        student.status ||
+                        "active"
+                    )
+                    .toLowerCase();
+
+
+                if(
+                    search &&
+                    !name.includes(search) &&
+                    !id.includes(search)
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    classKey &&
+                    studentClass !== classKey
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    status &&
+                    studentStatus !== status
+                ){
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            }
+        );
+
+
+    DOM.studentsBody.innerHTML =
+        "";
+
+
+    if(!filtered.length){
+
+        DOM.studentsBody.innerHTML =
+            `
+            <tr>
+                <td colspan="6">
+                    <div
+                        style="
+                            padding:30px;
+                            text-align:center;
+                            color:var(--muted);
+                        "
+                    >
+                        No matching students found.
+                    </div>
+                </td>
+            </tr>
+            `;
+
+        return;
+
+    }
+
+
+    filtered.forEach(
+        student => {
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const status =
+                String(
+                    student.status ||
+                    "active"
+                )
+                .toLowerCase();
+
+
+            tr.innerHTML =
+                `
+
+                <td>
+                    <strong>
+                        ${escapeHtml(
+                            student.full_name ||
+                            student.name ||
+                            "Unnamed Student"
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        student.student_id ||
+                        student.id ||
+                        "—"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        student.class_name ||
+                        className(
+                            student.class_key
+                        )
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        student.parent_name ||
+                        "—"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        student.parent_phone ||
+                        "—"
+                    )}
+                </td>
+
+                <td>
+                    <span class="badge">
+                        ${escapeHtml(
+                            status
+                        )}
+                    </span>
+                </td>
+
+                `;
+
+
+            DOM.studentsBody.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   STUDENT SOURCE
+============================================================ */
+
+function getStudents(){
+
+    if(
+        Array.isArray(
+            state.dashboard?.today_register
+        )
+    ){
+
+        /*
+         * Today register already contains every student,
+         * so it provides a fast initial directory.
+         */
+
+        return state.dashboard
+            .today_register;
+
+    }
+
+
+    return state.students;
+
+}
+
+
+/* ============================================================
+   CLASS NAME
+============================================================ */
+
+function className(
+    key
+){
+
+    const found =
+        state.classes.find(
+            item =>
+                item.class_key ===
+                key
+        );
+
+
+    return found?.class_name ||
+        key ||
+        "—";
+
+}
+
+
+/* ============================================================
+   ATTENDANCE
+============================================================ */
+
+function renderAttendance(){
+
+    const attendance =
+        state.dashboard
+            ?.today_register ||
+        [];
+
+
+    const search =
+        String(
+            DOM.attendanceSearch?.value ||
+            ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    const classKey =
+        DOM.attendanceClassFilter?.value ||
+        "";
+
+
+    const filtered =
+        attendance.filter(
+            row => {
+
+                const name =
+                    String(
+                        row.full_name ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const classText =
+                    String(
+                        row.class_name ||
+                        className(
+                            row.class_key
+                        )
+                    )
+                    .toLowerCase();
+
+
+                if(
+                    search &&
+                    !name.includes(search) &&
+                    !classText.includes(search)
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    classKey &&
+                    row.class_key !== classKey
+                ){
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            }
+        );
+
+
+    DOM.attendanceBody.innerHTML =
+        "";
+
+
+    filtered.forEach(
+        row => {
+
+            const status =
+                String(
+                    row.attendance_status ||
+                    "unmarked"
+                )
+                .toLowerCase();
+
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            tr.innerHTML =
+                `
+
+                <td>
+                    ${escapeHtml(
+                        row.full_name ||
+                        "Unnamed Student"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        row.class_name ||
+                        className(
+                            row.class_key
+                        )
+                    )}
+                </td>
+
+                <td>
+                    <span
+                        class="badge badge-${escapeHtml(
+                            status
+                        )}"
+                    >
+                        ${escapeHtml(
+                            status
+                        )}
+                    </span>
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        formatDateTime(
+                            row.marked_at
+                        )
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        row.marked_by ||
+                        "—"
+                    )}
+                </td>
+
+                `;
+
+
+            DOM.attendanceBody.appendChild(
+                tr
+            );
+
+        }
+    );
+
+
+    const stats =
+        state.dashboard?.attendance ||
+        {};
+
+
+    DOM.attendancePresent.textContent =
+        stats.present ||
+        0;
+
+
+    DOM.attendanceAbsent.textContent =
+        stats.absent ||
+        0;
+
+
+    DOM.attendanceLate.textContent =
+        stats.late ||
+        0;
+
+
+    DOM.attendanceMarked.textContent =
+        stats.marked ||
+        0;
+
+}
+
+
+/* ============================================================
+   TEACHERS
+============================================================ */
+
+function renderTeachers(){
+
+    DOM.teachersBody.innerHTML =
+        "";
+
+
+    state.teachers.forEach(
+        teacher => {
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const lastActivity =
+                findTeacherActivity(
+                    teacher
+                );
+
+
+            tr.innerHTML =
+                `
+
+                <td>
+                    ${escapeHtml(
+                        teacher.account_number
+                    )}
+                </td>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(
+                            teacher.class_name
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        teacher.email
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        classStudentCount(
+                            teacher.class_key
+                        )
+                    )}
+                </td>
+
+                <td>
+                    <span class="badge">
+                        ${
+                            teacher.active
+                                ? "ACTIVE"
+                                : "INACTIVE"
+                        }
+                    </span>
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        formatDateTime(
+                            lastActivity?.created_at
+                        )
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        deviceInformation(
+                            lastActivity
+                        )
+                    )}
+                </td>
+
+                `;
+
+
+            DOM.teachersBody.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   CLASS STUDENT COUNT
+============================================================ */
+
+function classStudentCount(
+    classKey
+){
+
+    const found =
+        state.classes.find(
+            item =>
+                item.class_key ===
+                classKey
+        );
+
+
+    return found?.total_students ||
+        0;
+
+}
+
+
+/* ============================================================
+   ACTIVITY
+============================================================ */
+
+function renderActivity(){
+
+    DOM.activityBody.innerHTML =
+        "";
+
+
+    state.activity
+        .slice(0,500)
+        .forEach(
+            activity => {
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                tr.innerHTML =
+                    `
+
+                    <td>
+                        ${escapeHtml(
+                            formatDateTime(
+                                activity.created_at
+                            )
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            activity.action ||
+                            "activity"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            activity.student_id ||
+                            "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            activity.class_name ||
+                            className(
+                                activity.class_key
+                            )
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            activity.performed_by ||
+                            "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            deviceInformation(
+                                activity
+                            )
+                        )}
+                    </td>
+
+                    `;
+
+
+                DOM.activityBody.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+}
+
+
+/* ============================================================
+   TEACHER ACTIVITY
+============================================================ */
+
+function findTeacherActivity(
+    teacher
+){
+
+    return state.activity.find(
+        activity =>
+            activity.class_key ===
+            teacher.class_key
+    );
+
+}
+
+
+/* ============================================================
+   DEVICE / IP EXTRACTION
+============================================================ */
+
+function deviceInformation(
+    record
+){
+
+    if(!record){
+
+        return "Not recorded";
+
+    }
+
+
+    const details =
+        record.details &&
+        typeof record.details ===
+        "object"
+            ? record.details
+            : {};
+
+
+    const device =
+        details.device ||
+        details.device_type ||
+        details.user_agent ||
+        "";
+
+
+    const ip =
+        details.ip ||
+        details.ip_address ||
+        details.client_ip ||
+        "";
+
+
+    const parts =
+        [];
+
+
+    if(device){
+
+        parts.push(
+            String(device)
+        );
+
+    }
+
+
+    if(ip){
+
+        parts.push(
+            "IP " +
+            String(ip)
+        );
+
+    }
+
+
+    return parts.join(
+        " · "
+    ) ||
+    "Not recorded";
+
+}
+
+
+/* ============================================================
+   NOTIFICATIONS
+============================================================ */
+
+function renderNotifications(){
+
+    DOM.notificationHistory.innerHTML =
+        "";
+
+
+    if(!state.notifications.length){
+
+        DOM.notificationHistory.innerHTML =
+            `
+            <div
+                style="
+                    padding:20px;
+                    color:var(--muted);
+                    text-align:center;
+                    font-size:10px;
+                "
+            >
+                No administrator notifications have been sent yet.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    state.notifications.forEach(
+        notification => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.style.cssText =
+                `
+                padding:15px 0;
+                border-bottom:
+                    1px solid
+                    var(--border);
+                `;
+
+
+            item.innerHTML =
+                `
+
+                <div
+                    style="
+                        font-size:11px;
+                        font-weight:950;
+                    "
+                >
+                    ${escapeHtml(
+                        notification.title
+                    )}
+                </div>
+
+                <div
+                    style="
+                        margin-top:6px;
+                        color:var(--muted);
+                        font-size:9px;
+                        line-height:1.6;
+                    "
+                >
+                    ${escapeHtml(
+                        notification.message
+                    )}
+                </div>
+
+                <div
+                    style="
+                        margin-top:7px;
+                        color:var(--muted2);
+                        font-size:8px;
+                    "
+                >
+                    ${escapeHtml(
+                        formatDateTime(
+                            notification.created_at
+                        )
+                    )}
+                    ·
+                    ALL TEACHERS
+                </div>
+
+                `;
+
+
+            DOM.notificationHistory.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   ANALYTICS
+============================================================ */
+
+function renderAnalytics(){
+
+    renderClassCards(
+        DOM.analyticsClasses,
+        state.classes
+    );
+
+}
+
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+
+function navigate(
+    page
+){
+
+    state.currentPage =
+        page;
+
+
+    document
+        .querySelectorAll(
+            ".nav-button"
+        )
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.page ===
+                    page
+                );
+
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            ".page"
+        )
+        .forEach(
+            section => {
+
+                section.classList.toggle(
+                    "active",
+                    section.id ===
+                    "page-" +
+                    page
+                );
+
+            }
+        );
+
+
+    const titles = {
+
+        overview:
+            [
+                "Administrator Control Center",
+                "MIS-NEXUS™ · Complete School Overview"
+            ],
+
+        classes:
+            [
+                "All Classes",
+                "MIS-NEXUS™ · School-wide class management"
+            ],
+
+        students:
+            [
+                "All Students",
+                "MIS-NEXUS™ · Complete student directory"
+            ],
+
+        attendance:
+            [
+                "Today's Attendance",
+                "MIS-NEXUS™ · School-wide attendance register"
+            ],
+
+        teachers:
+            [
+                "Teachers & Class Accounts",
+                "MIS-NEXUS™ · Teacher gateway monitoring"
+            ],
+
+        activity:
+            [
+                "Activity Monitor",
+                "MIS-NEXUS™ · Recent institutional activity"
+            ],
+
+        notifications:
+            [
+                "Teacher Notifications",
+                "MIS-NEXUS™ · Institutional communication"
+            ],
+
+        analytics:
+            [
+                "School Analytics",
+                "MIS-NEXUS™ · Population and attendance intelligence"
+            ]
+
+    };
+
+
+    const selected =
+        titles[page] ||
+        titles.overview;
+
+
+    DOM.pageTitle.textContent =
+        selected[0];
+
+
+    DOM.pageSubtitle.textContent =
+        selected[1];
+
+
+    closeMobileSidebar();
+
+
+    if(
+        page ===
+        "activity" &&
+        !state.activity.length
+    ){
+
+        loadActivity()
+            .catch(
+                error =>
+                    toast(
+                        "Activity unavailable",
+                        error.message
+                    )
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE SIDEBAR
+============================================================ */
+
+function openMobileSidebar(){
+
+    DOM.sidebar.classList.add(
+        "open"
+    );
+
+    DOM.overlay.classList.add(
+        "show"
+    );
+
+}
+
+
+function closeMobileSidebar(){
+
+    DOM.sidebar.classList.remove(
+        "open"
+    );
+
+    DOM.overlay.classList.remove(
+        "show"
+    );
+
+}
+
+
+$("mobileMenu")
+    .addEventListener(
+        "click",
+        openMobileSidebar
+    );
+
+
+DOM.overlay.addEventListener(
+    "click",
+    closeMobileSidebar
+);
+
+
+/* ============================================================
+   NAV EVENTS
+============================================================ */
+
+document
+    .querySelectorAll(
+        ".nav-button"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    navigate(
+                        button.dataset.page
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+document
+    .querySelectorAll(
+        "[data-page-action]"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    navigate(
+                        button.dataset.pageAction
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+/* ============================================================
+   SEARCH
+============================================================ */
+
+DOM.studentSearch.addEventListener(
+    "input",
+    renderStudents
+);
+
+
+DOM.studentClassFilter.addEventListener(
+    "change",
+    renderStudents
+);
+
+
+DOM.studentStatusFilter.addEventListener(
+    "change",
+    renderStudents
+);
+
+
+DOM.attendanceSearch.addEventListener(
+    "input",
+    renderAttendance
+);
+
+
+DOM.attendanceClassFilter.addEventListener(
+    "change",
+    renderAttendance
+);
+
+
+/* ============================================================
+   REFRESH
+============================================================ */
+
+$("refreshButton")
+    .addEventListener(
+        "click",
+        async () => {
+
+            try{
+
+                await loadDashboard();
+
+            }catch{
+
+                toast(
+                    "Refresh failed",
+                    "The administrator data could not be refreshed."
+                );
+
+            }
+
+        }
+    );
+
+
+$("classesRefresh")
+    .addEventListener(
+        "click",
+        async () => {
+
+            try{
+
+                await loadDashboard();
+
+            }catch(error){
+
+                toast(
+                    "Refresh failed",
+                    error.message
+                );
+
+            }
+
+        }
+    );
+
+
+$("attendanceRefresh")
+    .addEventListener(
+        "click",
+        async () => {
+
+            try{
+
+                await loadDashboard();
+
+                navigate(
+                    "attendance"
+                );
+
+            }catch(error){
+
+                toast(
+                    "Refresh failed",
+                    error.message
+                );
+
+            }
+
+        }
+    );
+
+
+$("activityRefresh")
+    .addEventListener(
+        "click",
+        async () => {
+
+            try{
+
+                await loadActivity();
+
+                toast(
+                    "Activity refreshed",
+                    "Recent activity has been synchronized."
+                );
+
+            }catch(error){
+
+                toast(
+                    "Activity refresh failed",
+                    error.message
+                );
+
+            }
+
+        }
+    );
+
+
+/* ============================================================
+   NOTIFICATION PREVIEW
+============================================================ */
+
+function updateNotificationPreview(){
+
+    DOM.notificationPreviewTitle.textContent =
+        DOM.notificationTitle.value.trim() ||
+        "Notification title";
+
+
+    DOM.notificationPreviewMessage.textContent =
+        DOM.notificationMessage.value.trim() ||
+        "Your notification message will appear here.";
+
+}
+
+
+DOM.notificationTitle.addEventListener(
+    "input",
+    updateNotificationPreview
+);
+
+
+DOM.notificationMessage.addEventListener(
+    "input",
+    updateNotificationPreview
+);
+
+
+/* ============================================================
+   SEND NOTIFICATION
+============================================================ */
+
+DOM.notificationForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        const title =
+            DOM.notificationTitle.value.trim();
+
+
+        const message =
+            DOM.notificationMessage.value.trim();
+
+
+        const type =
+            DOM.notificationType.value ||
+            "general";
+
+
+        if(!title){
+
+            toast(
+                "Missing title",
+                "Enter a notification title."
+            );
+
+            return;
+
+        }
+
+
+        if(!message){
+
+            toast(
+                "Missing message",
+                "Enter the message to send to teachers."
+            );
+
+            return;
+
+        }
+
+
+        showLoader(
+            "Sending Institutional Notification",
+            "Delivering the message to all teacher gateways..."
+        );
+
+
+        try{
+
+            const {
+                data,
+                error
+            } =
+                await supabase.rpc(
+                    "mis_nexus_admin_send_notification",
+                    {
+                        p_title:
+                            title,
+
+                        p_message:
+                            message,
+
+                        p_type:
+                            type,
+
+                        p_expires_at:
+                            null
+                    }
+                );
+
+
+            if(error){
+
+                throw error;
+
+            }
+
+
+            DOM.notificationForm.reset();
+
+            updateNotificationPreview();
+
+
+            await loadDashboard();
+
+
+            navigate(
+                "notifications"
+            );
+
+
+            toast(
+                "Notification sent",
+                "The institutional notification was created for all teachers."
+            );
+
+
+        }catch(error){
+
+            console.error(
+                error
+            );
+
+
+            toast(
+                "Notification failed",
+                error?.message ||
+                "Unable to send notification."
+            );
+
+        }finally{
+
+            hideLoader();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   SIGN OUT
+============================================================ */
+
+$("logoutButton")
+    .addEventListener(
+        "click",
+        async () => {
+
+            showLoader(
+                "Signing Out",
+                "Closing administrator session..."
+            );
+
+
+            try{
+
+                await supabase.auth.signOut();
+
+            }finally{
+
+                window.location.replace(
+                    "administrator-login.html"
+                );
+
+            }
+
+        }
+    );
+
+
+/* ============================================================
+   AUTH STATE
+============================================================ */
+
+function listenAuth(){
+
+    supabase.auth.onAuthStateChange(
+        (
+            event
+        ) => {
+
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
+
+                window.location.replace(
+                    "administrator-login.html"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   ESCAPE
+============================================================ */
+
+function escapeHtml(
+    value
+){
+
+    return String(
+        value ??
+        ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* ============================================================
+   DATE
+============================================================ */
+
+function formatDateTime(
+    value
+){
+
+    if(!value){
+
+        return "—";
+
+    }
+
+
+    const date =
+        new Date(
+            value
+        );
+
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+
+        return "—";
+
+    }
+
+
+    return new Intl.DateTimeFormat(
+        "en-NG",
+        {
+
+            timeZone:
+                "Africa/Lagos",
+
+            day:
+                "2-digit",
+
+            month:
+                "short",
+
+            year:
+                "numeric",
+
+            hour:
+                "2-digit",
+
+            minute:
+                "2-digit",
+
+            hour12:
+                true
+
+        }
+    ).format(
+        date
+    );
+
+}
+
+
+/* ============================================================
+   RENDER ALL
+============================================================ */
+
+function renderAll(){
+
+    renderIdentity();
+
+    populateClassFilters();
+
+    renderOverview();
+
+    renderClasses();
+
+    renderStudents();
+
+    renderAttendance();
+
+    renderTeachers();
+
+    renderNotifications();
+
+    renderAnalytics();
+
+}
+
+
+/* ============================================================
+   INITIALIZATION
+============================================================ */
+
+async function initialize(){
+
+    try{
+
+        const ready =
+            await initSupabase();
+
+
+        if(!ready){
+
+            throw new Error(
+                "Administrator connection could not be initialized."
+            );
+
+        }
+
+
+        listenAuth();
+
+
+        await requireAdministrator();
+
+
+        await loadDashboard();
+
+
+        DOM.boot.classList.add(
+            "hide"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "MIS-NEXUS administrator initialization",
+            error
+        );
+
+
+        DOM.boot.classList.add(
+            "hide"
+        );
+
+
+        toast(
+            "Secure access error",
+            error?.message ||
+            "Administrator dashboard could not be initialized."
+        );
+
+    }
+
+}
+
+
+initialize();
+
+</script>
+
+</body>
+
+</html>
