@@ -1,0 +1,5972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MIS-NEXUS QR Studio">
+<meta name="description" content="MIS-NEXUS Student QR and Smart ID Card Generator">
+<title>MIS-NEXUS™ Student QR Studio</title>
+
+<!--
+============================================================
+MIS-NEXUS™ STUDENT QR STUDIO
+============================================================
+
+Standalone browser software.
+
+CORE FUNCTIONS
+------------------------------------------------------------
+1. Student QR generation
+2. Student ID / student code support
+3. Student photo upload
+4. School logo upload
+5. Ready-made student ID card
+6. QR download
+7. Complete ID-card download
+8. Print-ready card
+9. Live QR preview
+10. QR error correction
+11. QR size control
+12. QR margin control
+13. QR color control
+14. Card theme control
+15. Student class
+16. Student admission number
+17. Student house
+18. Dormitory
+19. Date of birth
+20. Gender
+21. Parent / guardian
+22. Phone
+23. School name
+24. School address
+25. School phone
+26. School email
+27. Card serial
+28. Attendance identifier
+29. QR validation
+30. Local browser persistence
+31. Draft save
+32. Draft restore
+33. Reset
+34. Image replacement
+35. Drag/drop image
+36. Mobile responsive layout
+37. Desktop responsive layout
+38. Print layout
+39. PNG card export
+40. JPG card export
+41. QR-only export
+42. Copy QR value
+43. Copy student ID
+44. Full-screen preview
+45. Keyboard support
+46. Accessibility
+47. Offline-friendly UI
+48. No database modification
+49. No student-table modification
+50. Compatible with the MIS-NEXUS boarders QR workflow
+
+IMPORTANT
+------------------------------------------------------------
+The QR DATA field is the value that the boarders dashboard
+will read.
+
+For the existing boarders scanner, use the student's actual
+student_code / attendance identifier.
+
+Example:
+
+000001
+
+Do not place passwords or sensitive information inside the QR.
+============================================================
+-->
+
+<!-- QRCode.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+/* ============================================================
+   GLOBAL RESET
+============================================================ */
+
+:root{
+    --bg:#07111f;
+    --bg2:#0b1728;
+    --panel:#101f33;
+    --panel2:#13263d;
+    --line:rgba(255,255,255,.09);
+    --text:#f7fbff;
+    --muted:#9fb0c4;
+    --primary:#4fd1c5;
+    --primary2:#38b2ac;
+    --danger:#ff647c;
+    --warning:#f5c451;
+    --success:#53d48a;
+    --shadow:0 20px 60px rgba(0,0,0,.35);
+    --radius:20px;
+    --radius-sm:13px;
+    --card-w:1012px;
+    --card-h:638px;
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 0%,rgba(79,209,197,.10),transparent 30%),
+        radial-gradient(circle at 90% 20%,rgba(70,130,255,.10),transparent 30%),
+        linear-gradient(145deg,var(--bg),var(--bg2));
+    color:var(--text);
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    overflow-x:hidden;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+img{
+    max-width:100%;
+}
+
+/* ============================================================
+   APP SHELL
+============================================================ */
+
+.app{
+    width:100%;
+    min-height:100vh;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    min-height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:
+        max(12px,env(safe-area-inset-top))
+        clamp(14px,3vw,34px)
+        12px;
+    background:rgba(7,17,31,.82);
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+}
+
+.brand-logo{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,#164e63,#0f766e);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    flex:none;
+}
+
+.brand-logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:none;
+}
+
+.brand-logo span{
+    font-weight:900;
+    font-size:17px;
+}
+
+.brand-copy{
+    min-width:0;
+}
+
+.brand-title{
+    font-weight:900;
+    font-size:clamp(15px,2vw,19px);
+    letter-spacing:-.3px;
+}
+
+.brand-sub{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:2px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    border:1px solid var(--line);
+    color:var(--text);
+    background:rgba(255,255,255,.045);
+    display:grid;
+    place-items:center;
+    transition:.2s ease;
+}
+
+.icon-btn:hover{
+    transform:translateY(-1px);
+    background:rgba(255,255,255,.09);
+}
+
+.icon-btn:active{
+    transform:scale(.96);
+}
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+.main{
+    width:min(1500px,100%);
+    margin:auto;
+    padding:clamp(18px,3vw,35px);
+}
+
+.hero{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:20px;
+    margin-bottom:22px;
+}
+
+.hero-panel{
+    border:1px solid var(--line);
+    background:
+        linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+    box-shadow:var(--shadow);
+    border-radius:26px;
+    padding:clamp(22px,4vw,40px);
+    overflow:hidden;
+    position:relative;
+}
+
+.hero-panel::after{
+    content:"";
+    position:absolute;
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    right:-130px;
+    top:-150px;
+    background:rgba(79,209,197,.08);
+    pointer-events:none;
+}
+
+.hero h1{
+    margin:0;
+    font-size:clamp(27px,5vw,54px);
+    line-height:1;
+    letter-spacing:-2px;
+}
+
+.hero p{
+    margin:15px 0 0;
+    color:var(--muted);
+    max-width:760px;
+    line-height:1.7;
+}
+
+.status-card{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:18px;
+}
+
+.status-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.status-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    width:max-content;
+    padding:8px 12px;
+    border-radius:999px;
+    background:rgba(83,212,138,.09);
+    color:#8ff0b7;
+    border:1px solid rgba(83,212,138,.18);
+    font-size:12px;
+    font-weight:800;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--success);
+    box-shadow:0 0 14px var(--success);
+}
+
+.hero-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.stat{
+    padding:14px;
+    border:1px solid var(--line);
+    background:rgba(0,0,0,.13);
+    border-radius:14px;
+}
+
+.stat strong{
+    display:block;
+    font-size:20px;
+}
+
+.stat span{
+    display:block;
+    margin-top:4px;
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* ============================================================
+   WORKSPACE
+============================================================ */
+
+.workspace{
+    display:grid;
+    grid-template-columns:minmax(320px,500px) minmax(0,1fr);
+    gap:22px;
+    align-items:start;
+}
+
+.panel{
+    background:
+        linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.panel-header{
+    padding:18px 20px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+.panel-title{
+    font-size:15px;
+    font-weight:900;
+}
+
+.panel-description{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:11px;
+}
+
+.panel-body{
+    padding:20px;
+}
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.form-section{
+    padding-bottom:20px;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--line);
+}
+
+.form-section:last-child{
+    border-bottom:0;
+    margin-bottom:0;
+    padding-bottom:0;
+}
+
+.section-heading{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:14px;
+}
+
+.section-number{
+    width:27px;
+    height:27px;
+    border-radius:9px;
+    display:grid;
+    place-items:center;
+    background:rgba(79,209,197,.10);
+    color:var(--primary);
+    border:1px solid rgba(79,209,197,.17);
+    font-size:11px;
+    font-weight:900;
+}
+
+.section-heading strong{
+    font-size:13px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+}
+
+.field{
+    min-width:0;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    color:#cbd7e5;
+    font-size:11px;
+    font-weight:800;
+    margin:0 0 7px;
+}
+
+.input,
+.select,
+.textarea{
+    width:100%;
+    min-height:45px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:rgba(0,0,0,.18);
+    color:var(--text);
+    outline:none;
+    padding:11px 12px;
+    transition:.2s ease;
+}
+
+.input::placeholder,
+.textarea::placeholder{
+    color:#65778d;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus{
+    border-color:rgba(79,209,197,.55);
+    box-shadow:0 0 0 3px rgba(79,209,197,.08);
+}
+
+.textarea{
+    resize:vertical;
+    min-height:85px;
+}
+
+.select{
+    appearance:auto;
+}
+
+/* ============================================================
+   UPLOAD
+============================================================ */
+
+.upload-box{
+    min-height:130px;
+    border:1px dashed rgba(255,255,255,.20);
+    border-radius:16px;
+    background:rgba(0,0,0,.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:15px;
+    position:relative;
+    overflow:hidden;
+    transition:.2s ease;
+}
+
+.upload-box:hover,
+.upload-box.dragover{
+    border-color:rgba(79,209,197,.65);
+    background:rgba(79,209,197,.06);
+}
+
+.upload-box input{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    cursor:pointer;
+}
+
+.upload-content{
+    pointer-events:none;
+}
+
+.upload-icon{
+    font-size:28px;
+    margin-bottom:6px;
+}
+
+.upload-content strong{
+    display:block;
+    font-size:12px;
+}
+
+.upload-content small{
+    display:block;
+    color:var(--muted);
+    margin-top:4px;
+}
+
+.image-preview{
+    display:none;
+    width:100%;
+    height:130px;
+    object-fit:contain;
+    border-radius:12px;
+}
+
+.upload-box.has-image .upload-content{
+    display:none;
+}
+
+.upload-box.has-image .image-preview{
+    display:block;
+}
+
+/* ============================================================
+   QR SETTINGS
+============================================================ */
+
+.range-row{
+    display:grid;
+    grid-template-columns:1fr 70px;
+    gap:10px;
+    align-items:center;
+}
+
+input[type="range"]{
+    width:100%;
+    accent-color:var(--primary);
+}
+
+.range-value{
+    min-height:42px;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:rgba(0,0,0,.15);
+    font-size:12px;
+    font-weight:800;
+}
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+
+.button-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+}
+
+.btn{
+    min-height:44px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    padding:10px 14px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color:var(--text);
+    background:rgba(255,255,255,.05);
+    font-weight:800;
+    font-size:12px;
+    transition:.2s ease;
+}
+
+.btn:hover{
+    transform:translateY(-1px);
+    background:rgba(255,255,255,.09);
+}
+
+.btn:active{
+    transform:scale(.98);
+}
+
+.btn.primary{
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:#05201e;
+    border-color:transparent;
+}
+
+.btn.success{
+    background:rgba(83,212,138,.12);
+    color:#8ff0b7;
+    border-color:rgba(83,212,138,.2);
+}
+
+.btn.danger{
+    background:rgba(255,100,124,.10);
+    color:#ff9aab;
+    border-color:rgba(255,100,124,.2);
+}
+
+.btn.block{
+    width:100%;
+}
+
+/* ============================================================
+   PREVIEW AREA
+============================================================ */
+
+.preview-panel{
+    position:sticky;
+    top:96px;
+}
+
+.preview-toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.preview-stage{
+    padding:clamp(12px,3vw,28px);
+    background:
+        radial-gradient(circle at center,rgba(255,255,255,.035),transparent 55%),
+        #050c16;
+    min-height:700px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:auto;
+}
+
+/* ============================================================
+   CARD
+============================================================ */
+
+.id-card-wrap{
+    width:min(100%,var(--card-w));
+    aspect-ratio:1012/638;
+    flex:none;
+    container-type:inline-size;
+}
+
+.id-card{
+    width:100%;
+    height:100%;
+    position:relative;
+    overflow:hidden;
+    color:#101820;
+    background:#f8fafc;
+    border-radius:clamp(12px,2cqw,25px);
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.42),
+        inset 0 0 0 1px rgba(0,0,0,.05);
+}
+
+/* card background */
+.card-bg{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.card-bg::before{
+    content:"";
+    position:absolute;
+    width:65%;
+    height:150%;
+    right:-20%;
+    top:-30%;
+    transform:rotate(15deg);
+    background:rgba(79,209,197,.12);
+}
+
+.card-bg::after{
+    content:"";
+    position:absolute;
+    width:50%;
+    height:100%;
+    left:-22%;
+    bottom:-40%;
+    transform:rotate(-16deg);
+    background:rgba(30,64,175,.08);
+}
+
+.watermark{
+    position:absolute;
+    left:50%;
+    top:54%;
+    transform:translate(-50%,-50%) rotate(-24deg);
+    font-size:clamp(40px,9cqw,110px);
+    font-weight:1000;
+    letter-spacing:5px;
+    color:rgba(15,23,42,.045);
+    white-space:nowrap;
+    pointer-events:none;
+}
+
+/* card header */
+.card-header{
+    position:absolute;
+    left:5%;
+    right:5%;
+    top:5%;
+    height:19%;
+    display:flex;
+    align-items:center;
+    gap:3%;
+    border-bottom:1px solid rgba(15,23,42,.10);
+}
+
+.card-logo{
+    width:14%;
+    aspect-ratio:1;
+    border-radius:18%;
+    overflow:hidden;
+    background:#e5e7eb;
+    display:grid;
+    place-items:center;
+    flex:none;
+    border:1px solid rgba(15,23,42,.10);
+}
+
+.card-logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:none;
+}
+
+.card-logo-placeholder{
+    font-size:clamp(18px,4cqw,45px);
+}
+
+.school-details{
+    min-width:0;
+}
+
+.school-name{
+    font-size:clamp(13px,3.2cqw,35px);
+    font-weight:1000;
+    letter-spacing:-.7px;
+    text-transform:uppercase;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.school-motto{
+    font-size:clamp(7px,1.35cqw,14px);
+    color:#475569;
+    margin-top:4px;
+    font-weight:700;
+}
+
+.school-contact{
+    font-size:clamp(6px,1.15cqw,12px);
+    color:#64748b;
+    margin-top:5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* card body */
+.card-photo{
+    position:absolute;
+    left:5%;
+    top:30%;
+    width:23%;
+    aspect-ratio:4/5;
+    border-radius:8%;
+    overflow:hidden;
+    background:#e2e8f0;
+    border:4px solid white;
+    box-shadow:0 7px 25px rgba(15,23,42,.12);
+}
+
+.card-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:none;
+}
+
+.photo-placeholder{
+    width:100%;
+    height:100%;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    color:#64748b;
+    font-size:clamp(8px,1.5cqw,15px);
+    font-weight:800;
+    padding:10px;
+}
+
+.student-block{
+    position:absolute;
+    left:32%;
+    top:30%;
+    width:37%;
+}
+
+.card-label{
+    color:#64748b;
+    font-size:clamp(6px,1.1cqw,11px);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:900;
+}
+
+.card-student-name{
+    font-size:clamp(12px,3cqw,31px);
+    font-weight:1000;
+    line-height:1.05;
+    margin:3px 0 10px;
+    text-transform:uppercase;
+    overflow-wrap:anywhere;
+}
+
+.card-field{
+    margin-bottom:7px;
+}
+
+.card-value{
+    font-size:clamp(8px,1.55cqw,16px);
+    font-weight:850;
+    color:#172033;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.card-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px 15px;
+}
+
+.card-qr{
+    position:absolute;
+    right:5%;
+    top:29%;
+    width:24%;
+    aspect-ratio:1;
+    background:white;
+    border-radius:8%;
+    padding:3%;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(15,23,42,.08);
+}
+
+.card-qr canvas,
+.card-qr img{
+    width:100%!important;
+    height:100%!important;
+    image-rendering:auto;
+}
+
+.qr-empty{
+    text-align:center;
+    color:#64748b;
+    font-size:clamp(7px,1.3cqw,14px);
+    font-weight:800;
+}
+
+/* card footer */
+.card-footer{
+    position:absolute;
+    left:5%;
+    right:5%;
+    bottom:5%;
+    height:15%;
+    border-top:1px solid rgba(15,23,42,.10);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.card-footer-left{
+    min-width:0;
+}
+
+.attendance-code{
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+    font-size:clamp(8px,1.5cqw,15px);
+    font-weight:1000;
+    letter-spacing:1px;
+}
+
+.valid-text{
+    color:#64748b;
+    font-size:clamp(6px,1.05cqw,11px);
+    margin-top:3px;
+}
+
+.card-signature{
+    width:22%;
+    text-align:center;
+}
+
+.signature-line{
+    border-top:1px solid #64748b;
+    margin-bottom:4px;
+}
+
+.signature-label{
+    color:#64748b;
+    font-size:clamp(6px,1cqw,10px);
+    font-weight:700;
+}
+
+/* ============================================================
+   INFORMATION
+============================================================ */
+
+.info-strip{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.info-box{
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.035);
+    border-radius:14px;
+    padding:14px;
+}
+
+.info-box strong{
+    display:block;
+    font-size:11px;
+}
+
+.info-box span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    margin-top:5px;
+    line-height:1.5;
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+.toast-container{
+    position:fixed;
+    right:16px;
+    bottom:16px;
+    z-index:5000;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    width:min(380px,calc(100vw - 32px));
+    pointer-events:none;
+}
+
+.toast{
+    pointer-events:auto;
+    border:1px solid var(--line);
+    background:rgba(8,18,31,.92);
+    backdrop-filter:blur(18px);
+    border-radius:14px;
+    padding:13px 15px;
+    box-shadow:var(--shadow);
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    animation:toastIn .25s ease both;
+}
+
+.toast-icon{
+    width:27px;
+    height:27px;
+    display:grid;
+    place-items:center;
+    border-radius:9px;
+    background:rgba(79,209,197,.10);
+    color:var(--primary);
+    flex:none;
+}
+
+.toast-text strong{
+    display:block;
+    font-size:12px;
+}
+
+.toast-text span{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+    margin-top:2px;
+    line-height:1.45;
+}
+
+@keyframes toastIn{
+    from{
+        opacity:0;
+        transform:translateY(12px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:4000;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(10px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.open{
+    display:flex;
+}
+
+.modal-box{
+    width:min(850px,100%);
+    max-height:90vh;
+    overflow:auto;
+    border:1px solid var(--line);
+    background:#0d1b2d;
+    border-radius:22px;
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 20px;
+    border-bottom:1px solid var(--line);
+}
+
+.modal-body{
+    padding:20px;
+}
+
+/* ============================================================
+   LOADER
+============================================================ */
+
+.loader{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:#07111f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:opacity .35s ease,visibility .35s ease;
+}
+
+.loader.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.loader-inner{
+    text-align:center;
+}
+
+.loader-ring{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,.10);
+    border-top-color:var(--primary);
+    animation:spin .7s linear infinite;
+    margin:auto;
+}
+
+.loader-title{
+    margin-top:16px;
+    font-weight:900;
+    font-size:14px;
+}
+
+.loader-sub{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:4px;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media(max-width:1100px){
+
+    .workspace{
+        grid-template-columns:1fr;
+    }
+
+    .preview-panel{
+        position:relative;
+        top:auto;
+    }
+
+    .preview-stage{
+        min-height:0;
+    }
+
+}
+
+@media(max-width:760px){
+
+    .hero{
+        grid-template-columns:1fr;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+
+    .info-strip{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .topbar{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .brand-sub{
+        display:none;
+    }
+
+    .main{
+        padding:13px;
+    }
+
+    .panel-body{
+        padding:15px;
+    }
+
+}
+
+@media(max-width:520px){
+
+    .hero-panel{
+        padding:22px;
+        border-radius:20px;
+    }
+
+    .hero-stats{
+        grid-template-columns:1fr;
+    }
+
+    .info-strip{
+        grid-template-columns:1fr;
+    }
+
+    .button-row .btn{
+        flex:1 1 140px;
+    }
+
+    .preview-stage{
+        padding:8px;
+    }
+
+}
+
+@media print{
+
+    body{
+        background:white!important;
+        color:#000!important;
+    }
+
+    .topbar,
+    .hero,
+    .form-panel,
+    .preview-toolbar,
+    .info-strip,
+    .panel-header,
+    .toast-container{
+        display:none!important;
+    }
+
+    .main{
+        padding:0!important;
+        width:100%!important;
+    }
+
+    .workspace{
+        display:block!important;
+    }
+
+    .preview-panel{
+        display:block!important;
+        box-shadow:none!important;
+        border:0!important;
+        position:static!important;
+    }
+
+    .preview-stage{
+        padding:0!important;
+        background:white!important;
+        overflow:visible!important;
+        min-height:0!important;
+    }
+
+    .id-card-wrap{
+        width:1012px!important;
+        height:638px!important;
+        margin:0 auto!important;
+    }
+
+    .id-card{
+        box-shadow:none!important;
+        border:1px solid #ddd!important;
+        border-radius:0!important;
+    }
+
+    @page{
+        size:auto;
+        margin:10mm;
+    }
+}
+
+/* ============================================================
+   DARK INPUT COLOR FIX
+============================================================ */
+
+input[type="date"]{
+    color-scheme:dark;
+}
+
+input[type="color"]{
+    min-height:45px;
+    padding:4px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.muted{
+    color:var(--muted);
+}
+
+.small{
+    font-size:11px;
+}
+
+/* ============================================================
+   CARD COLOR THEMES
+============================================================ */
+
+.theme-teal .card-bg::before{
+    background:rgba(20,184,166,.13);
+}
+
+.theme-blue .card-bg::before{
+    background:rgba(37,99,235,.13);
+}
+
+.theme-purple .card-bg::before{
+    background:rgba(124,58,237,.13);
+}
+
+.theme-gold .card-bg::before{
+    background:rgba(217,119,6,.14);
+}
+
+.theme-red .card-bg::before{
+    background:rgba(220,38,38,.12);
+}
+
+.theme-green .card-bg::before{
+    background:rgba(22,163,74,.13);
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     LOADING SCREEN
+============================================================ -->
+
+<div class="loader" id="loader">
+    <div class="loader-inner">
+        <div class="loader-ring"></div>
+        <div class="loader-title">MIS-NEXUS™ QR STUDIO</div>
+        <div class="loader-sub">Preparing QR workspace...</div>
+    </div>
+</div>
+
+<!-- ============================================================
+     APPLICATION
+============================================================ -->
+
+<div class="app">
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-logo" id="topBrandLogo">
+            <span>MN</span>
+            <img id="topBrandLogoImg" alt="School logo">
+        </div>
+
+        <div class="brand-copy">
+            <div class="brand-title">
+                MIS-NEXUS™ QR STUDIO
+            </div>
+
+            <div class="brand-sub">
+                Student QR • Smart ID Card • Attendance Identifier
+            </div>
+        </div>
+
+    </div>
+
+    <div class="top-actions">
+
+        <button
+            class="icon-btn"
+            id="helpButton"
+            title="Help"
+            aria-label="Help"
+        >?</button>
+
+        <button
+            class="icon-btn"
+            id="resetTopButton"
+            title="Reset"
+            aria-label="Reset"
+        >↻</button>
+
+    </div>
+
+</header>
+
+<main class="main">
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+
+<section class="hero">
+
+    <div class="hero-panel">
+
+        <h1>
+            Student QR<br>
+            <span style="color:var(--primary)">ID Studio.</span>
+        </h1>
+
+        <p>
+            Generate a clean, high-quality QR identifier and a
+            ready-made student ID card. The QR value can be used
+            directly by the MIS-NEXUS boarders attendance scanner.
+        </p>
+
+    </div>
+
+    <div class="hero-panel status-card">
+
+        <div class="status-row">
+
+            <div>
+                <div class="panel-title">
+                    Generator Status
+                </div>
+
+                <div class="panel-description">
+                    Local browser generation
+                </div>
+            </div>
+
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                READY
+            </div>
+
+        </div>
+
+        <div class="hero-stats">
+
+            <div class="stat">
+                <strong id="statGenerated">0</strong>
+                <span>Generated</span>
+            </div>
+
+            <div class="stat">
+                <strong id="statDraft">—</strong>
+                <span>Draft</span>
+            </div>
+
+            <div class="stat">
+                <strong id="statQR">LIVE</strong>
+                <span>QR Engine</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ============================================================
+     WORKSPACE
+============================================================ -->
+
+<section class="workspace">
+
+<!-- ============================================================
+     FORM PANEL
+============================================================ -->
+
+<div class="panel form-panel">
+
+    <div class="panel-header">
+
+        <div>
+            <div class="panel-title">
+                Student Information
+            </div>
+
+            <div class="panel-description">
+                Enter the details for the ID card.
+            </div>
+        </div>
+
+        <button
+            class="btn"
+            id="saveDraftButton"
+            type="button"
+        >
+            Save
+        </button>
+
+    </div>
+
+    <div class="panel-body">
+
+        <!-- ====================================================
+             SCHOOL
+        ==================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-heading">
+                <div class="section-number">01</div>
+                <strong>School Information</strong>
+            </div>
+
+            <div class="grid">
+
+                <div class="field full">
+
+                    <label for="schoolName">
+                        School Name
+                    </label>
+
+                    <input
+                        id="schoolName"
+                        class="input"
+                        type="text"
+                        maxlength="100"
+                        value="MIS ABUJA"
+                        placeholder="School name"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="schoolMotto">
+                        Motto
+                    </label>
+
+                    <input
+                        id="schoolMotto"
+                        class="input"
+                        type="text"
+                        maxlength="120"
+                        value="Knowledge • Character • Excellence"
+                        placeholder="School motto"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="schoolContact">
+                        Contact
+                    </label>
+
+                    <input
+                        id="schoolContact"
+                        class="input"
+                        type="text"
+                        maxlength="150"
+                        value="MIS Abuja • Student Services"
+                        placeholder="Phone / email / address"
+                    >
+
+                </div>
+
+                <div class="field full">
+
+                    <label>
+                        School Logo
+                    </label>
+
+                    <div
+                        class="upload-box"
+                        id="logoUploadBox"
+                    >
+
+                        <input
+                            id="logoInput"
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                        >
+
+                        <div class="upload-content">
+                            <div class="upload-icon">◉</div>
+                            <strong>Upload school logo</strong>
+                            <small>PNG, JPG, WEBP or SVG</small>
+                        </div>
+
+                        <img
+                            class="image-preview"
+                            id="logoPreview"
+                            alt="Logo preview"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ====================================================
+             STUDENT
+        ==================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-heading">
+                <div class="section-number">02</div>
+                <strong>Student Identity</strong>
+            </div>
+
+            <div class="grid">
+
+                <div class="field full">
+
+                    <label for="studentName">
+                        Full Name *
+                    </label>
+
+                    <input
+                        id="studentName"
+                        class="input"
+                        type="text"
+                        maxlength="100"
+                        placeholder="e.g. Aisha Mohammed Bello"
+                        autocomplete="name"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="studentCode">
+                        Student Code / QR ID *
+                    </label>
+
+                    <input
+                        id="studentCode"
+                        class="input"
+                        type="text"
+                        maxlength="80"
+                        placeholder="e.g. 000001"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="admissionNumber">
+                        Admission Number
+                    </label>
+
+                    <input
+                        id="admissionNumber"
+                        class="input"
+                        type="text"
+                        maxlength="80"
+                        placeholder="e.g. MIS/BRD/001"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="className">
+                        Class
+                    </label>
+
+                    <input
+                        id="className"
+                        class="input"
+                        type="text"
+                        maxlength="60"
+                        placeholder="e.g. SS1"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="gender">
+                        Gender
+                    </label>
+
+                    <select
+                        id="gender"
+                        class="select"
+                    >
+
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+
+                    </select>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="dateOfBirth">
+                        Date of Birth
+                    </label>
+
+                    <input
+                        id="dateOfBirth"
+                        class="input"
+                        type="date"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ====================================================
+             BOARDING
+        ==================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-heading">
+                <div class="section-number">03</div>
+                <strong>Boarding Information</strong>
+            </div>
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label for="house">
+                        House
+                    </label>
+
+                    <input
+                        id="house"
+                        class="input"
+                        type="text"
+                        maxlength="60"
+                        placeholder="e.g. Blue House"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="dormitory">
+                        Dormitory
+                    </label>
+
+                    <input
+                        id="dormitory"
+                        class="input"
+                        type="text"
+                        maxlength="60"
+                        placeholder="e.g. Block A"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="room">
+                        Room
+                    </label>
+
+                    <input
+                        id="room"
+                        class="input"
+                        type="text"
+                        maxlength="30"
+                        placeholder="e.g. A-12"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="boardingType">
+                        Boarding Type
+                    </label>
+
+                    <select
+                        id="boardingType"
+                        class="select"
+                    >
+
+                        <option value="Boarder">
+                            Boarder
+                        </option>
+
+                        <option value="Day Student">
+                            Day Student
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ====================================================
+             PARENT
+        ==================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-heading">
+                <div class="section-number">04</div>
+                <strong>Parent / Guardian</strong>
+            </div>
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label for="guardianName">
+                        Parent / Guardian
+                    </label>
+
+                    <input
+                        id="guardianName"
+                        class="input"
+                        type="text"
+                        maxlength="100"
+                        placeholder="Full name"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="guardianPhone">
+                        Phone
+                    </label>
+
+                    <input
+                        id="guardianPhone"
+                        class="input"
+                        type="tel"
+                        maxlength="40"
+                        placeholder="+234..."
+                    >
+
+                </div>
+
+                <div class="field full">
+
+                    <label for="guardianEmail">
+                        Email
+                    </label>
+
+                    <input
+                        id="guardianEmail"
+                        class="input"
+                        type="email"
+                        maxlength="120"
+                        placeholder="parent@example.com"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ====================================================
+             PHOTO
+        ==================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-heading">
+                <div class="section-number">05</div>
+                <strong>Student Photograph</strong>
+            </div>
+
+            <div
+                class="upload-box"
+                id="photoUploadBox"
+            >
+
+                <input
+                    id="photoInput"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                >
+
+                <div class="upload-content">
+                    <div class="upload-icon">◎</div>
+                    <strong>Upload student photograph</strong>
+                    <small>Use a clear front-facing photo</small>
+                </div>
+
+                <img
+                    class="image-preview"
+                    id="photoPreview"
+                    alt="Student photo preview"
+                >
+
+            </div>
+
+        </div>
+
+        <!-- ====================================================
+             QR SETTINGS
+        ==================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-heading">
+                <div class="section-number">06</div>
+                <strong>QR Configuration</strong>
+            </div>
+
+            <div class="grid">
+
+                <div class="field full">
+
+                    <label for="qrForeground">
+                        QR Foreground
+                    </label>
+
+                    <input
+                        id="qrForeground"
+                        type="color"
+                        value="#000000"
+                        style="width:100%;"
+                    >
+
+                </div>
+
+                <div class="field full">
+
+                    <label for="qrBackground">
+                        QR Background
+                    </label>
+
+                    <input
+                        id="qrBackground"
+                        type="color"
+                        value="#ffffff"
+                        style="width:100%;"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="qrSize">
+                        QR Size
+                    </label>
+
+                    <div class="range-row">
+
+                        <input
+                            id="qrSize"
+                            type="range"
+                            min="180"
+                            max="900"
+                            step="10"
+                            value="500"
+                        >
+
+                        <div
+                            class="range-value"
+                            id="qrSizeValue"
+                        >
+                            500
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="qrMargin">
+                        QR Margin
+                    </label>
+
+                    <div class="range-row">
+
+                        <input
+                            id="qrMargin"
+                            type="range"
+                            min="0"
+                            max="30"
+                            step="1"
+                            value="4"
+                        >
+
+                        <div
+                            class="range-value"
+                            id="qrMarginValue"
+                        >
+                            4
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="field full">
+
+                    <label for="qrLevel">
+                        Error Correction
+                    </label>
+
+                    <select
+                        id="qrLevel"
+                        class="select"
+                    >
+
+                        <option value="L">
+                            Low — maximum data
+                        </option>
+
+                        <option
+                            value="M"
+                            selected
+                        >
+                            Medium — recommended
+                        </option>
+
+                        <option value="Q">
+                            Quartile — stronger
+                        </option>
+
+                        <option value="H">
+                            High — strongest
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ====================================================
+             CARD STYLE
+        ==================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-heading">
+                <div class="section-number">07</div>
+                <strong>Card Design</strong>
+            </div>
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label for="cardTheme">
+                        Theme
+                    </label>
+
+                    <select
+                        id="cardTheme"
+                        class="select"
+                    >
+
+                        <option value="teal">Teal</option>
+                        <option value="blue">Blue</option>
+                        <option value="purple">Purple</option>
+                        <option value="gold">Gold</option>
+                        <option value="red">Red</option>
+                        <option value="green">Green</option>
+
+                    </select>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="cardSerial">
+                        Card Serial
+                    </label>
+
+                    <input
+                        id="cardSerial"
+                        class="input"
+                        type="text"
+                        maxlength="80"
+                        placeholder="Auto-generated"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ====================================================
+             ACTIONS
+        ==================================================== -->
+
+        <div class="form-section">
+
+            <div class="button-row">
+
+                <button
+                    class="btn primary"
+                    id="generateButton"
+                    type="button"
+                >
+                    ⚡ Generate QR
+                </button>
+
+                <button
+                    class="btn success"
+                    id="downloadCardButton"
+                    type="button"
+                >
+                    ↓ Download Card
+                </button>
+
+                <button
+                    class="btn"
+                    id="downloadQRButton"
+                    type="button"
+                >
+                    ↓ QR Only
+                </button>
+
+                <button
+                    class="btn"
+                    id="printButton"
+                    type="button"
+                >
+                    ⎙ Print
+                </button>
+
+                <button
+                    class="btn danger"
+                    id="clearButton"
+                    type="button"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ============================================================
+     PREVIEW PANEL
+============================================================ -->
+
+<div class="panel preview-panel">
+
+    <div class="panel-header">
+
+        <div>
+            <div class="panel-title">
+                Live ID Card Preview
+            </div>
+
+            <div class="panel-description">
+                This is the card that will be printed.
+            </div>
+        </div>
+
+        <div class="preview-toolbar">
+
+            <button
+                class="btn"
+                id="fullscreenButton"
+                type="button"
+            >
+                ⛶
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="preview-stage" id="previewStage">
+
+        <div class="id-card-wrap" id="cardExportArea">
+
+            <div
+                class="id-card theme-teal"
+                id="idCard"
+            >
+
+                <div class="card-bg"></div>
+
+                <div
+                    class="watermark"
+                    id="cardWatermark"
+                >
+                    MIS ABUJA
+                </div>
+
+                <!-- CARD HEADER -->
+
+                <div class="card-header">
+
+                    <div class="card-logo">
+
+                        <div
+                            class="card-logo-placeholder"
+                            id="cardLogoPlaceholder"
+                        >
+                            MN
+                        </div>
+
+                        <img
+                            id="cardLogoImg"
+                            alt="School logo"
+                        >
+
+                    </div>
+
+                    <div class="school-details">
+
+                        <div
+                            class="school-name"
+                            id="cardSchoolName"
+                        >
+                            MIS ABUJA
+                        </div>
+
+                        <div
+                            class="school-motto"
+                            id="cardSchoolMotto"
+                        >
+                            Knowledge • Character • Excellence
+                        </div>
+
+                        <div
+                            class="school-contact"
+                            id="cardSchoolContact"
+                        >
+                            MIS Abuja • Student Services
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- PHOTO -->
+
+                <div class="card-photo">
+
+                    <div
+                        class="photo-placeholder"
+                        id="cardPhotoPlaceholder"
+                    >
+                        STUDENT<br>PHOTO
+                    </div>
+
+                    <img
+                        id="cardStudentPhoto"
+                        alt="Student photograph"
+                    >
+
+                </div>
+
+                <!-- STUDENT DATA -->
+
+                <div class="student-block">
+
+                    <div class="card-label">
+                        Student
+                    </div>
+
+                    <div
+                        class="card-student-name"
+                        id="cardStudentName"
+                    >
+                        STUDENT NAME
+                    </div>
+
+                    <div class="card-grid">
+
+                        <div class="card-field">
+
+                            <div class="card-label">
+                                Student ID
+                            </div>
+
+                            <div
+                                class="card-value"
+                                id="cardStudentCode"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="card-field">
+
+                            <div class="card-label">
+                                Class
+                            </div>
+
+                            <div
+                                class="card-value"
+                                id="cardClass"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="card-field">
+
+                            <div class="card-label">
+                                Admission No.
+                            </div>
+
+                            <div
+                                class="card-value"
+                                id="cardAdmission"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="card-field">
+
+                            <div class="card-label">
+                                Gender
+                            </div>
+
+                            <div
+                                class="card-value"
+                                id="cardGender"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="card-field">
+
+                            <div class="card-label">
+                                House
+                            </div>
+
+                            <div
+                                class="card-value"
+                                id="cardHouse"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="card-field">
+
+                            <div class="card-label">
+                                Dormitory
+                            </div>
+
+                            <div
+                                class="card-value"
+                                id="cardDormitory"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- QR -->
+
+                <div
+                    class="card-qr"
+                    id="cardQR"
+                >
+
+                    <div
+                        class="qr-empty"
+                        id="qrEmpty"
+                    >
+                        ENTER STUDENT<br>
+                        QR ID
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+
+                <div class="card-footer">
+
+                    <div class="card-footer-left">
+
+                        <div
+                            class="attendance-code"
+                            id="cardAttendanceCode"
+                        >
+                            QR ID: —
+                        </div>
+
+                        <div class="valid-text">
+                            Scan this code for MIS-NEXUS attendance identification.
+                        </div>
+
+                    </div>
+
+                    <div class="card-signature">
+
+                        <div class="signature-line"></div>
+
+                        <div class="signature-label">
+                            SCHOOL AUTHORITY
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+<!-- ============================================================
+     INFORMATION STRIP
+============================================================ -->
+
+<section class="info-strip">
+
+    <div class="info-box">
+
+        <strong>QR Identifier</strong>
+
+        <span>
+            Use the actual student_code generated for the boarder.
+        </span>
+
+    </div>
+
+    <div class="info-box">
+
+        <strong>Attendance</strong>
+
+        <span>
+            The boarders scanner can use this value to identify the student.
+        </span>
+
+    </div>
+
+    <div class="info-box">
+
+        <strong>Privacy</strong>
+
+        <span>
+            Keep passwords, parent information and sensitive data outside the QR.
+        </span>
+
+    </div>
+
+    <div class="info-box">
+
+        <strong>Printing</strong>
+
+        <span>
+            Generate first, then print or download the ready-made card.
+        </span>
+
+    </div>
+
+</section>
+
+</main>
+
+</div>
+
+<!-- ============================================================
+     HELP MODAL
+============================================================ -->
+
+<div
+    class="modal"
+    id="helpModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="helpTitle"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+                <strong id="helpTitle">
+                    MIS-NEXUS QR Studio
+                </strong>
+
+                <div class="panel-description">
+                    Quick instructions
+                </div>
+            </div>
+
+            <button
+                class="icon-btn"
+                id="closeHelpButton"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <h3>How to create a boarder QR</h3>
+
+            <ol class="muted" style="line-height:1.9">
+
+                <li>
+                    Register the boarder in your boarders system.
+                </li>
+
+                <li>
+                    Copy the student's actual
+                    <strong>student_code</strong>.
+                </li>
+
+                <li>
+                    Enter that value into
+                    <strong>Student Code / QR ID</strong>.
+                </li>
+
+                <li>
+                    Enter the student's name and other information.
+                </li>
+
+                <li>
+                    Upload the school logo.
+                </li>
+
+                <li>
+                    Upload the student's photograph.
+                </li>
+
+                <li>
+                    Press <strong>Generate QR</strong>.
+                </li>
+
+                <li>
+                    Download or print the card.
+                </li>
+
+                <li>
+                    The QR should contain only the attendance identifier.
+                </li>
+
+            </ol>
+
+            <div
+                style="
+                    padding:14px;
+                    border-radius:13px;
+                    background:rgba(79,209,197,.07);
+                    border:1px solid rgba(79,209,197,.14);
+                    line-height:1.6;
+                "
+            >
+                <strong>Example</strong><br>
+                Student Code:
+                <code>000001</code><br><br>
+
+                QR content:
+                <code>000001</code>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ============================================================
+     TOAST CONTAINER
+============================================================ -->
+
+<div
+    class="toast-container"
+    id="toastContainer"
+    aria-live="polite"
+></div>
+
+<script>
+/* ============================================================
+   MIS-NEXUS™ QR STUDIO ENGINE
+============================================================ */
+
+(function(){
+
+"use strict";
+
+/* ============================================================
+   CONFIGURATION
+============================================================ */
+
+const CONFIG = {
+
+    storageKey:
+        "mis_nexus_student_qr_studio_v1",
+
+    statsKey:
+        "mis_nexus_student_qr_stats_v1",
+
+    defaultSchool:
+        "MIS ABUJA",
+
+    defaultMotto:
+        "Knowledge • Character • Excellence",
+
+    defaultContact:
+        "MIS Abuja • Student Services",
+
+    defaultQRSize:
+        500,
+
+    defaultMargin:
+        4,
+
+    debounceDelay:
+        80,
+
+    maxImageBytes:
+        8 * 1024 * 1024,
+
+    allowedImageTypes:[
+        "image/png",
+        "image/jpeg",
+        "image/webp",
+        "image/svg+xml"
+    ]
+
+};
+
+/* ============================================================
+   STATE
+============================================================ */
+
+const state = {
+
+    qrInstance:null,
+
+    logoData:null,
+
+    photoData:null,
+
+    generated:false,
+
+    generatedCount:0,
+
+    dirty:false,
+
+    generationTimer:null,
+
+    lastQRValue:"",
+
+    initialized:false
+
+};
+
+/* ============================================================
+   DOM HELPERS
+============================================================ */
+
+const $ = id =>
+    document.getElementById(id);
+
+const qs = selector =>
+    document.querySelector(selector);
+
+const qsa = selector =>
+    Array.from(document.querySelectorAll(selector));
+
+/* ============================================================
+   INPUT MAP
+============================================================ */
+
+const fields = {
+
+    schoolName:
+        $("schoolName"),
+
+    schoolMotto:
+        $("schoolMotto"),
+
+    schoolContact:
+        $("schoolContact"),
+
+    studentName:
+        $("studentName"),
+
+    studentCode:
+        $("studentCode"),
+
+    admissionNumber:
+        $("admissionNumber"),
+
+    className:
+        $("className"),
+
+    gender:
+        $("gender"),
+
+    dateOfBirth:
+        $("dateOfBirth"),
+
+    house:
+        $("house"),
+
+    dormitory:
+        $("dormitory"),
+
+    room:
+        $("room"),
+
+    boardingType:
+        $("boardingType"),
+
+    guardianName:
+        $("guardianName"),
+
+    guardianPhone:
+        $("guardianPhone"),
+
+    guardianEmail:
+        $("guardianEmail"),
+
+    qrForeground:
+        $("qrForeground"),
+
+    qrBackground:
+        $("qrBackground"),
+
+    qrSize:
+        $("qrSize"),
+
+    qrMargin:
+        $("qrMargin"),
+
+    qrLevel:
+        $("qrLevel"),
+
+    cardTheme:
+        $("cardTheme"),
+
+    cardSerial:
+        $("cardSerial")
+
+};
+
+/* ============================================================
+   CARD MAP
+============================================================ */
+
+const card = {
+
+    element:
+        $("idCard"),
+
+    watermark:
+        $("cardWatermark"),
+
+    schoolName:
+        $("cardSchoolName"),
+
+    schoolMotto:
+        $("cardSchoolMotto"),
+
+    schoolContact:
+        $("cardSchoolContact"),
+
+    studentName:
+        $("cardStudentName"),
+
+    studentCode:
+        $("cardStudentCode"),
+
+    admission:
+        $("cardAdmission"),
+
+    className:
+        $("cardClass"),
+
+    gender:
+        $("cardGender"),
+
+    house:
+        $("cardHouse"),
+
+    dormitory:
+        $("cardDormitory"),
+
+    attendanceCode:
+        $("cardAttendanceCode"),
+
+    logo:
+        $("cardLogoImg"),
+
+    logoPlaceholder:
+        $("cardLogoPlaceholder"),
+
+    photo:
+        $("cardStudentPhoto"),
+
+    photoPlaceholder:
+        $("cardPhotoPlaceholder"),
+
+    qr:
+        $("cardQR"),
+
+    qrEmpty:
+        $("qrEmpty")
+
+};
+
+/* ============================================================
+   UTILITIES
+============================================================ */
+
+function safeText(value, fallback="—"){
+
+    if(
+        value === undefined ||
+        value === null ||
+        String(value).trim() === ""
+    ){
+
+        return fallback;
+
+    }
+
+    return String(value).trim();
+
+}
+
+function normalizeCode(value){
+
+    return String(value || "")
+        .trim()
+        .replace(/\s+/g," ");
+
+}
+
+function slugify(value){
+
+    return safeText(value,"student")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g,"-")
+        .replace(/^-+|-+$/g,"")
+        .slice(0,70);
+
+}
+
+function escapeFilename(value){
+
+    return slugify(value) || "student";
+
+}
+
+function debounce(fn,delay){
+
+    let timer;
+
+    return function(){
+
+        clearTimeout(timer);
+
+        const context = this;
+        const args = arguments;
+
+        timer = setTimeout(
+            () => fn.apply(context,args),
+            delay
+        );
+
+    };
+
+}
+
+function nextFrame(fn){
+
+    if(
+        "requestAnimationFrame" in window
+    ){
+
+        requestAnimationFrame(fn);
+
+    }else{
+
+        setTimeout(fn,0);
+
+    }
+
+}
+
+function sleep(ms){
+
+    return new Promise(
+        resolve => setTimeout(resolve,ms)
+    );
+
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+function toast(
+    title,
+    message,
+    type="info"
+){
+
+    const container =
+        $("toastContainer");
+
+    const item =
+        document.createElement("div");
+
+    item.className =
+        "toast";
+
+    const icon =
+        document.createElement("div");
+
+    icon.className =
+        "toast-icon";
+
+    icon.textContent =
+        type === "success"
+            ? "✓"
+            : type === "error"
+                ? "!"
+                : "i";
+
+    const text =
+        document.createElement("div");
+
+    text.className =
+        "toast-text";
+
+    const strong =
+        document.createElement("strong");
+
+    strong.textContent =
+        title;
+
+    const span =
+        document.createElement("span");
+
+    span.textContent =
+        message;
+
+    text.appendChild(strong);
+    text.appendChild(span);
+
+    item.appendChild(icon);
+    item.appendChild(text);
+
+    container.appendChild(item);
+
+    setTimeout(
+        () => {
+
+            item.style.opacity="0";
+            item.style.transform=
+                "translateY(10px)";
+
+            setTimeout(
+                () => item.remove(),
+                250
+            );
+
+        },
+        3500
+    );
+
+}
+
+/* ============================================================
+   STATISTICS
+============================================================ */
+
+function loadStats(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                CONFIG.statsKey
+            );
+
+        if(!raw){
+
+            state.generatedCount=0;
+
+            return;
+
+        }
+
+        const parsed =
+            JSON.parse(raw);
+
+        state.generatedCount =
+            Number(parsed.generated || 0);
+
+    }catch(error){
+
+        state.generatedCount=0;
+
+    }
+
+    updateStats();
+
+}
+
+function saveStats(){
+
+    try{
+
+        localStorage.setItem(
+            CONFIG.statsKey,
+            JSON.stringify({
+                generated:
+                    state.generatedCount,
+                updatedAt:
+                    new Date().toISOString()
+            })
+        );
+
+    }catch(error){
+
+        /* localStorage can be unavailable */
+    }
+
+}
+
+function updateStats(){
+
+    $("statGenerated")
+        .textContent =
+        state.generatedCount;
+
+    $("statDraft")
+        .textContent =
+        state.dirty
+            ? "EDIT"
+            : "SAVED";
+
+}
+
+/* ============================================================
+   FORM DATA
+============================================================ */
+
+function getFormData(){
+
+    return {
+
+        schoolName:
+            fields.schoolName.value,
+
+        schoolMotto:
+            fields.schoolMotto.value,
+
+        schoolContact:
+            fields.schoolContact.value,
+
+        studentName:
+            fields.studentName.value,
+
+        studentCode:
+            fields.studentCode.value,
+
+        admissionNumber:
+            fields.admissionNumber.value,
+
+        className:
+            fields.className.value,
+
+        gender:
+            fields.gender.value,
+
+        dateOfBirth:
+            fields.dateOfBirth.value,
+
+        house:
+            fields.house.value,
+
+        dormitory:
+            fields.dormitory.value,
+
+        room:
+            fields.room.value,
+
+        boardingType:
+            fields.boardingType.value,
+
+        guardianName:
+            fields.guardianName.value,
+
+        guardianPhone:
+            fields.guardianPhone.value,
+
+        guardianEmail:
+            fields.guardianEmail.value,
+
+        qrForeground:
+            fields.qrForeground.value,
+
+        qrBackground:
+            fields.qrBackground.value,
+
+        qrSize:
+            fields.qrSize.value,
+
+        qrMargin:
+            fields.qrMargin.value,
+
+        qrLevel:
+            fields.qrLevel.value,
+
+        cardTheme:
+            fields.cardTheme.value,
+
+        cardSerial:
+            fields.cardSerial.value,
+
+        logoData:
+            state.logoData,
+
+        photoData:
+            state.photoData
+
+    };
+
+}
+
+/* ============================================================
+   APPLY FORM DATA
+============================================================ */
+
+function applyFormData(data){
+
+    if(!data){
+        return;
+    }
+
+    Object.keys(fields).forEach(key => {
+
+        if(
+            data[key] !== undefined &&
+            fields[key]
+        ){
+
+            fields[key].value =
+                data[key];
+
+        }
+
+    });
+
+    state.logoData =
+        data.logoData || null;
+
+    state.photoData =
+        data.photoData || null;
+
+    if(state.logoData){
+
+        showLogo(state.logoData);
+
+    }
+
+    if(state.photoData){
+
+        showPhoto(state.photoData);
+
+    }
+
+    updateRangeLabels();
+
+    updateCard();
+
+}
+
+/* ============================================================
+   SAVE DRAFT
+============================================================ */
+
+function saveDraft(){
+
+    try{
+
+        const data =
+            getFormData();
+
+        localStorage.setItem(
+            CONFIG.storageKey,
+            JSON.stringify({
+                data:data,
+                savedAt:
+                    new Date().toISOString()
+            })
+        );
+
+        state.dirty=false;
+
+        updateStats();
+
+        toast(
+            "Draft saved",
+            "The current student card has been saved in this browser.",
+            "success"
+        );
+
+    }catch(error){
+
+        toast(
+            "Could not save",
+            "The browser could not store the draft. Large images may be the cause.",
+            "error"
+        );
+
+    }
+
+}
+
+/* ============================================================
+   LOAD DRAFT
+============================================================ */
+
+function loadDraft(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                CONFIG.storageKey
+            );
+
+        if(!raw){
+
+            return false;
+
+        }
+
+        const parsed =
+            JSON.parse(raw);
+
+        if(!parsed || !parsed.data){
+
+            return false;
+
+        }
+
+        applyFormData(parsed.data);
+
+        state.dirty=false;
+
+        updateStats();
+
+        return true;
+
+    }catch(error){
+
+        return false;
+
+    }
+
+}
+
+/* ============================================================
+   CLEAR
+============================================================ */
+
+function clearAll(){
+
+    const confirmed =
+        window.confirm(
+            "Clear the current student information and preview?"
+        );
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+    Object.keys(fields).forEach(key => {
+
+        const element =
+            fields[key];
+
+        if(
+            element.tagName === "SELECT"
+        ){
+
+            element.selectedIndex=0;
+
+        }
+
+    });
+
+    fields.schoolName.value =
+        CONFIG.defaultSchool;
+
+    fields.schoolMotto.value =
+        CONFIG.defaultMotto;
+
+    fields.schoolContact.value =
+        CONFIG.defaultContact;
+
+    fields.qrForeground.value =
+        "#000000";
+
+    fields.qrBackground.value =
+        "#ffffff";
+
+    fields.qrSize.value =
+        CONFIG.defaultQRSize;
+
+    fields.qrMargin.value =
+        CONFIG.defaultMargin;
+
+    fields.qrLevel.value =
+        "M";
+
+    fields.cardTheme.value =
+        "teal";
+
+    fields.cardSerial.value =
+        generateCardSerial();
+
+    state.logoData=null;
+
+    state.photoData=null;
+
+    removeImagePreview(
+        $("logoUploadBox"),
+        $("logoPreview")
+    );
+
+    removeImagePreview(
+        $("photoUploadBox"),
+        $("photoPreview")
+    );
+
+    fields.studentName.focus();
+
+    state.generated=false;
+    state.lastQRValue="";
+    state.dirty=true;
+
+    clearQR();
+
+    updateCard();
+
+    updateStats();
+
+    toast(
+        "Workspace cleared",
+        "You can now create another student card."
+    );
+
+}
+
+/* ============================================================
+   CARD SERIAL
+============================================================ */
+
+function generateCardSerial(){
+
+    const time =
+        Date.now()
+        .toString(36)
+        .toUpperCase();
+
+    const random =
+        Math.random()
+        .toString(36)
+        .slice(2,6)
+        .toUpperCase();
+
+    return `MIS-${time}-${random}`;
+
+}
+
+/* ============================================================
+   IMAGE VALIDATION
+============================================================ */
+
+function validateImage(file){
+
+    if(!file){
+
+        return false;
+
+    }
+
+    if(
+        !CONFIG.allowedImageTypes
+            .includes(file.type)
+    ){
+
+        toast(
+            "Unsupported image",
+            "Please select PNG, JPG, WEBP or SVG.",
+            "error"
+        );
+
+        return false;
+
+    }
+
+    if(
+        file.size >
+        CONFIG.maxImageBytes
+    ){
+
+        toast(
+            "Image too large",
+            "Please use an image smaller than 8 MB.",
+            "error"
+        );
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+/* ============================================================
+   IMAGE TO DATA URL
+============================================================ */
+
+function fileToDataURL(file){
+
+    return new Promise(
+        (resolve,reject) => {
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                () => resolve(reader.result);
+
+            reader.onerror =
+                reject;
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+/* ============================================================
+   LOGO UPLOAD
+============================================================ */
+
+async function handleLogoFile(file){
+
+    if(!validateImage(file)){
+        return;
+    }
+
+    try{
+
+        const data =
+            await fileToDataURL(file);
+
+        state.logoData=data;
+
+        showLogo(data);
+
+        updateCard();
+
+        markDirty();
+
+        toast(
+            "Logo loaded",
+            "The school logo has been applied to the card.",
+            "success"
+        );
+
+    }catch(error){
+
+        toast(
+            "Logo error",
+            "The selected logo could not be loaded.",
+            "error"
+        );
+
+    }
+
+}
+
+function showLogo(data){
+
+    $("logoPreview").src=data;
+
+    $("logoUploadBox")
+        .classList
+        .add("has-image");
+
+    card.logo.src=data;
+    card.logo.style.display="block";
+    card.logoPlaceholder.style.display="none";
+
+    $("topBrandLogoImg").src=data;
+    $("topBrandLogoImg").style.display="block";
+
+    $("topBrandLogo")
+        .querySelector("span")
+        .style.display="none";
+
+}
+
+/* ============================================================
+   PHOTO UPLOAD
+============================================================ */
+
+async function handlePhotoFile(file){
+
+    if(!validateImage(file)){
+        return;
+    }
+
+    try{
+
+        const data =
+            await fileToDataURL(file);
+
+        state.photoData=data;
+
+        showPhoto(data);
+
+        updateCard();
+
+        markDirty();
+
+        toast(
+            "Photo loaded",
+            "The student photograph has been applied.",
+            "success"
+        );
+
+    }catch(error){
+
+        toast(
+            "Photo error",
+            "The selected photograph could not be loaded.",
+            "error"
+        );
+
+    }
+
+}
+
+function showPhoto(data){
+
+    $("photoPreview").src=data;
+
+    $("photoUploadBox")
+        .classList
+        .add("has-image");
+
+    card.photo.src=data;
+    card.photo.style.display="block";
+    card.photoPlaceholder.style.display="none";
+
+}
+
+/* ============================================================
+   REMOVE IMAGE
+============================================================ */
+
+function removeImagePreview(
+    box,
+    preview
+){
+
+    box.classList.remove(
+        "has-image"
+    );
+
+    preview.removeAttribute(
+        "src"
+    );
+
+}
+
+/* ============================================================
+   DRAG DROP
+============================================================ */
+
+function setupDropZone(
+    box,
+    handler
+){
+
+    [
+        "dragenter",
+        "dragover"
+    ].forEach(eventName => {
+
+        box.addEventListener(
+            eventName,
+            event => {
+
+                event.preventDefault();
+
+                box.classList.add(
+                    "dragover"
+                );
+
+            }
+        );
+
+    });
+
+    [
+        "dragleave",
+        "drop"
+    ].forEach(eventName => {
+
+        box.addEventListener(
+            eventName,
+            event => {
+
+                event.preventDefault();
+
+                box.classList.remove(
+                    "dragover"
+                );
+
+            }
+        );
+
+    });
+
+    box.addEventListener(
+        "drop",
+        event => {
+
+            const files =
+                event.dataTransfer.files;
+
+            if(
+                files &&
+                files.length
+            ){
+
+                handler(
+                    files[0]
+                );
+
+            }
+
+        }
+    );
+
+}
+
+/* ============================================================
+   QR ENGINE
+============================================================ */
+
+function qrCorrectLevel(){
+
+    if(
+        typeof QRCode ===
+        "undefined"
+    ){
+
+        return null;
+
+    }
+
+    const map = {
+
+        L:
+            QRCode.CorrectLevel.L,
+
+        M:
+            QRCode.CorrectLevel.M,
+
+        Q:
+            QRCode.CorrectLevel.Q,
+
+        H:
+            QRCode.CorrectLevel.H
+
+    };
+
+    return map[
+        fields.qrLevel.value
+    ] || QRCode.CorrectLevel.M;
+
+}
+
+/* ============================================================
+   CLEAR QR
+============================================================ */
+
+function clearQR(){
+
+    card.qr.innerHTML="";
+
+    const empty =
+        document.createElement("div");
+
+    empty.className="qr-empty";
+
+    empty.id="qrEmpty";
+
+    empty.innerHTML=
+        "ENTER STUDENT<br>QR ID";
+
+    card.qr.appendChild(empty);
+
+}
+
+/* ============================================================
+   CREATE QR
+============================================================ */
+
+function createQR(){
+
+    const value =
+        normalizeCode(
+            fields.studentCode.value
+        );
+
+    if(!value){
+
+        clearQR();
+
+        state.generated=false;
+
+        return false;
+
+    }
+
+    if(
+        typeof QRCode ===
+        "undefined"
+    ){
+
+        toast(
+            "QR engine unavailable",
+            "The QR library did not load. Check your internet connection.",
+            "error"
+        );
+
+        return false;
+
+    }
+
+    clearQR();
+
+    const size =
+        Math.max(
+            180,
+            Math.min(
+                900,
+                Number(fields.qrSize.value)
+            )
+        );
+
+    try{
+
+        state.qrInstance =
+            new QRCode(
+                card.qr,
+                {
+                    text:value,
+                    width:size,
+                    height:size,
+                    colorDark:
+                        fields.qrForeground.value,
+                    colorLight:
+                        fields.qrBackground.value,
+                    correctLevel:
+                        qrCorrectLevel()
+                }
+            );
+
+        state.lastQRValue=value;
+        state.generated=true;
+
+        nextFrame(
+            optimizeQRVisual
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "QR generation error:",
+            error
+        );
+
+        toast(
+            "QR generation failed",
+            "The selected QR value could not be encoded.",
+            "error"
+        );
+
+        clearQR();
+
+        return false;
+
+    }
+
+}
+
+/* ============================================================
+   QR VISUAL OPTIMIZATION
+============================================================ */
+
+function optimizeQRVisual(){
+
+    const images =
+        card.qr.querySelectorAll(
+            "img"
+        );
+
+    images.forEach(image => {
+
+        image.style.width="100%";
+        image.style.height="100%";
+        image.style.display="block";
+
+    });
+
+    const canvases =
+        card.qr.querySelectorAll(
+            "canvas"
+        );
+
+    canvases.forEach(canvas => {
+
+        canvas.style.width="100%";
+        canvas.style.height="100%";
+        canvas.style.display="block";
+
+    });
+
+}
+
+/* ============================================================
+   UPDATE CARD
+============================================================ */
+
+function updateCard(){
+
+    card.schoolName.textContent =
+        safeText(
+            fields.schoolName.value,
+            CONFIG.defaultSchool
+        );
+
+    card.schoolMotto.textContent =
+        safeText(
+            fields.schoolMotto.value,
+            CONFIG.defaultMotto
+        );
+
+    card.schoolContact.textContent =
+        safeText(
+            fields.schoolContact.value,
+            CONFIG.defaultContact
+        );
+
+    card.studentName.textContent =
+        safeText(
+            fields.studentName.value,
+            "STUDENT NAME"
+        ).toUpperCase();
+
+    card.studentCode.textContent =
+        safeText(
+            fields.studentCode.value
+        );
+
+    card.admission.textContent =
+        safeText(
+            fields.admissionNumber.value
+        );
+
+    card.className.textContent =
+        safeText(
+            fields.className.value
+        );
+
+    card.gender.textContent =
+        safeText(
+            fields.gender.value
+        );
+
+    card.house.textContent =
+        safeText(
+            fields.house.value
+        );
+
+    card.dormitory.textContent =
+        safeText(
+            fields.dormitory.value
+        );
+
+    card.attendanceCode.textContent =
+        "QR ID: " +
+        safeText(
+            fields.studentCode.value
+        );
+
+    card.watermark.textContent =
+        safeText(
+            fields.schoolName.value,
+            CONFIG.defaultSchool
+        ).toUpperCase();
+
+    applyTheme();
+
+    updateRangeLabels();
+
+}
+
+/* ============================================================
+   THEME
+============================================================ */
+
+function applyTheme(){
+
+    const theme =
+        fields.cardTheme.value ||
+        "teal";
+
+    card.element.classList.remove(
+        "theme-teal",
+        "theme-blue",
+        "theme-purple",
+        "theme-gold",
+        "theme-red",
+        "theme-green"
+    );
+
+    card.element.classList.add(
+        `theme-${theme}`
+    );
+
+}
+
+/* ============================================================
+   RANGE LABELS
+============================================================ */
+
+function updateRangeLabels(){
+
+    $("qrSizeValue")
+        .textContent =
+        fields.qrSize.value;
+
+    $("qrMarginValue")
+        .textContent =
+        fields.qrMargin.value;
+
+}
+
+/* ============================================================
+   GENERATE
+============================================================ */
+
+function generate(){
+
+    const code =
+        normalizeCode(
+            fields.studentCode.value
+        );
+
+    if(!code){
+
+        fields.studentCode.focus();
+
+        toast(
+            "Student QR ID required",
+            "Enter the student's actual student_code before generating.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    updateCard();
+
+    const success =
+        createQR();
+
+    if(!success){
+
+        return;
+
+    }
+
+    state.generatedCount++;
+
+    saveStats();
+
+    state.dirty=true;
+
+    updateStats();
+
+    toast(
+        "QR generated",
+        `QR ${code} is ready for download and printing.`,
+        "success"
+    );
+
+}
+
+/* ============================================================
+   DEBOUNCED LIVE UPDATE
+============================================================ */
+
+const liveUpdate =
+    debounce(
+        () => {
+
+            updateCard();
+
+            const code =
+                normalizeCode(
+                    fields.studentCode.value
+                );
+
+            if(code){
+
+                createQR();
+
+            }else{
+
+                clearQR();
+
+            }
+
+            markDirty();
+
+        },
+        CONFIG.debounceDelay
+    );
+
+/* ============================================================
+   DIRTY STATE
+============================================================ */
+
+function markDirty(){
+
+    state.dirty=true;
+
+    updateStats();
+
+}
+
+/* ============================================================
+   COPY
+============================================================ */
+
+async function copyText(
+    value,
+    label
+){
+
+    if(!value){
+
+        toast(
+            "Nothing to copy",
+            `Enter a ${label.toLowerCase()} first.`,
+            "error"
+        );
+
+        return;
+
+    }
+
+    try{
+
+        await navigator.clipboard.writeText(
+            value
+        );
+
+        toast(
+            "Copied",
+            `${label} copied to clipboard.`,
+            "success"
+        );
+
+    }catch(error){
+
+        const temporary =
+            document.createElement("textarea");
+
+        temporary.value=value;
+
+        document.body.appendChild(
+            temporary
+        );
+
+        temporary.select();
+
+        try{
+
+            document.execCommand(
+                "copy"
+            );
+
+            toast(
+                "Copied",
+                `${label} copied to clipboard.`,
+                "success"
+            );
+
+        }catch(e){
+
+            toast(
+                "Copy failed",
+                "Please select and copy the value manually.",
+                "error"
+            );
+
+        }
+
+        temporary.remove();
+
+    }
+
+}
+
+/* ============================================================
+   QR CANVAS EXTRACTION
+============================================================ */
+
+function getQRImage(){
+
+    const image =
+        card.qr.querySelector("img");
+
+    if(image && image.src){
+
+        return image;
+
+    }
+
+    const canvas =
+        card.qr.querySelector("canvas");
+
+    if(canvas){
+
+        const img =
+            new Image();
+
+        img.src =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+        return img;
+
+    }
+
+    return null;
+
+}
+
+/* ============================================================
+   DOWNLOAD QR
+============================================================ */
+
+async function downloadQR(){
+
+    const value =
+        normalizeCode(
+            fields.studentCode.value
+        );
+
+    if(!value){
+
+        toast(
+            "Student QR ID required",
+            "Enter the student code first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(
+        !state.generated ||
+        state.lastQRValue !== value
+    ){
+
+        const success =
+            createQR();
+
+        if(!success){
+
+            return;
+
+        }
+
+        await sleep(100);
+
+    }
+
+    const source =
+        card.qr.querySelector("canvas") ||
+        card.qr.querySelector("img");
+
+    if(!source){
+
+        toast(
+            "QR not ready",
+            "Generate the QR again.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    try{
+
+        let dataURL;
+
+        if(
+            source.tagName.toLowerCase()
+            === "canvas"
+        ){
+
+            dataURL =
+                source.toDataURL(
+                    "image/png"
+                );
+
+        }else{
+
+            dataURL =
+                source.src;
+
+        }
+
+        triggerDownload(
+            dataURL,
+            `${escapeFilename(value)}-QR.png`
+        );
+
+        toast(
+            "QR downloaded",
+            "The QR image has been saved.",
+            "success"
+        );
+
+    }catch(error){
+
+        toast(
+            "Download failed",
+            "The browser could not create the QR file.",
+            "error"
+        );
+
+    }
+
+}
+
+/* ============================================================
+   GENERIC DOWNLOAD
+============================================================ */
+
+function triggerDownload(
+    dataURL,
+    filename
+){
+
+    const anchor =
+        document.createElement("a");
+
+    anchor.href=dataURL;
+
+    anchor.download=filename;
+
+    document.body.appendChild(
+        anchor
+    );
+
+    anchor.click();
+
+    anchor.remove();
+
+}
+
+/* ============================================================
+   CARD CANVAS RENDERING
+============================================================ */
+
+async function renderCardCanvas(){
+
+    /*
+     * The ID card is rendered manually rather than relying on
+     * an external screenshot package. This keeps the generator
+     * lightweight and predictable.
+     */
+
+    const width=2024;
+    const height=1276;
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width=width;
+    canvas.height=height;
+
+    const ctx =
+        canvas.getContext(
+            "2d",
+            {
+                alpha:false
+            }
+        );
+
+    if(!ctx){
+
+        throw new Error(
+            "Canvas unavailable"
+        );
+
+    }
+
+    /* background */
+
+    ctx.fillStyle="#f8fafc";
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    /* theme */
+
+    const theme =
+        fields.cardTheme.value;
+
+    const themeColors={
+
+        teal:"#14b8a6",
+        blue:"#2563eb",
+        purple:"#7c3aed",
+        gold:"#d97706",
+        red:"#dc2626",
+        green:"#16a34a"
+
+    };
+
+    const accent =
+        themeColors[theme] ||
+        themeColors.teal;
+
+    ctx.save();
+
+    ctx.globalAlpha=.10;
+
+    ctx.fillStyle=accent;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        width*.55,
+        0
+    );
+
+    ctx.lineTo(
+        width,
+        0
+    );
+
+    ctx.lineTo(
+        width,
+        height*.95
+    );
+
+    ctx.lineTo(
+        width*.75,
+        height*.75
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.restore();
+
+    /* watermark */
+
+    ctx.save();
+
+    ctx.translate(
+        width/2,
+        height*.57
+    );
+
+    ctx.rotate(
+        -24*Math.PI/180
+    );
+
+    ctx.globalAlpha=.045;
+
+    ctx.fillStyle="#0f172a";
+
+    ctx.font=
+        "900 190px Arial";
+
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        safeText(
+            fields.schoolName.value,
+            "MIS ABUJA"
+        ).toUpperCase(),
+        0,
+        0
+    );
+
+    ctx.restore();
+
+    /* logo */
+
+    if(state.logoData){
+
+        try{
+
+            const logo =
+                await loadImage(
+                    state.logoData
+                );
+
+            roundImage(
+                ctx,
+                logo,
+                width*.05,
+                height*.05,
+                width*.14,
+                width*.14,
+                45
+            );
+
+        }catch(error){}
+
+    }else{
+
+        drawLogoPlaceholder(
+            ctx,
+            width*.05,
+            height*.05,
+            width*.14
+        );
+
+    }
+
+    /* school text */
+
+    ctx.fillStyle="#101820";
+
+    ctx.font=
+        "900 68px Arial";
+
+    ctx.fillText(
+        safeText(
+            fields.schoolName.value,
+            "MIS ABUJA"
+        ).toUpperCase(),
+        width*.22,
+        height*.12
+    );
+
+    ctx.fillStyle="#475569";
+
+    ctx.font=
+        "600 28px Arial";
+
+    ctx.fillText(
+        safeText(
+            fields.schoolMotto.value,
+            CONFIG.defaultMotto
+        ),
+        width*.22,
+        height*.155
+    );
+
+    ctx.font=
+        "500 24px Arial";
+
+    ctx.fillText(
+        safeText(
+            fields.schoolContact.value,
+            CONFIG.defaultContact
+        ),
+        width*.22,
+        height*.19
+    );
+
+    /* separator */
+
+    ctx.strokeStyle=
+        "rgba(15,23,42,.12)";
+
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        width*.05,
+        height*.24
+    );
+
+    ctx.lineTo(
+        width*.95,
+        height*.24
+    );
+
+    ctx.stroke();
+
+    /* student photo */
+
+    const photoX =
+        width*.05;
+
+    const photoY =
+        height*.30;
+
+    const photoW =
+        width*.23;
+
+    const photoH =
+        height*.43;
+
+    if(state.photoData){
+
+        try{
+
+            const photo =
+                await loadImage(
+                    state.photoData
+                );
+
+            roundImage(
+                ctx,
+                photo,
+                photoX,
+                photoY,
+                photoW,
+                photoH,
+                45
+            );
+
+        }catch(error){
+
+            drawPhotoPlaceholder(
+                ctx,
+                photoX,
+                photoY,
+                photoW,
+                photoH
+            );
+
+        }
+
+    }else{
+
+        drawPhotoPlaceholder(
+            ctx,
+            photoX,
+            photoY,
+            photoW,
+            photoH
+        );
+
+    }
+
+    /* student details */
+
+    const sx =
+        width*.32;
+
+    const sy =
+        height*.32;
+
+    ctx.fillStyle="#64748b";
+
+    ctx.font=
+        "800 22px Arial";
+
+    ctx.fillText(
+        "STUDENT",
+        sx,
+        sy
+    );
+
+    ctx.fillStyle="#101820";
+
+    ctx.font=
+        "900 58px Arial";
+
+    drawWrappedText(
+        ctx,
+        safeText(
+            fields.studentName.value,
+            "STUDENT NAME"
+        ).toUpperCase(),
+        sx,
+        sy+55,
+        width*.36,
+        65,
+        2
+    );
+
+    drawCanvasField(
+        ctx,
+        "STUDENT ID",
+        safeText(fields.studentCode.value),
+        sx,
+        height*.49
+    );
+
+    drawCanvasField(
+        ctx,
+        "CLASS",
+        safeText(fields.className.value),
+        sx+width*.19,
+        height*.49
+    );
+
+    drawCanvasField(
+        ctx,
+        "ADMISSION NO.",
+        safeText(fields.admissionNumber.value),
+        sx,
+        height*.58
+    );
+
+    drawCanvasField(
+        ctx,
+        "GENDER",
+        safeText(fields.gender.value),
+        sx+width*.19,
+        height*.58
+    );
+
+    drawCanvasField(
+        ctx,
+        "HOUSE",
+        safeText(fields.house.value),
+        sx,
+        height*.67
+    );
+
+    drawCanvasField(
+        ctx,
+        "DORMITORY",
+        safeText(fields.dormitory.value),
+        sx+width*.19,
+        height*.67
+    );
+
+    /* QR */
+
+    const qrCanvas =
+        await buildExportQR(
+            safeText(
+                fields.studentCode.value
+            ),
+            width*.70,
+            width*.24
+        );
+
+    if(qrCanvas){
+
+        ctx.fillStyle="#ffffff";
+
+        roundRect(
+            ctx,
+            width*.71,
+            height*.29,
+            width*.22,
+            width*.22,
+            45
+        );
+
+        ctx.drawImage(
+            qrCanvas,
+            width*.73,
+            height*.31,
+            width*.18,
+            width*.18
+        );
+
+    }
+
+    /* footer */
+
+    ctx.strokeStyle=
+        "rgba(15,23,42,.12)";
+
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        width*.05,
+        height*.83
+    );
+
+    ctx.lineTo(
+        width*.95,
+        height*.83
+    );
+
+    ctx.stroke();
+
+    ctx.fillStyle="#101820";
+
+    ctx.font=
+        "900 30px monospace";
+
+    ctx.fillText(
+        "QR ID: " +
+        safeText(
+            fields.studentCode.value
+        ),
+        width*.05,
+        height*.90
+    );
+
+    ctx.fillStyle="#64748b";
+
+    ctx.font=
+        "500 21px Arial";
+
+    ctx.fillText(
+        "Scan this code for MIS-NEXUS attendance identification.",
+        width*.05,
+        height*.94
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        width*.75,
+        height*.91
+    );
+
+    ctx.lineTo(
+        width*.92,
+        height*.91
+    );
+
+    ctx.strokeStyle="#64748b";
+
+    ctx.stroke();
+
+    ctx.font=
+        "600 18px Arial";
+
+    ctx.fillText(
+        "SCHOOL AUTHORITY",
+        width*.785,
+        height*.945
+    );
+
+    return canvas;
+
+}
+
+/* ============================================================
+   IMAGE LOADER
+============================================================ */
+
+function loadImage(src){
+
+    return new Promise(
+        (resolve,reject) => {
+
+            const image =
+                new Image();
+
+            image.onload =
+                () => resolve(image);
+
+            image.onerror =
+                reject;
+
+            image.src=src;
+
+        }
+    );
+
+}
+
+/* ============================================================
+   CANVAS ROUND IMAGE
+============================================================ */
+
+function roundImage(
+    ctx,
+    image,
+    x,
+    y,
+    width,
+    height,
+    radius
+){
+
+    ctx.save();
+
+    roundRect(
+        ctx,
+        x,
+        y,
+        width,
+        height,
+        radius
+    );
+
+    ctx.clip();
+
+    const sourceRatio =
+        image.width /
+        image.height;
+
+    const targetRatio =
+        width /
+        height;
+
+    let sx=0;
+    let sy=0;
+    let sw=image.width;
+    let sh=image.height;
+
+    if(
+        sourceRatio >
+        targetRatio
+    ){
+
+        sw =
+            image.height *
+            targetRatio;
+
+        sx =
+            (image.width-sw)/2;
+
+    }else{
+
+        sh =
+            image.width /
+            targetRatio;
+
+        sy =
+            (image.height-sh)/2;
+
+    }
+
+    ctx.drawImage(
+        image,
+        sx,
+        sy,
+        sw,
+        sh,
+        x,
+        y,
+        width,
+        height
+    );
+
+    ctx.restore();
+
+}
+
+/* ============================================================
+   PLACEHOLDERS
+============================================================ */
+
+function drawLogoPlaceholder(
+    ctx,
+    x,
+    y,
+    size
+){
+
+    ctx.fillStyle="#e2e8f0";
+
+    roundRect(
+        ctx,
+        x,
+        y,
+        size,
+        size,
+        45
+    );
+
+    ctx.fillStyle="#334155";
+
+    ctx.font=
+        "900 60px Arial";
+
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        "MN",
+        x+size/2,
+        y+size*.62
+    );
+
+    ctx.textAlign="left";
+
+}
+
+function drawPhotoPlaceholder(
+    ctx,
+    x,
+    y,
+    width,
+    height
+){
+
+    ctx.fillStyle="#e2e8f0";
+
+    roundRect(
+        ctx,
+        x,
+        y,
+        width,
+        height,
+        45
+    );
+
+    ctx.fillStyle="#64748b";
+
+    ctx.font=
+        "800 28px Arial";
+
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        "STUDENT",
+        x+width/2,
+        y+height/2-5
+    );
+
+    ctx.fillText(
+        "PHOTO",
+        x+width/2,
+        y+height/2+32
+    );
+
+    ctx.textAlign="left";
+
+}
+
+/* ============================================================
+   CANVAS FIELD
+============================================================ */
+
+function drawCanvasField(
+    ctx,
+    label,
+    value,
+    x,
+    y
+){
+
+    ctx.fillStyle="#64748b";
+
+    ctx.font=
+        "800 20px Arial";
+
+    ctx.fillText(
+        label,
+        x,
+        y
+    );
+
+    ctx.fillStyle="#172033";
+
+    ctx.font=
+        "800 27px Arial";
+
+    ctx.fillText(
+        value,
+        x,
+        y+34
+    );
+
+}
+
+/* ============================================================
+   WRAPPED TEXT
+============================================================ */
+
+function drawWrappedText(
+    ctx,
+    text,
+    x,
+    y,
+    maxWidth,
+    lineHeight,
+    maxLines
+){
+
+    const words =
+        String(text)
+        .split(/\s+/);
+
+    let line="";
+    let lines=[];
+
+    words.forEach(word => {
+
+        const test =
+            line
+                ? line+" "+word
+                : word;
+
+        if(
+            ctx.measureText(test)
+                .width >
+            maxWidth &&
+            line
+        ){
+
+            lines.push(line);
+
+            line=word;
+
+        }else{
+
+            line=test;
+
+        }
+
+    });
+
+    if(line){
+
+        lines.push(line);
+
+    }
+
+    lines =
+        lines.slice(
+            0,
+            maxLines
+        );
+
+    lines.forEach(
+        (item,index) => {
+
+            ctx.fillText(
+                item,
+                x,
+                y+
+                index*lineHeight
+            );
+
+        }
+    );
+
+}
+
+/* ============================================================
+   ROUNDED RECT
+============================================================ */
+
+function roundRect(
+    ctx,
+    x,
+    y,
+    width,
+    height,
+    radius
+){
+
+    const r =
+        Math.min(
+            radius,
+            width/2,
+            height/2
+        );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x+r,
+        y
+    );
+
+    ctx.lineTo(
+        x+width-r,
+        y
+    );
+
+    ctx.quadraticCurveTo(
+        x+width,
+        y,
+        x+width,
+        y+r
+    );
+
+    ctx.lineTo(
+        x+width,
+        y+height-r
+    );
+
+    ctx.quadraticCurveTo(
+        x+width,
+        y+height,
+        x+width-r,
+        y+height
+    );
+
+    ctx.lineTo(
+        x+r,
+        y+height
+    );
+
+    ctx.quadraticCurveTo(
+        x,
+        y+height,
+        x,
+        y+height-r
+    );
+
+    ctx.lineTo(
+        x,
+        y+r
+    );
+
+    ctx.quadraticCurveTo(
+        x,
+        y,
+        x+r,
+        y
+    );
+
+    ctx.closePath();
+
+}
+
+/* ============================================================
+   BUILD EXPORT QR
+============================================================ */
+
+async function buildExportQR(
+    value,
+    size
+){
+
+    if(
+        !value ||
+        typeof QRCode === "undefined"
+    ){
+
+        return null;
+
+    }
+
+    const holder =
+        document.createElement("div");
+
+    holder.style.position=
+        "fixed";
+
+    holder.style.left=
+        "-10000px";
+
+    holder.style.top=
+        "-10000px";
+
+    holder.style.width=
+        `${size}px`;
+
+    holder.style.height=
+        `${size}px`;
+
+    document.body.appendChild(
+        holder
+    );
+
+    try{
+
+        new QRCode(
+            holder,
+            {
+                text:value,
+                width:size,
+                height:size,
+                colorDark:
+                    fields.qrForeground.value,
+                colorLight:
+                    fields.qrBackground.value,
+                correctLevel:
+                    qrCorrectLevel()
+            }
+        );
+
+        await sleep(100);
+
+        const canvas =
+            holder.querySelector(
+                "canvas"
+            );
+
+        if(canvas){
+
+            const result =
+                document.createElement(
+                    "canvas"
+                );
+
+            result.width=size;
+            result.height=size;
+
+            result.getContext("2d")
+                .drawImage(
+                    canvas,
+                    0,
+                    0,
+                    size,
+                    size
+                );
+
+            return result;
+
+        }
+
+        const image =
+            holder.querySelector(
+                "img"
+            );
+
+        if(image){
+
+            const loaded =
+                await loadImage(
+                    image.src
+                );
+
+            const result =
+                document.createElement(
+                    "canvas"
+                );
+
+            result.width=size;
+            result.height=size;
+
+            result.getContext("2d")
+                .drawImage(
+                    loaded,
+                    0,
+                    0,
+                    size,
+                    size
+                );
+
+            return result;
+
+        }
+
+        return null;
+
+    }finally{
+
+        holder.remove();
+
+    }
+
+}
+
+/* ============================================================
+   DOWNLOAD CARD
+============================================================ */
+
+async function downloadCard(){
+
+    const code =
+        normalizeCode(
+            fields.studentCode.value
+        );
+
+    if(!code){
+
+        toast(
+            "Student QR ID required",
+            "Enter the student code before downloading.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    try{
+
+        toast(
+            "Preparing card",
+            "Rendering the high-resolution printable card..."
+        );
+
+        const canvas =
+            await renderCardCanvas();
+
+        const dataURL =
+            canvas.toDataURL(
+                "image/png",
+                1
+            );
+
+        const name =
+            escapeFilename(
+                fields.studentName.value ||
+                code
+            );
+
+        triggerDownload(
+            dataURL,
+            `${name}-MIS-NEXUS-ID-card.png`
+        );
+
+        toast(
+            "Card downloaded",
+            "High-resolution PNG ID card created successfully.",
+            "success"
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            "Card export failed",
+            "The card could not be rendered by this browser.",
+            "error"
+        );
+
+    }
+
+}
+
+/* ============================================================
+   PRINT
+============================================================ */
+
+function printCard(){
+
+    const code =
+        normalizeCode(
+            fields.studentCode.value
+        );
+
+    if(!code){
+
+        toast(
+            "Student QR ID required",
+            "Enter the student code before printing.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    updateCard();
+
+    if(
+        !state.generated ||
+        state.lastQRValue !== code
+    ){
+
+        createQR();
+
+    }
+
+    setTimeout(
+        () => window.print(),
+        100
+    );
+
+}
+
+/* ============================================================
+   FULLSCREEN
+============================================================ */
+
+async function toggleFullscreen(){
+
+    const target =
+        $("previewStage");
+
+    try{
+
+        if(
+            !document.fullscreenElement
+        ){
+
+            if(
+                target.requestFullscreen
+            ){
+
+                await target.requestFullscreen();
+
+            }
+
+        }else{
+
+            await document.exitFullscreen();
+
+        }
+
+    }catch(error){
+
+        toast(
+            "Fullscreen unavailable",
+            "Your browser does not allow fullscreen mode here."
+        );
+
+    }
+
+}
+
+/* ============================================================
+   EVENT LISTENERS
+============================================================ */
+
+/* form changes */
+
+Object.keys(fields).forEach(
+    key => {
+
+        const element =
+            fields[key];
+
+        if(!element){
+            return;
+        }
+
+        element.addEventListener(
+            "input",
+            liveUpdate
+        );
+
+        element.addEventListener(
+            "change",
+            liveUpdate
+        );
+
+    }
+);
+
+/* logo */
+
+$("logoInput")
+    .addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files &&
+                event.target.files[0];
+
+            if(file){
+
+                handleLogoFile(file);
+
+            }
+
+        }
+    );
+
+/* photo */
+
+$("photoInput")
+    .addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files &&
+                event.target.files[0];
+
+            if(file){
+
+                handlePhotoFile(file);
+
+            }
+
+        }
+    );
+
+/* drag drop */
+
+setupDropZone(
+    $("logoUploadBox"),
+    handleLogoFile
+);
+
+setupDropZone(
+    $("photoUploadBox"),
+    handlePhotoFile
+);
+
+/* generate */
+
+$("generateButton")
+    .addEventListener(
+        "click",
+        generate
+    );
+
+/* download */
+
+$("downloadCardButton")
+    .addEventListener(
+        "click",
+        downloadCard
+    );
+
+$("downloadQRButton")
+    .addEventListener(
+        "click",
+        downloadQR
+    );
+
+/* print */
+
+$("printButton")
+    .addEventListener(
+        "click",
+        printCard
+    );
+
+/* clear */
+
+$("clearButton")
+    .addEventListener(
+        "click",
+        clearAll
+    );
+
+$("resetTopButton")
+    .addEventListener(
+        "click",
+        clearAll
+    );
+
+/* save */
+
+$("saveDraftButton")
+    .addEventListener(
+        "click",
+        saveDraft
+    );
+
+/* fullscreen */
+
+$("fullscreenButton")
+    .addEventListener(
+        "click",
+        toggleFullscreen
+    );
+
+/* help */
+
+$("helpButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            $("helpModal")
+                .classList
+                .add("open");
+
+        }
+    );
+
+$("closeHelpButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            $("helpModal")
+                .classList
+                .remove("open");
+
+        }
+    );
+
+$("helpModal")
+    .addEventListener(
+        "click",
+        event => {
+
+            if(
+                event.target ===
+                $("helpModal")
+            ){
+
+                $("helpModal")
+                    .classList
+                    .remove("open");
+
+            }
+
+        }
+    );
+
+/* ============================================================
+   KEYBOARD SHORTCUTS
+============================================================ */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.ctrlKey &&
+            event.key.toLowerCase()==="s"
+        ){
+
+            event.preventDefault();
+
+            saveDraft();
+
+        }
+
+        if(
+            event.ctrlKey &&
+            event.key.toLowerCase()==="p"
+        ){
+
+            event.preventDefault();
+
+            printCard();
+
+        }
+
+        if(
+            event.key==="Escape"
+        ){
+
+            $("helpModal")
+                .classList
+                .remove("open");
+
+        }
+
+    }
+);
+
+/* ============================================================
+   BEFORE UNLOAD
+============================================================ */
+
+window.addEventListener(
+    "beforeunload",
+    event => {
+
+        if(
+            state.dirty
+        ){
+
+            event.preventDefault();
+
+            event.returnValue="";
+
+        }
+
+    }
+);
+
+/* ============================================================
+   INITIALIZATION
+============================================================ */
+
+function initialize(){
+
+    loadStats();
+
+    const restored =
+        loadDraft();
+
+    if(!restored){
+
+        fields.schoolName.value =
+            CONFIG.defaultSchool;
+
+        fields.schoolMotto.value =
+            CONFIG.defaultMotto;
+
+        fields.schoolContact.value =
+            CONFIG.defaultContact;
+
+        fields.qrSize.value =
+            CONFIG.defaultQRSize;
+
+        fields.qrMargin.value =
+            CONFIG.defaultMargin;
+
+        fields.qrLevel.value =
+            "M";
+
+        fields.cardSerial.value =
+            generateCardSerial();
+
+        updateCard();
+
+    }
+
+    updateRangeLabels();
+
+    state.initialized=true;
+
+    setTimeout(
+        () => {
+
+            $("loader")
+                .classList
+                .add("hidden");
+
+        },
+        350
+    );
+
+}
+
+/* ============================================================
+   QR LIBRARY CHECK
+============================================================ */
+
+function waitForQREngine(){
+
+    let attempts=0;
+
+    const timer =
+        setInterval(
+            () => {
+
+                attempts++;
+
+                if(
+                    typeof QRCode !==
+                    "undefined"
+                ){
+
+                    clearInterval(timer);
+
+                    $("statQR")
+                        .textContent=
+                        "READY";
+
+                    return;
+
+                }
+
+                if(
+                    attempts>=50
+                ){
+
+                    clearInterval(timer);
+
+                    $("statQR")
+                        .textContent=
+                        "OFFLINE";
+
+                }
+
+            },
+            100
+        );
+
+}
+
+/* ============================================================
+   START
+============================================================ */
+
+if(
+    document.readyState ===
+    "loading"
+){
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            initialize();
+            waitForQREngine();
+
+        }
+    );
+
+}else{
+
+    initialize();
+    waitForQREngine();
+
+}
+
+/* ============================================================
+   EXTRA API
+   ------------------------------------------------------------
+   These functions are deliberately exposed so the page can
+   later be integrated into another MIS-NEXUS interface without
+   rewriting the generator.
+============================================================ */
+
+window.MISNexusQRStudio = {
+
+    generate:function(){
+
+        generate();
+
+    },
+
+    clear:function(){
+
+        clearAll();
+
+    },
+
+    save:function(){
+
+        saveDraft();
+
+    },
+
+    getData:function(){
+
+        return getFormData();
+
+    },
+
+    setStudentCode:function(value){
+
+        fields.studentCode.value =
+            normalizeCode(value);
+
+        updateCard();
+
+        createQR();
+
+    },
+
+    setStudentName:function(value){
+
+        fields.studentName.value =
+            value || "";
+
+        updateCard();
+
+    },
+
+    getStudentCode:function(){
+
+        return normalizeCode(
+            fields.studentCode.value
+        );
+
+    },
+
+    downloadQR:function(){
+
+        return downloadQR();
+
+    },
+
+    downloadCard:function(){
+
+        return downloadCard();
+
+    },
+
+    print:function(){
+
+        printCard();
+
+    }
+
+};
+
+})();
+</script>
+
+</body>
+</html>
