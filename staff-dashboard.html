@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en-NG">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="application-name" content="MIS-NEXUS Staff Attendance">
+<meta name="apple-mobile-web-app-title" content="MIS-NEXUS Staff">
+<link rel="manifest" href="manifest.json">
+<title>MIS-NEXUS™ — Central Staff Attendance</title>
+
+<!--
+  MIS-NEXUS™ STAFF ATTENDANCE — CENTRALIZED FINAL CLIENT
+  -------------------------------------------------------
+  Database contract preserved:
+    mis_nexus_staff_profiles
+    mis_nexus_staff_attendance
+    mis_nexus_staff_attendance_events
+    mis_nexus_staff_roles
+    mis_nexus_staff_notifications
+  No CREATE/ALTER/DROP/DELETE/TRUNCATE SQL is performed by this file.
+
+  This client adds:
+    • centralized attendance station
+    • role → staff → six-digit passcode flow
+    • current-staff ownership enforcement to respect existing RLS
+    • today's school role reports
+    • direct PDF download using jsPDF + AutoTable
+    • print-ready report
+    • school logo + watermark + signature/stamp area
+    • compact live GPS card
+    • live OpenStreetMap/Leaflet map
+    • reverse location name lookup
+    • light/dark theme
+    • personal history, analytics, notifications, profile and security
+    • CSV export
+    • responsive mobile/tablet/desktop layout
+    • PWA install support
+-->
+
+<style>
+:root{
+  --bg:#f4f7fb;
+  --surface:#ffffff;
+  --surface2:#f8fafc;
+  --surface3:#eef3f8;
+  --text:#111827;
+  --muted:#667085;
+  --muted2:#98a2b3;
+  --line:#e4e7ec;
+  --line2:#eef2f6;
+  --accent:#b88922;
+  --accent2:#e1bd68;
+  --accent-soft:rgba(184,137,34,.10);
+  --success:#087443;
+  --success-soft:rgba(8,116,67,.09);
+  --danger:#b42318;
+  --danger-soft:rgba(180,35,24,.08);
+  --warning:#b54708;
+  --warning-soft:rgba(181,71,8,.09);
+  --info:#175cd3;
+  --info-soft:rgba(23,92,211,.08);
+  --shadow:0 16px 45px rgba(16,24,40,.08);
+  --shadow2:0 8px 24px rgba(16,24,40,.07);
+  --radius:20px;
+  --sidebar:264px;
+}
+html[data-theme="dark"]{
+  --bg:#070a0e;
+  --surface:#0f141a;
+  --surface2:#141a21;
+  --surface3:#1a222b;
+  --text:#f2f4f7;
+  --muted:#98a2b3;
+  --muted2:#667085;
+  --line:#27313c;
+  --line2:#1c252f;
+  --accent:#e0bd67;
+  --accent2:#f0d58d;
+  --accent-soft:rgba(224,189,103,.12);
+  --success:#75d6a0;
+  --success-soft:rgba(117,214,160,.10);
+  --danger:#f38b83;
+  --danger-soft:rgba(243,139,131,.10);
+  --warning:#fdb022;
+  --warning-soft:rgba(253,176,34,.10);
+  --info:#84adff;
+  --info-soft:rgba(132,173,255,.10);
+  --shadow:0 20px 65px rgba(0,0,0,.35);
+  --shadow2:0 10px 32px rgba(0,0,0,.24);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{overflow-x:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.48;cursor:not-allowed}
+a{color:inherit}
+img{max-width:100%}
+.hidden{display:none!important}
+.app{min-height:100dvh;position:relative}
+.watermark{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:-1;overflow:hidden}
+.watermark img{width:min(70vw,760px);opacity:.035;filter:grayscale(1);transform:rotate(-7deg)}
+.topbar{
+  position:sticky;top:0;z-index:90;height:70px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px max(14px,env(safe-area-inset-right)) 10px max(14px,env(safe-area-inset-left));
+  background:color-mix(in srgb,var(--surface) 88%,transparent);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(18px)
+}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{width:42px;height:42px;border-radius:12px;object-fit:contain;border:1px solid var(--line);background:var(--surface2)}
+.brand strong{display:block;font-size:12px;letter-spacing:.12em}
+.brand span{display:block;margin-top:3px;font-size:8px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase}
+.top-actions{display:flex;align-items:center;gap:7px}
+.icon{
+  width:40px;height:40px;border:1px solid var(--line);border-radius:12px;
+  background:var(--surface2);color:var(--text);display:grid;place-items:center
+}
+.icon:hover{border-color:var(--accent);transform:translateY(-1px)}
+.layout{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);min-height:calc(100dvh - 70px)}
+.sidebar{
+  position:sticky;top:70px;height:calc(100dvh - 70px);overflow:auto;
+  padding:16px 12px;border-right:1px solid var(--line);background:var(--surface)
+}
+.nav-label{padding:10px 10px 6px;font-size:8px;font-weight:900;color:var(--muted2);letter-spacing:.14em;text-transform:uppercase}
+.nav button{
+  width:100%;border:0;background:transparent;color:var(--muted);
+  padding:11px 12px;border-radius:13px;text-align:left;display:flex;align-items:center;gap:10px;font-weight:750;font-size:11px
+}
+.nav button:hover{background:var(--surface2);color:var(--text)}
+.nav button.active{background:var(--accent-soft);color:var(--accent)}
+.nav .ico{width:20px;text-align:center;font-size:15px}
+.sidebar-foot{margin-top:18px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface2)}
+.sidebar-foot small{display:block;color:var(--muted);font-size:8px;line-height:1.6}
+.content{min-width:0;padding:22px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+.page{display:none;width:min(1500px,100%);margin:auto}
+.page.active{display:block}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px}
+.kicker{color:var(--accent);font-size:8px;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
+.hero h1{margin:7px 0 0;font-size:clamp(26px,4vw,43px);line-height:1.05;letter-spacing:-.04em}
+.hero p{margin:9px 0 0;max-width:760px;color:var(--muted);font-size:11px;line-height:1.65}
+.clock{
+  flex:none;min-width:210px;padding:13px 16px;border:1px solid var(--line);
+  border-radius:17px;background:var(--surface);box-shadow:var(--shadow2);text-align:right
+}
+.clock small{display:block;color:var(--muted);font-size:7px;text-transform:uppercase;letter-spacing:.13em}
+.clock strong{display:block;margin-top:4px;font-size:19px}
+.clock span{display:block;margin-top:3px;color:var(--accent);font-size:8px}
+.grid{display:grid;gap:14px}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+  min-width:0;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow)
+}
+.stat{padding:17px;position:relative;overflow:hidden}
+.stat:after{content:"";position:absolute;width:110px;height:110px;right:-55px;top:-55px;border-radius:50%;background:var(--accent-soft)}
+.stat-label{font-size:8px;font-weight:900;color:var(--muted);letter-spacing:.13em;text-transform:uppercase}
+.stat-value{margin-top:9px;font-size:29px;font-weight:950;letter-spacing:-.04em}
+.stat-meta{margin-top:5px;color:var(--muted2);font-size:8px}
+.dashboard-grid{grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);margin-top:14px}
+.panel{padding:19px}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.title{font-size:14px;font-weight:900}
+.subtitle{margin:5px 0 0;color:var(--muted);font-size:9px;line-height:1.5}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:0 9px;
+  border:1px solid var(--line);border-radius:999px;background:var(--surface2);font-size:8px;font-weight:850
+}
+.badge.live:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 9px var(--success)}
+.profile-strip{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid var(--line2);border-radius:15px;background:var(--surface2)}
+.avatar{width:48px;height:48px;border-radius:15px;object-fit:cover;border:1px solid var(--line);background:var(--surface3);flex:none}
+.profile-info{min-width:0;flex:1}
+.profile-info strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.profile-info span{display:block;margin-top:3px;color:var(--muted);font-size:8px}
+.field{margin-top:13px}
+.label{display:block;margin:0 0 6px 2px;color:var(--muted);font-size:8px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}
+input,select,textarea{
+  width:100%;border:1px solid var(--line);border-radius:13px;outline:none;
+  color:var(--text);background:var(--surface2);padding:0 12px;transition:.18s ease
+}
+input,select{height:45px}
+textarea{min-height:88px;padding:11px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.gps-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:13px}
+.gps-box{min-height:70px;padding:11px;border:1px solid var(--line2);border-radius:14px;background:var(--surface2)}
+.gps-box small{display:block;color:var(--muted2);font-size:7px;text-transform:uppercase;letter-spacing:.1em}
+.gps-box strong{display:block;margin-top:7px;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.location-row{display:grid;grid-template-columns:minmax(0,1fr) 155px;gap:10px;margin-top:10px}
+.location-status{padding:10px 12px;border-radius:12px;background:var(--surface2);font-size:8px;color:var(--muted);border:1px solid var(--line2)}
+.location-status.ok{color:var(--success);background:var(--success-soft)}
+.location-status.bad{color:var(--danger);background:var(--danger-soft)}
+.btn{
+  min-height:42px;border:1px solid var(--line);border-radius:12px;padding:0 13px;
+  background:var(--surface2);color:var(--text);font-size:9px;font-weight:850
+}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{border-color:transparent;color:#17120a;background:linear-gradient(145deg,var(--accent2),var(--accent));box-shadow:0 9px 22px rgba(184,137,34,.18)}
+.btn.danger{color:var(--danger)}
+.btn.small{min-height:34px;font-size:8px;padding:0 10px}
+.btn.block{width:100%}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.attendance-main{margin-top:13px}
+.big-attend{
+  width:100%;min-height:54px;margin-top:13px;border:0;border-radius:15px;
+  background:linear-gradient(145deg,var(--accent2),var(--accent));color:#18120a;
+  font-size:10px;font-weight:950;letter-spacing:.12em;text-transform:uppercase
+}
+.big-attend.loading{opacity:.7}
+.spinner{display:none;width:18px;height:18px;border:2px solid rgba(0,0,0,.18);border-top-color:#111;border-radius:50%;animation:spin .65s linear infinite;margin:auto}
+.loading .spinner{display:block}.loading .button-text{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.message{min-height:20px;margin-top:8px;text-align:center;color:var(--muted);font-size:8px;line-height:1.5}
+.message.ok{color:var(--success)}.message.bad{color:var(--danger)}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.quick{
+  min-height:82px;padding:12px;border:1px solid var(--line2);border-radius:14px;background:var(--surface2);
+  color:var(--text);text-align:left
+}
+.quick:hover{border-color:var(--accent);transform:translateY(-1px)}
+.quick b{display:block;font-size:10px}.quick span{display:block;margin-top:5px;color:var(--muted);font-size:7px;line-height:1.45}
+.map-card{margin-top:13px;overflow:hidden;border:1px solid var(--line);border-radius:17px;background:var(--surface2)}
+#map,#reportMap{height:260px;width:100%}
+.map-foot{padding:9px 11px;display:flex;justify-content:space-between;gap:8px;font-size:8px;color:var(--muted)}
+.section-gap{margin-top:14px}
+.table-wrap{overflow:auto;border:1px solid var(--line2);border-radius:15px}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line2);text-align:left;font-size:8px;white-space:nowrap}
+th{background:var(--surface2);color:var(--muted);font-size:7px;letter-spacing:.1em;text-transform:uppercase}
+td{color:var(--text)}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:7px;font-weight:900;text-transform:uppercase}
+.pill.present{color:var(--success);background:var(--success-soft)}
+.pill.late{color:var(--warning);background:var(--warning-soft)}
+.pill.absent{color:var(--danger);background:var(--danger-soft)}
+.pill.excused,.pill.off_day{color:var(--info);background:var(--info-soft)}
+.empty{padding:35px 14px;text-align:center;color:var(--muted2);font-size:9px}
+.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}
+.report-toolbar{display:grid;grid-template-columns:1fr 1fr auto auto;gap:9px;align-items:end}
+.role-staff-card{margin-top:12px;padding:13px;border:1px solid var(--line);border-radius:16px;background:var(--surface2)}
+.role-staff-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+.staff-choice{
+  padding:10px;border:1px solid var(--line);border-radius:13px;background:var(--surface);
+  text-align:left;color:var(--text)
+}
+.staff-choice.selected{border-color:var(--accent);background:var(--accent-soft)}
+.staff-choice b{display:block;font-size:9px}.staff-choice span{display:block;margin-top:4px;color:var(--muted);font-size:7px}
+.pass-panel{margin-top:12px;padding:14px;border:1px solid var(--accent);border-radius:16px;background:var(--accent-soft)}
+.pass-grid{display:grid;grid-template-columns:1fr auto;gap:9px;align-items:end}
+.pass-input{text-align:center;font-size:20px;letter-spacing:.35em;font-weight:900}
+.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.info{padding:12px;border:1px solid var(--line2);border-radius:13px;background:var(--surface2)}
+.info small{display:block;color:var(--muted);font-size:7px;text-transform:uppercase;letter-spacing:.1em}
+.info b{display:block;margin-top:6px;font-size:9px;overflow-wrap:anywhere}
+.notification-list{display:grid;gap:9px}
+.notification{padding:12px;border:1px solid var(--line2);border-radius:14px;background:var(--surface2)}
+.notification strong{display:block;font-size:9px}.notification p{margin:5px 0 0;color:var(--muted);font-size:8px;line-height:1.5}.notification time{display:block;margin-top:7px;color:var(--muted2);font-size:7px}
+.analytics-cards{grid-template-columns:repeat(5,1fr)}
+.chart-wrap{height:260px;position:relative}
+canvas{width:100%;height:100%}
+.modal{
+  position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;
+  padding:16px;background:rgba(0,0,0,.62);backdrop-filter:blur(10px)
+}
+.modal.open{display:flex}
+.modal-card{
+  width:min(720px,100%);max-height:92dvh;overflow:auto;border:1px solid var(--line);
+  border-radius:22px;background:var(--surface);box-shadow:0 35px 100px rgba(0,0,0,.28)
+}
+.modal-card.wide{width:min(1100px,100%)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:17px 19px;border-bottom:1px solid var(--line)}
+.modal-head h2{margin:0;font-size:15px}
+.close{width:36px;height:36px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text)}
+.modal-body{padding:18px}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid var(--line)}
+.station-step{display:none}.station-step.active{display:block}
+.stepbar{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.step{padding:8px;border-radius:10px;background:var(--surface2);color:var(--muted);font-size:7px;font-weight:900;text-align:center;text-transform:uppercase}
+.step.active{color:var(--accent);background:var(--accent-soft)}
+.qr-box{min-height:220px;border:1px dashed var(--line);border-radius:15px;display:grid;place-items:center;background:var(--surface2);overflow:hidden}
+#qrReader{width:100%;max-width:520px}
+.loader{
+  position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);transition:.3s
+}
+.loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-inner{text-align:center}.loader-logo{width:76px;height:76px;border-radius:22px;object-fit:contain}.loader-ring{width:28px;height:28px;margin:14px auto;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}.loader-text{font-size:8px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.toast{
+  position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));z-index:1900;
+  width:min(470px,calc(100% - 28px));padding:12px 14px;border:1px solid var(--line);border-radius:14px;
+  background:var(--surface);box-shadow:var(--shadow);text-align:center;font-size:8px;
+  transform:translate(-50%,18px);opacity:0;visibility:hidden;transition:.22s
+}
+.toast.show{transform:translate(-50%,0);opacity:1;visibility:visible}
+.mobile-menu{display:none}
+.report-preview{font-family:Arial,sans-serif;color:#111;background:#fff;padding:26px}
+.report-preview h1,.report-preview h2{margin:0}.report-preview table{min-width:0;width:100%;font-size:8px}.report-preview th,.report-preview td{font-size:8px;padding:6px;border:1px solid #ccc;white-space:normal}.report-preview .report-head{display:flex;gap:12px;align-items:center;border-bottom:2px solid #222;padding-bottom:10px}.report-preview .report-logo{width:64px;height:64px;object-fit:contain}.seal{width:78px;height:78px;border:2px double #222;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:8px;font-weight:900}.signature-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:25px;margin-top:35px}.signature-line{border-top:1px solid #222;padding-top:5px;font-size:8px}
+@media(max-width:1100px){
+  .layout{grid-template-columns:1fr}.sidebar{position:fixed;left:-285px;top:70px;z-index:150;width:264px;transition:.22s;height:calc(100dvh - 70px);box-shadow:var(--shadow)}.sidebar.open{left:0}.mobile-menu{display:grid}
+  .dashboard-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.gps-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  .content{padding-top:15px}.hero{display:block}.clock{margin-top:12px;text-align:left}.stats{grid-template-columns:1fr 1fr}.two,.three{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr 1fr}.role-staff-list{grid-template-columns:1fr 1fr}.report-toolbar{grid-template-columns:1fr 1fr}.report-toolbar .wide-action{grid-column:span 2}.location-row{grid-template-columns:1fr}.analytics-cards{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:470px){
+  .brand span{display:none}.brand strong{font-size:10px}.brand img{width:38px;height:38px}.topbar{height:62px}.layout{min-height:calc(100dvh - 62px)}.sidebar{top:62px;height:calc(100dvh - 62px)}
+  .stats{grid-template-columns:1fr 1fr}.stat{padding:14px}.stat-value{font-size:22px}.gps-grid{grid-template-columns:1fr 1fr}.profile-grid{grid-template-columns:1fr}.role-staff-list{grid-template-columns:1fr}.pass-grid{grid-template-columns:1fr}.report-toolbar{grid-template-columns:1fr}.report-toolbar .wide-action{grid-column:auto}.analytics-cards{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media print{body{background:#fff}.no-print{display:none!important}}
+</style>
+
+<!-- Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+<body>
+
+<div id="loader" class="loader">
+  <div class="loader-inner">
+    <img class="loader-logo" src="logo.png" alt="">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Securing MIS-NEXUS Staff Centre</div>
+  </div>
+</div>
+
+<div class="app" id="app">
+  <div class="watermark"><img src="institution.png" alt=""></div>
+
+  <header class="topbar no-print">
+    <div class="brand">
+      <button class="icon mobile-menu" id="menuBtn" type="button" aria-label="Menu">☰</button>
+      <img src="logo.png" alt="MISBAHUL 'ILM SCHOOLS ABUJA">
+      <div>
+        <strong>MIS-NEXUS™</strong>
+        <span>Central Staff Attendance Management</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="icon" id="refreshBtn" type="button" aria-label="Refresh">↻</button>
+      <button class="icon" id="themeBtn" type="button" aria-label="Theme">☾</button>
+      <button class="icon" id="notificationBtn" type="button" aria-label="Notifications">♢</button>
+      <button class="icon" id="profileBtn" type="button" aria-label="Profile">◉</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar no-print" id="sidebar">
+      <nav class="nav">
+        <div class="nav-label">Workspace</div>
+        <button class="active" data-page="home"><span class="ico">⌂</span>Dashboard</button>
+        <button data-page="station"><span class="ico">✓</span>Attendance Station</button>
+        <button data-page="history"><span class="ico">▤</span>My Attendance</button>
+        <button data-page="reports"><span class="ico">▥</span>School Reports</button>
+        <button data-page="analytics"><span class="ico">◔</span>Analytics</button>
+        <div class="nav-label">Account</div>
+        <button data-page="notifications"><span class="ico">♢</span>Notifications</button>
+        <button data-page="profile"><span class="ico">◉</span>My Profile</button>
+        <button data-page="security"><span class="ico">⌁</span>Security & Device</button>
+        <button id="installBtn" type="button"><span class="ico">⇩</span>Install App</button>
+        <button id="signOutBtn" type="button"><span class="ico">↪</span>Sign Out</button>
+      </nav>
+      <div class="sidebar-foot">
+        <small><b>MISBAHUL 'ILM SCHOOLS ABUJA</b></small>
+        <small style="margin-top:5px">Live staff attendance • WAT • Standalone staff objects</small>
+      </div>
+    </aside>
+
+    <main class="content">
+
+      <!-- DASHBOARD -->
+      <section class="page active" id="page-home">
+        <div class="hero">
+          <div>
+            <div class="kicker">MISBAHUL 'ILM SCHOOLS ABUJA</div>
+            <h1>Staff Attendance Centre</h1>
+            <p>Centralized attendance control with live geographical verification, staff identity protection, today's role reports, PDF export, print-ready records and responsive operation on phones, tablets and computers.</p>
+          </div>
+          <div class="clock">
+            <small>Abuja • Nigeria • WAT</small>
+            <strong id="clock">--:--:--</strong>
+            <span id="todayLabel">Loading...</span>
+          </div>
+        </div>
+
+        <div class="grid stats">
+          <article class="card stat"><div class="stat-label">Today's Staff</div><div class="stat-value" id="todayCount">0</div><div class="stat-meta">All attendance records today</div></article>
+          <article class="card stat"><div class="stat-label">Registered Staff</div><div class="stat-value" id="staffCount">0</div><div class="stat-meta">Active staff profiles visible to this account</div></article>
+          <article class="card stat"><div class="stat-label">My Attendance</div><div class="stat-value" id="myCount">0</div><div class="stat-meta">My saved attendance records</div></article>
+          <article class="card stat"><div class="stat-label">Today's Status</div><div class="stat-value" id="myTodayStatus">—</div><div class="stat-meta">Current authenticated staff</div></article>
+        </div>
+
+        <div class="grid dashboard-grid">
+          <article class="card panel">
+            <div class="panel-head">
+              <div><div class="title">Central Attendance Station</div><div class="subtitle">Visible to every authenticated staff user. Select role → staff name → six-digit passcode → attendance.</div></div>
+              <span class="badge live">LIVE</span>
+            </div>
+
+            <div class="profile-strip">
+              <img class="avatar" id="homeAvatar" src="logo.png" alt="">
+              <div class="profile-info"><strong id="homeName">Loading...</strong><span id="homeEmail">—</span></div>
+              <span class="badge" id="homeAuth">Checking</span>
+            </div>
+
+            <div class="quick-grid" style="margin-top:12px">
+              <button class="quick" id="openStationHome" type="button"><b>Enter Today's Attendance</b><span>Open the protected role/name/passcode station.</span></button>
+              <button class="quick" id="openReportsHome" type="button"><b>Today's Role Reports</b><span>Select a role and download or print its attendance report.</span></button>
+              <button class="quick" id="openHistoryHome" type="button"><b>My History</b><span>Review previous attendance, location and device information.</span></button>
+              <button class="quick" id="openLocationHome" type="button"><b>Live Location</b><span>Refresh GPS and display the location directly on the map.</span></button>
+            </div>
+          </article>
+
+          <aside class="card panel">
+            <div class="panel-head"><div><div class="title">Live Location</div><div class="subtitle">GPS is compulsory for a new attendance.</div></div><span class="badge" id="gpsBadge">OFF</span></div>
+            <div class="gps-grid">
+              <div class="gps-box"><small>Latitude</small><strong id="homeLat">—</strong></div>
+              <div class="gps-box"><small>Longitude</small><strong id="homeLng">—</strong></div>
+              <div class="gps-box"><small>Accuracy</small><strong id="homeAcc">—</strong></div>
+              <div class="gps-box"><small>Location</small><strong id="homePlace">Waiting</strong></div>
+            </div>
+            <button class="btn block" id="homeGpsBtn" style="margin-top:10px" type="button">⌖ VERIFY LIVE LOCATION</button>
+            <div class="map-card"><div id="map"></div><div class="map-foot"><span id="mapStatus">Map waiting for GPS</span><button class="btn small" id="mapOpen" type="button">Open map</button></div></div>
+          </aside>
+        </div>
+
+        <div class="grid two section-gap">
+          <article class="card panel">
+            <div class="panel-head"><div><div class="title">Recent My Attendance</div><div class="subtitle">Latest records with exact place and device context.</div></div><button class="btn small" id="homeHistoryRefresh" type="button">Refresh</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Role</th><th>Status</th><th>Where</th><th>Device</th></tr></thead><tbody id="homeHistoryBody"></tbody></table></div>
+          </article>
+          <article class="card panel">
+            <div class="panel-head"><div><div class="title">Latest Notifications</div><div class="subtitle">Messages available to your authenticated staff profile.</div></div><button class="btn small" id="homeNotifBtn" type="button">Open all</button></div>
+            <div id="homeNotifications" class="notification-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- STATION -->
+      <section class="page" id="page-station">
+        <div class="hero">
+          <div><div class="kicker">Protected entry</div><h1>Attendance Station</h1><p>Use the station for today's attendance. The selected role and staff identity are confirmed before the attendance control is opened. The existing database RLS remains the final authority.</p></div>
+        </div>
+
+        <div class="card panel">
+          <div class="stepbar">
+            <div class="step active" id="step1Label">1 • Role</div>
+            <div class="step" id="step2Label">2 • Staff</div>
+            <div class="step" id="step3Label">3 • Passcode</div>
+          </div>
+
+          <div class="station-step active" id="stationStep1">
+            <div class="title">Select your school role</div>
+            <div class="subtitle">Choose from the live active roles stored in the existing staff role table.</div>
+            <div class="field"><label class="label">Role</label><select id="stationRole"><option value="">Loading roles...</option></select></div>
+            <div class="actions" style="margin-top:12px"><button class="btn primary" id="stationRoleNext" type="button">CONTINUE TO STAFF</button></div>
+          </div>
+
+          <div class="station-step" id="stationStep2">
+            <div class="title">Select staff name</div>
+            <div class="subtitle">The list below is populated from the existing staff profile table and filtered by the selected role.</div>
+            <div id="stationStaffList" class="role-staff-list" style="margin-top:12px"></div>
+            <div class="actions" style="margin-top:12px"><button class="btn" id="stationBack1" type="button">BACK</button><button class="btn primary" id="stationStaffNext" type="button" disabled>CONTINUE TO PASSCODE</button></div>
+          </div>
+
+          <div class="station-step" id="stationStep3">
+            <div class="title">Confirm six-digit passcode</div>
+            <div class="subtitle">Enter the six-digit attendance passcode belonging to the selected staff profile.</div>
+            <div class="pass-panel">
+              <div class="profile-strip" style="background:var(--surface)">
+                <img class="avatar" id="stationAvatar" src="logo.png" alt="">
+                <div class="profile-info"><strong id="stationSelectedName">—</strong><span id="stationSelectedRole">—</span></div>
+              </div>
+              <div class="pass-grid" style="margin-top:11px">
+                <div><label class="label">Six-digit passcode</label><input class="pass-input" id="stationPass" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"></div>
+                <button class="btn primary" id="stationVerify" type="button">VERIFY</button>
+              </div>
+              <div class="message" id="stationPassMessage"></div>
+            </div>
+            <div class="actions" style="margin-top:12px"><button class="btn" id="stationBack2" type="button">BACK</button></div>
+          </div>
+
+          <div class="station-step" id="stationUnlocked">
+            <div class="panel-head">
+              <div><div class="title">Attendance unlocked</div><div class="subtitle">Confirm live location, then record today's attendance.</div></div>
+              <span class="badge" id="stationUnlockBadge">VERIFIED</span>
+            </div>
+            <div class="profile-strip">
+              <img class="avatar" id="unlockedAvatar" src="logo.png" alt="">
+              <div class="profile-info"><strong id="unlockedName">—</strong><span id="unlockedMeta">—</span></div>
+            </div>
+            <div class="gps-grid">
+              <div class="gps-box"><small>Latitude</small><strong id="stationLat">—</strong></div>
+              <div class="gps-box"><small>Longitude</small><strong id="stationLng">—</strong></div>
+              <div class="gps-box"><small>Accuracy</small><strong id="stationAcc">—</strong></div>
+              <div class="gps-box"><small>Location</small><strong id="stationPlace">Waiting</strong></div>
+            </div>
+            <div class="location-row">
+              <div class="location-status" id="stationLocationStatus">Live GPS verification is required.</div>
+              <button class="btn" id="stationGpsBtn" type="button">⌖ GET LIVE LOCATION</button>
+            </div>
+            <div class="map-card"><div id="stationMap"></div><div class="map-foot"><span id="stationMapStatus">Waiting for GPS</span><span id="stationMapCoords">—</span></div></div>
+            <div class="field"><label class="label">Optional attendance note</label><textarea id="stationNote" maxlength="500" placeholder="Optional note for today's attendance..."></textarea></div>
+            <button class="big-attend" id="stationAttendBtn" type="button" disabled><span class="button-text">RECORD TODAY'S ATTENDANCE</span><span class="spinner"></span></button>
+            <div class="message" id="stationAttendMessage"></div>
+            <div class="actions" style="margin-top:10px"><button class="btn" id="stationReset" type="button">START ANOTHER CHECK</button><button class="btn primary" id="stationMyHistory" type="button">OPEN MY HISTORY</button></div>
+          </div>
+        </div>
+
+        <div class="grid two section-gap">
+          <article class="card panel">
+            <div class="title">Attendance rules</div>
+            <div class="info-list" style="margin-top:9px">
+              <div class="info"><small>Date</small><b id="stationRuleDate">—</b></div>
+              <div class="info"><small>Time</small><b>Generated automatically</b></div>
+              <div class="info"><small>GPS</small><b>Compulsory</b></div>
+              <div class="info"><small>Duplicate</small><b>Blocked by existing daily unique constraint</b></div>
+            </div>
+          </article>
+          <article class="card panel">
+            <div class="title">Current authenticated account</div>
+            <div class="profile-strip" style="margin-top:10px"><img class="avatar" id="stationCurrentAvatar" src="logo.png" alt=""><div class="profile-info"><strong id="stationCurrentName">—</strong><span id="stationCurrentEmail">—</span></div></div>
+            <div class="message" style="text-align:left">For security, the existing database RLS only permits an authenticated user to create attendance for the staff profile connected to that authenticated account. No database policy is changed by this dashboard.</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section class="page" id="page-history">
+        <div class="hero"><div><div class="kicker">Personal records</div><h1>My Attendance</h1><p>Review your attendance history, location, coordinates, accuracy, device, operating system and browser.</p></div><div class="actions"><button class="btn" id="historyRefresh" type="button">Refresh</button><button class="btn primary" id="historyCsv" type="button">Download CSV</button></div></div>
+        <div class="grid analytics-cards">
+          <article class="card stat"><div class="stat-label">Total</div><div class="stat-value" id="hTotal">0</div><div class="stat-meta">My records</div></article>
+          <article class="card stat"><div class="stat-label">Present</div><div class="stat-value" id="hPresent">0</div><div class="stat-meta">Present</div></article>
+          <article class="card stat"><div class="stat-label">Late</div><div class="stat-value" id="hLate">0</div><div class="stat-meta">Late</div></article>
+          <article class="card stat"><div class="stat-label">Other</div><div class="stat-value" id="hOther">0</div><div class="stat-meta">Other statuses</div></article>
+          <article class="card stat"><div class="stat-label">Rate</div><div class="stat-value" id="hRate">0%</div><div class="stat-meta">Present + late</div></article>
+        </div>
+        <div class="card panel section-gap">
+          <div class="panel-head"><div><div class="title">Full attendance history</div><div class="subtitle">Search locally without changing the database.</div></div><input id="historySearch" style="width:min(300px,45vw)" placeholder="Search date, role, location, device..."></div>
+          <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Status</th><th>Role</th><th>Where attendance was taken</th><th>Latitude</th><th>Longitude</th><th>Accuracy</th><th>Device</th><th>OS</th><th>Browser</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- REPORTS -->
+      <section class="page" id="page-reports">
+        <div class="hero"><div><div class="kicker">School reporting</div><h1>Today's Role Reports</h1><p>Select a role — no searching is required. The dashboard loads today's attendance records for that role and prepares a school-ready PDF/print report containing names, time, status, location, coordinates, device information and signature/seal areas.</p></div></div>
+
+        <div class="card panel">
+          <div class="report-toolbar">
+            <div><label class="label">Select school role</label><select id="reportRole"><option value="">Select a role</option></select></div>
+            <div><label class="label">Report date</label><input id="reportDate" type="date"></div>
+            <button class="btn primary wide-action" id="loadReportBtn" type="button">LOAD REPORT</button>
+            <button class="btn wide-action" id="reportAllTodayBtn" type="button">ALL ROLES</button>
+          </div>
+          <div class="message" id="reportMessage"></div>
+        </div>
+
+        <div class="grid stats section-gap">
+          <article class="card stat"><div class="stat-label">Selected Role</div><div class="stat-value" id="reportRoleName">—</div><div class="stat-meta">Current report filter</div></article>
+          <article class="card stat"><div class="stat-label">Attendance</div><div class="stat-value" id="reportTotal">0</div><div class="stat-meta">Records loaded</div></article>
+          <article class="card stat"><div class="stat-label">Present</div><div class="stat-value" id="reportPresent">0</div><div class="stat-meta">Present</div></article>
+          <article class="card stat"><div class="stat-label">Late</div><div class="stat-value" id="reportLate">0</div><div class="stat-meta">Late</div></article>
+        </div>
+
+        <div class="card panel section-gap">
+          <div class="panel-head">
+            <div><div class="title">Report records</div><div class="subtitle" id="reportSubtitle">Select a role to load today's source data.</div></div>
+            <div class="actions"><button class="btn" id="printReportBtn" type="button" disabled>PRINT</button><button class="btn primary" id="pdfReportBtn" type="button" disabled>DOWNLOAD PDF</button><button class="btn" id="csvReportBtn" type="button" disabled>DOWNLOAD CSV</button></div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>#</th><th>Staff Name</th><th>Staff No.</th><th>Role</th><th>Date</th><th>Time</th><th>Status</th><th>Where attendance was taken</th><th>Coordinates</th><th>Accuracy</th><th>Device</th><th>OS</th><th>Browser</th></tr></thead><tbody id="reportBody"></tbody></table></div>
+        </div>
+
+        <div class="card panel section-gap">
+          <div class="panel-head"><div><div class="title">Report location map</div><div class="subtitle">Attendance locations represented from today's selected role records.</div></div></div>
+          <div id="reportMap"></div>
+        </div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="page" id="page-analytics">
+        <div class="hero"><div><div class="kicker">Personal intelligence</div><h1>Attendance Analytics</h1><p>Local analysis of your authenticated staff attendance records. No existing database structure is modified.</p></div></div>
+        <div class="grid two">
+          <article class="card panel"><div class="panel-head"><div><div class="title">Attendance timeline</div><div class="subtitle">Recent attendance status pattern.</div></div></div><div class="chart-wrap"><canvas id="attendanceChart"></canvas></div></article>
+          <article class="card panel"><div class="panel-head"><div><div class="title">Summary</div><div class="subtitle">Calculated from loaded personal records.</div></div></div><div class="profile-grid" id="analyticsSummary"></div></article>
+        </div>
+        <div class="grid three section-gap">
+          <article class="card panel"><div class="title">Role usage</div><div class="notification-list" id="roleStats"></div></article>
+          <article class="card panel"><div class="title">Location history</div><div class="notification-list" id="locationStats"></div></article>
+          <article class="card panel"><div class="title">Device history</div><div class="notification-list" id="deviceStats"></div></article>
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section class="page" id="page-notifications">
+        <div class="hero"><div><div class="kicker">School communication</div><h1>Notifications</h1><p>Announcements available to the authenticated staff account.</p></div><button class="btn" id="notifRefresh" type="button">Refresh</button></div>
+        <div class="card panel"><div id="notificationPageList" class="notification-list"></div></div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="page" id="page-profile">
+        <div class="hero"><div><div class="kicker">Staff identity</div><h1>My Profile</h1><p>Your staff information as stored in the standalone MIS-NEXUS staff profile object.</p></div><div class="actions"><button class="btn" id="printProfileBtn" type="button">PRINT PROFILE</button></div></div>
+        <div class="card panel">
+          <div class="profile-strip"><img class="avatar" id="profileAvatar" src="logo.png" alt=""><div class="profile-info"><strong id="profileName">—</strong><span id="profileRole">—</span></div><span class="badge" id="profileStatus">—</span></div>
+          <div class="profile-grid">
+            <div class="info"><small>Staff ID</small><b id="pId">—</b></div><div class="info"><small>Staff number</small><b id="pNumber">—</b></div><div class="info"><small>Email</small><b id="pEmail">—</b></div>
+            <div class="info"><small>Role</small><b id="pRole">—</b></div><div class="info"><small>Department</small><b id="pDepartment">—</b></div><div class="info"><small>Employment type</small><b id="pType">—</b></div>
+            <div class="info"><small>Employment status</small><b id="pEmploymentStatus">—</b></div><div class="info"><small>Date joined</small><b id="pJoined">—</b></div><div class="info"><small>Phone</small><b id="pPhone">—</b></div>
+            <div class="info"><small>Alternate phone</small><b id="pAlt">—</b></div><div class="info"><small>Address</small><b id="pAddress">—</b></div><div class="info"><small>Attendance access</small><b id="pAccess">—</b></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section class="page" id="page-security">
+        <div class="hero"><div><div class="kicker">Security centre</div><h1>Device & Security</h1><p>Browser-visible device information and authenticated session status.</p></div></div>
+        <div class="grid two">
+          <article class="card panel"><div class="title">Current device</div><div class="profile-grid" id="deviceGrid"></div></article>
+          <article class="card panel"><div class="title">Session</div><div class="profile-grid">
+            <div class="info"><small>Authentication</small><b id="secAuth">—</b></div><div class="info"><small>Online</small><b id="secOnline">—</b></div><div class="info"><small>Secure context</small><b id="secSecure">—</b></div><div class="info"><small>Timezone</small><b id="secTZ">—</b></div>
+          </div><div class="actions" style="margin-top:12px"><button class="btn danger" id="securitySignout" type="button">SIGN OUT</button></div></article>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal" id="profileModal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>My Staff Profile</h2><button class="close" data-close="profileModal" type="button">×</button></div>
+    <div class="modal-body">
+      <div class="profile-strip"><img class="avatar" id="modalAvatar" src="logo.png" alt=""><div class="profile-info"><strong id="modalName">—</strong><span id="modalRole">—</span><span id="modalEmail">—</span></div></div>
+      <div class="profile-grid">
+        <div class="info"><small>Staff number</small><b id="modalNumber">—</b></div><div class="info"><small>Phone</small><b id="modalPhone">—</b></div><div class="info"><small>Department</small><b id="modalDepartment">—</b></div>
+        <div class="info"><small>Employment type</small><b id="modalType">—</b></div><div class="info"><small>Date joined</small><b id="modalJoined">—</b></div><div class="info"><small>Status</small><b id="modalStatus">—</b></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" data-close="profileModal" type="button">Close</button><button class="btn primary" id="modalPrintProfile" type="button">Print</button></div>
+  </div>
+</div>
+
+<!-- NOTIFICATION MODAL -->
+<div class="modal" id="notificationModal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>Staff Notifications</h2><button class="close" data-close="notificationModal" type="button">×</button></div>
+    <div class="modal-body"><div id="notificationModalList" class="notification-list"></div></div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="modal" id="reportPreviewModal">
+  <div class="modal-card wide">
+    <div class="modal-head"><h2>Report Preview</h2><button class="close" data-close="reportPreviewModal" type="button">×</button></div>
+    <div class="modal-body"><div id="reportPreview" class="report-preview"></div></div>
+    <div class="modal-foot"><button class="btn" data-close="reportPreviewModal" type="button">Close</button><button class="btn primary" id="previewPrintBtn" type="button">PRINT REPORT</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.min.js"></script>
+
+<script type="module">
+"use strict";
+
+const SUPABASE_URL="https://ysjugqdcnbpzrqnvowpl.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_4IiL5xK5zv8C-VG7kNW92g_v1ghHlqx";
+
+const T={
+  profiles:"mis_nexus_staff_profiles",
+  attendance:"mis_nexus_staff_attendance",
+  events:"mis_nexus_staff_attendance_events",
+  roles:"mis_nexus_staff_roles",
+  notifications:"mis_nexus_staff_notifications"
+};
+
+const state={
+  sb:null,user:null,profile:null,roles:[],allStaff:[],history:[],today:[],notifications:[],
+  location:null,locationName:"",map:null,stationMap:null,reportMap:null,install:null,
+  selectedRole:"",selectedStaff:null,unlocked:false,submitting:false,reportRows:[],reportDate:"",
+  theme:localStorage.getItem("MIS_NEXUS_STAFF_THEME")||"light"
+};
+
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+const pretty=v=>String(v??"").replaceAll("_"," ").replace(/\b\w/g,c=>c.toUpperCase());
+
+function toast(msg){
+  $("toast").textContent=msg;$("toast").classList.add("show");
+  clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").classList.remove("show"),3200);
+}
+function setTheme(t){
+  state.theme=t;document.documentElement.dataset.theme=t;localStorage.setItem("MIS_NEXUS_STAFF_THEME",t);
+  $("themeBtn").textContent=t==="dark"?"☀":"☾";
+}
+function nigeriaDate(){
+  const p=new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Lagos",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
+  const o={};p.forEach(x=>o[x.type]=x.value);return `${o.year}-${o.month}-${o.day}`;
+}
+function formatDate(v){
+  if(!v)return "—";
+  try{return new Intl.DateTimeFormat("en-NG",{timeZone:"Africa/Lagos",year:"numeric",month:"short",day:"numeric"}).format(new Date(v+"T00:00:00"));}catch{return String(v)}
+}
+function formatDateTime(v){
+  if(!v)return "—";
+  try{return new Intl.DateTimeFormat("en-NG",{timeZone:"Africa/Lagos",dateStyle:"medium",timeStyle:"medium"}).format(new Date(v));}catch{return String(v)}
+}
+function formatTime(v){
+  if(!v)return "—";
+  try{return new Intl.DateTimeFormat("en-NG",{timeZone:"Africa/Lagos",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true}).format(new Date(v));}catch{return String(v)}
+}
+function staffName(p){
+  return p?.full_name||[p?.first_name,p?.middle_name,p?.last_name].filter(Boolean).join(" ")||"MIS-NEXUS Staff";
+}
+function statusPill(s){return `<span class="pill ${esc(s)}">${esc(pretty(s))}</span>`}
+
+function updateClock(){
+  const now=new Date();
+  $("clock").textContent=new Intl.DateTimeFormat("en-NG",{timeZone:"Africa/Lagos",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true}).format(now)+" WAT";
+  $("todayLabel").textContent=new Intl.DateTimeFormat("en-NG",{timeZone:"Africa/Lagos",weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(now);
+  $("stationRuleDate").textContent=nigeriaDate();
+  if($("reportDate") && !$("reportDate").value)$("reportDate").value=nigeriaDate();
+}
+setTheme(state.theme);updateClock();setInterval(updateClock,1000);
+
+function detectDevice(){
+  const ua=navigator.userAgent||"";
+  const type=/Android/i.test(ua)?"Android":/iPhone|iPad|iPod/i.test(ua)?"iOS":/Windows/i.test(ua)?"Windows":"Desktop";
+  const browser=/Edg\//i.test(ua)?"Microsoft Edge":/Chrome\//i.test(ua)?"Google Chrome":/Firefox\//i.test(ua)?"Mozilla Firefox":/Safari\//i.test(ua)?"Safari":"Browser";
+  const os=/Android/i.test(ua)?"Android":/iPhone|iPad|iPod/i.test(ua)?"iOS":/Windows/i.test(ua)?"Windows":/Mac OS/i.test(ua)?"macOS":/Linux/i.test(ua)?"Linux":"Unknown";
+  return {type,browser,os,ua};
+}
+const DEVICE=detectDevice();
+
+function renderDevice(){
+  $("deviceGrid").innerHTML=[
+    ["Device",DEVICE.type],["Operating system",DEVICE.os],["Browser",DEVICE.browser],
+    ["Screen",`${screen.width} × ${screen.height}`],["Language",navigator.language||"—"],
+    ["Timezone",Intl.DateTimeFormat().resolvedOptions().timeZone||"—"],["Online",navigator.onLine?"Online":"Offline"],["Secure context",window.isSecureContext?"Yes":"No"]
+  ].map(x=>`<div class="info"><small>${esc(x[0])}</small><b>${esc(x[1])}</b></div>`).join("");
+  $("secAuth").textContent=state.user?"Authenticated":"—";$("secOnline").textContent=navigator.onLine?"Online":"Offline";$("secSecure").textContent=window.isSecureContext?"Yes":"No";$("secTZ").textContent=Intl.DateTimeFormat().resolvedOptions().timeZone||"—";
+}
+renderDevice();
+
+async function initSupabase(){
+  const m=await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm");
+  state.sb=m.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+}
+async function requireSession(){
+  const q=await state.sb.auth.getSession();
+  if(q.error)throw q.error;
+  if(!q.data.session?.user){location.replace("staffs.html");return false}
+  state.user=q.data.session.user;return true;
+}
+async function loadProfile(){
+  const q=await state.sb.from(T.profiles).select("*").eq("auth_user_id",state.user.id).maybeSingle();
+  if(q.error)throw q.error;
+  if(!q.data)throw new Error("No staff profile is connected to this authenticated account.");
+  if(q.data.employment_status!=="active"||q.data.is_attendance_enabled!==true)throw new Error("Staff attendance access is currently disabled.");
+  state.profile=q.data;renderProfile();
+}
+function renderProfile(){
+  const p=state.profile,n=staffName(p);
+  ["homeName","stationCurrentName","profileName","modalName"].forEach(id=>$(id).textContent=n);
+  ["homeEmail","stationCurrentEmail","pEmail","modalEmail"].forEach(id=>$(id).textContent=p.email||state.user.email||"—");
+  ["homeAvatar","stationCurrentAvatar","profileAvatar","modalAvatar","unlockedAvatar"].forEach(id=>{if($(id))$(id).src=p.photo_url||"logo.png"});
+  $("homeAuth").textContent="AUTHENTICATED";$("profileStatus").textContent=pretty(p.employment_status);
+  $("profileRole").textContent=pretty(p.role);$("pId").textContent=p.id||"—";$("pNumber").textContent=p.staff_number||"Not assigned";
+  $("pRole").textContent=pretty(p.role);$("pDepartment").textContent=p.department||"Not assigned";$("pType").textContent=p.employment_type||"Not specified";
+  $("pEmploymentStatus").textContent=pretty(p.employment_status);$("pJoined").textContent=p.date_joined?formatDate(p.date_joined):"Not provided";
+  $("pPhone").textContent=p.phone||"Not provided";$("pAlt").textContent=p.alternate_phone||"Not provided";$("pAddress").textContent=p.address||"Not provided";$("pAccess").textContent=p.is_attendance_enabled?"Enabled":"Disabled";
+  $("modalNumber").textContent=p.staff_number||"Not assigned";$("modalPhone").textContent=p.phone||"Not provided";$("modalDepartment").textContent=p.department||"Not assigned";
+  $("modalType").textContent=p.employment_type||"Not specified";$("modalJoined").textContent=p.date_joined?formatDate(p.date_joined):"Not provided";$("modalStatus").textContent=pretty(p.employment_status);
+  renderDevice();
+}
+
+async function loadRoles(){
+  const q=await state.sb.from(T.roles).select("id,role_name,role_description").eq("is_active",true).order("role_name");
+  if(q.error)throw q.error;state.roles=q.data||[];
+  const options='<option value="">Select a role</option>'+state.roles.map(r=>`<option value="${esc(r.role_name)}">${esc(pretty(r.role_name))}</option>`).join("");
+  $("stationRole").innerHTML=options;$("reportRole").innerHTML=options;
+  if(state.profile?.role){$("stationRole").value=state.profile.role;$("reportRole").value=state.profile.role}
+}
+async function loadAllStaff(){
+  const q=await state.sb.from(T.profiles).select("*").eq("employment_status","active").eq("is_attendance_enabled",true).order("full_name");
+  if(q.error)throw q.error;state.allStaff=q.data||[];$("staffCount").textContent=state.allStaff.length;
+}
+async function loadHistory(){
+  const q=await state.sb.from(T.attendance).select("*").eq("staff_id",state.profile.id).order("attendance_date",{ascending:false}).order("attendance_time",{ascending:false}).limit(1000);
+  if(q.error)throw q.error;state.history=q.data||[];renderHistory();renderHomeHistory();renderAnalytics();
+}
+async function loadToday(){
+  const d=nigeriaDate();
+  const q=await state.sb.from(T.attendance).select("*").eq("attendance_date",d).order("attendance_time",{ascending:false}).limit(2000);
+  if(q.error)throw q.error;state.today=q.data||[];$("todayCount").textContent=state.today.length;
+  const mine=state.today.find(x=>x.staff_id===state.profile.id);
+  $("myTodayStatus").textContent=mine?pretty(mine.status):"PENDING";
+}
+async function loadNotifications(){
+  const now=new Date().toISOString();
+  const q=await state.sb.from(T.notifications).select("*").or(`target_staff_id.is.null,target_staff_id.eq.${state.profile.id}`).or(`expires_at.is.null,expires_at.gt.${now}`).order("created_at",{ascending:false}).limit(100);
+  if(q.error){console.warn(q.error);state.notifications=[]}else state.notifications=q.data||[];
+  renderNotifications();
+}
+function renderNotifications(){
+  const html=state.notifications.length?state.notifications.map(n=>`<article class="notification"><strong>${esc(n.title)}</strong><p>${esc(n.message)}</p><time>${esc(formatDateTime(n.created_at))} • ${esc(pretty(n.priority||"normal"))}</time></article>`).join(""):'<div class="empty">No notifications available.</div>';
+  $("homeNotifications").innerHTML=state.notifications.slice(0,4).map(n=>`<article class="notification"><strong>${esc(n.title)}</strong><p>${esc(n.message)}</p><time>${esc(formatDateTime(n.created_at))}</time></article>`).join("")||'<div class="empty">No notifications.</div>';
+  $("notificationPageList").innerHTML=html;$("notificationModalList").innerHTML=html;
+}
+function renderHistory(){
+  const q=($("historySearch")?.value||"").toLowerCase();
+  const a=state.history.filter(x=>[x.attendance_date,x.selected_role,x.location_name,x.device_type,x.operating_system,x.browser_name,x.status].join(" ").toLowerCase().includes(q));
+  $("historyBody").innerHTML=a.length?a.map(x=>`<tr><td>${esc(formatDate(x.attendance_date))}</td><td>${esc(formatTime(x.attendance_time))}</td><td>${statusPill(x.status)}</td><td>${esc(pretty(x.selected_role))}</td><td>${esc(x.location_name||"—")}</td><td>${Number(x.latitude).toFixed(6)}</td><td>${Number(x.longitude).toFixed(6)}</td><td>${x.gps_accuracy!=null?esc(x.gps_accuracy)+" m":"—"}</td><td>${esc(x.device_type||"—")}</td><td>${esc(x.operating_system||"—")}</td><td>${esc(x.browser_name||"—")}</td></tr>`).join(""):'<tr><td colspan="11"><div class="empty">No attendance records found.</div></td></tr>';
+  const total=state.history.length,p=state.history.filter(x=>x.status==="present").length,l=state.history.filter(x=>x.status==="late").length;
+  $("myCount").textContent=total;$("hTotal").textContent=total;$("hPresent").textContent=p;$("hLate").textContent=l;$("hOther").textContent=Math.max(0,total-p-l);$("hRate").textContent=total?Math.round((p+l)/total*100)+"%":"0%";
+}
+function renderHomeHistory(){
+  const a=state.history.slice(0,8);
+  $("homeHistoryBody").innerHTML=a.length?a.map(x=>`<tr><td>${esc(formatDate(x.attendance_date))}</td><td>${esc(formatTime(x.attendance_time))}</td><td>${esc(pretty(x.selected_role))}</td><td>${statusPill(x.status)}</td><td>${esc(x.location_name||"—")}</td><td>${esc(x.device_type||"—")}</td></tr>`).join(""):'<tr><td colspan="6"><div class="empty">No attendance records.</div></td></tr>';
+}
+function renderAnalytics(){
+  const total=state.history.length,p=state.history.filter(x=>x.status==="present").length,l=state.history.filter(x=>x.status==="late").length;
+  const groups=(key)=>{const m={};state.history.forEach(x=>{const k=x[key]||"Unknown";m[k]=(m[k]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,8)};
+  $("analyticsSummary").innerHTML=[["Total",total],["Present",p],["Late",l],["Other",Math.max(0,total-p-l)],["Rate",total?Math.round((p+l)/total*100)+"%":"0%"],["Locations",new Set(state.history.map(x=>x.location_name).filter(Boolean)).size]].map(x=>`<div class="info"><small>${esc(x[0])}</small><b>${esc(x[1])}</b></div>`).join("");
+  $("roleStats").innerHTML=groups("selected_role").map(x=>`<article class="notification"><strong>${esc(pretty(x[0]))}</strong><p>${x[1]} record(s)</p></article>`).join("")||'<div class="empty">No data.</div>';
+  $("locationStats").innerHTML=groups("location_name").map(x=>`<article class="notification"><strong>${esc(x[0])}</strong><p>${x[1]} record(s)</p></article>`).join("")||'<div class="empty">No data.</div>';
+  $("deviceStats").innerHTML=groups("device_type").map(x=>`<article class="notification"><strong>${esc(x[0])}</strong><p>${x[1]} record(s)</p></article>`).join("")||'<div class="empty">No data.</div>';
+  drawChart();
+}
+function drawChart(){
+  const c=$("attendanceChart"),box=c.parentElement,w=box.clientWidth,h=box.clientHeight,r=devicePixelRatio||1;c.width=w*r;c.height=h*r;
+  const ctx=c.getContext("2d");ctx.setTransform(r,0,0,r,0,0);ctx.clearRect(0,0,w,h);
+  const data=state.history.slice(0,30).reverse();
+  ctx.font="12px sans-serif";ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue("--muted");
+  if(!data.length){ctx.fillText("No attendance data yet.",16,28);return}
+  const pad=28,base=h-30,step=(w-pad*2)/Math.max(1,data.length-1);
+  ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--accent");ctx.lineWidth=2;ctx.beginPath();
+  data.forEach((x,i)=>{const xx=pad+i*step,yy=base-(base-pad)*(x.status==="late"?.65:.9);i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)});ctx.stroke();
+  ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue("--muted");ctx.font="8px sans-serif";ctx.fillText("Older",pad,base+15);ctx.fillText("Recent",Math.max(pad,w-55),base+15);
+}
+
+function initMap(){
+  if(!window.L)return;
+  state.map=L.map("map",{zoomControl:false}).setView([9.0765,7.3986],12);
+  L.control.zoom({position:"bottomright"}).addTo(state.map);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(state.map);
+  state.stationMap=L.map("stationMap",{zoomControl:false}).setView([9.0765,7.3986],12);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(state.stationMap);
+  state.reportMap=L.map("reportMap",{zoomControl:false}).setView([9.0765,7.3986],12);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(state.reportMap);
+}
+function mapSet(map,lat,lng,label){
+  if(!map)return;
+  map.setView([lat,lng],16);
+  if(map._misMarker)map.removeLayer(map._misMarker);
+  map._misMarker=L.marker([lat,lng]).addTo(map).bindPopup(esc(label||"Attendance location")).openPopup();
+}
+async function reverseGeocode(lat,lng){
+  try{
+    const url=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lng)}&zoom=18&addressdetails=1`;
+    const r=await fetch(url,{headers:{"Accept":"application/json","Accept-Language":"en"}});
+    if(!r.ok)throw new Error("Reverse location unavailable");
+    const j=await r.json();
+    return j.display_name||`GPS ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+  }catch{return `GPS ${lat.toFixed(6)}, ${lng.toFixed(6)}`}
+}
+async function requestLocation(target="all"){
+  if(!navigator.geolocation){setLocationUI(null,"This device does not provide browser GPS.","bad");return null}
+  setLocationUI(null,"Requesting live geographical location…","");
+  return new Promise(resolve=>{
+    navigator.geolocation.getCurrentPosition(async pos=>{
+      const c=pos.coords;
+      state.location={latitude:c.latitude,longitude:c.longitude,accuracy:c.accuracy};
+      state.locationName=await reverseGeocode(c.latitude,c.longitude);
+      setLocationUI(state.location,`Live location verified • ±${Math.round(c.accuracy)} m`,"ok");
+      if(state.map)mapSet(state.map,c.latitude,c.longitude,state.locationName);
+      if(state.stationMap)mapSet(state.stationMap,c.latitude,c.longitude,state.locationName);
+      resolve(state.location);
+    },err=>{
+      state.location=null;state.locationName="";
+      const msg=err.code===1?"Location permission denied. Enable GPS permission and try again.":err.code===2?"Location unavailable. Check device GPS/network.":"Location request timed out. Try again.";
+      setLocationUI(null,msg,"bad");resolve(null);
+    },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+  });
+}
+function setLocationUI(loc,msg,type){
+  const ids=[["homeLat","homeLng","homeAcc","homePlace"],["stationLat","stationLng","stationAcc","stationPlace"]];
+  ids.forEach(([a,b,c,d])=>{
+    if($(a))$(a).textContent=loc?loc.latitude.toFixed(7):"—";if($(b))$(b).textContent=loc?loc.longitude.toFixed(7):"—";
+    if($(c))$(c).textContent=loc?Math.round(loc.accuracy)+" m":"—";if($(d))$(d).textContent=loc?(state.locationName||"Resolving…"):"Waiting";
+  });
+  $("gpsBadge").textContent=loc?"ON":"OFF";$("homePlace").textContent=loc?(state.locationName||"Resolving…"):"Waiting";
+  $("mapStatus").textContent=msg;
+  $("stationLocationStatus").textContent=msg;$("stationLocationStatus").className="location-status "+(type||"");
+  $("stationMapStatus").textContent=msg;
+  $("stationMapCoords").textContent=loc?`${loc.latitude.toFixed(6)}, ${loc.longitude.toFixed(6)}`:"—";
+  updateStationAttendButton();
+}
+function updateStationAttendButton(){
+  const ready=state.unlocked&&state.location&&Number.isFinite(state.location.latitude)&&Number.isFinite(state.location.longitude)&&!state.submitting;
+  $("stationAttendBtn").disabled=!ready;
+}
+async function logEvent(event_type,success=true,meta={}){
+  if(!state.profile)return;
+  try{
+    await state.sb.from(T.events).insert({
+      staff_id:state.profile.id, event_type, success,
+      selected_role:state.selectedRole||null,
+      latitude:state.location?.latitude||null,longitude:state.location?.longitude||null,gps_accuracy:state.location?.accuracy||null,
+      location_name:state.locationName||null,device_type:DEVICE.type,device_name:DEVICE.type,operating_system:DEVICE.os,
+      browser_name:DEVICE.browser,user_agent:DEVICE.ua.slice(0,1000),metadata:meta
+    });
+  }catch(e){console.warn("Event log:",e)}
+}
+
+function stationStep(n){
+  [1,2,3].forEach(i=>{const el=$(`stationStep${i}`);if(el)el.classList.toggle("active",i===n);$(`step${i}Label`).classList.toggle("active",i===n)});
+  $("stationUnlocked").classList.remove("active");
+}
+function renderStationStaff(){
+  const role=$("stationRole").value;state.selectedRole=role;
+  const a=state.allStaff.filter(p=>p.role===role);
+  $("stationStaffList").innerHTML=a.length?a.map(p=>`<button class="staff-choice" data-staff="${esc(p.id)}" type="button"><b>${esc(staffName(p))}</b><span>${esc(p.staff_number||"No staff number")} • ${esc(p.department||"No department")}</span></button>`).join(""):'<div class="empty" style="grid-column:1/-1">No active staff profile is registered under this role.</div>';
+  $("stationStaffNext").disabled=true;state.selectedStaff=null;
+  document.querySelectorAll(".staff-choice").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll(".staff-choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");
+    state.selectedStaff=state.allStaff.find(p=>p.id===b.dataset.staff)||null;$("stationStaffNext").disabled=!state.selectedStaff;
+  }));
+}
+async function verifyStation(){
+  const code=$("stationPass").value.trim();
+  if(!state.selectedStaff)return;
+  if(!/^\d{6}$/.test(code)){ $("stationPassMessage").textContent="Enter exactly six digits.";return }
+  $("stationVerify").disabled=true;$("stationPassMessage").textContent="Verifying securely…";
+  try{
+    const q=await state.sb.rpc("mis_nexus_staff_verify_passcode",{p_staff_id:state.selectedStaff.id,p_passcode:code});
+    if(q.error)throw q.error;
+    if(q.data!==true)throw new Error("Passcode was not accepted.");
+    state.unlocked=true;
+    $("unlockedName").textContent=staffName(state.selectedStaff);$("unlockedMeta").textContent=`${pretty(state.selectedStaff.role)} • ${state.selectedStaff.department||"Department not assigned"}`;
+    $("unlockedAvatar").src=state.selectedStaff.photo_url||"logo.png";
+    $("stationSelectedName").textContent=staffName(state.selectedStaff);$("stationSelectedRole").textContent=pretty(state.selectedStaff.role);
+    $("stationPassMessage").textContent="Passcode verified.";
+    $("stationStep3").classList.remove("active");$("stationUnlocked").classList.add("active");
+    [1,2,3].forEach(i=>$(`step${i}Label`).classList.remove("active"));$("step3Label").classList.add("active");
+    $("stationAttendMessage").textContent="";
+    if(state.selectedStaff.id!==state.profile.id){
+      $("stationAttendMessage").textContent="Identity verified, but this authenticated account cannot create attendance for another staff profile under the existing database RLS. Sign in with the selected staff account to record it.";
+      $("stationAttendMessage").className="message bad";
+    }
+    updateStationAttendButton();await logEvent("attendance_attempt",true,{passcode_verified:true,selected_staff_id:state.selectedStaff.id});
+  }catch(e){
+    console.error(e);$("stationPassMessage").textContent=e.message||"Passcode verification failed.";
+    $("stationPassMessage").className="message bad";await logEvent("attendance_rejected",false,{reason:e.message||"verification_failed"});
+  }finally{$("stationVerify").disabled=false}
+}
+async function createStationAttendance(){
+  if(!state.unlocked||!state.selectedStaff)return;
+  if(state.selectedStaff.id!==state.profile.id){
+    $("stationAttendMessage").textContent="The current authenticated account does not own the selected staff profile. No database policy was changed; sign in as that staff member first.";
+    $("stationAttendMessage").className="message bad";return;
+  }
+  if(!state.location){await requestLocation("station");return}
+  if(state.history.some(x=>x.attendance_date===nigeriaDate())){
+    $("stationAttendMessage").textContent="Today's attendance has already been recorded for this staff account.";
+    $("stationAttendMessage").className="message bad";return;
+  }
+  state.submitting=true;updateStationAttendButton();$("stationAttendBtn").classList.add("loading");$("stationAttendMessage").textContent="Recording attendance securely…";
+  const payload={
+    staff_id:state.profile.id,attendance_date:nigeriaDate(),attendance_time:new Date().toISOString(),status:"present",
+    selected_role:state.selectedRole,latitude:state.location.latitude,longitude:state.location.longitude,gps_accuracy:state.location.accuracy,
+    location_name:state.locationName||`GPS ${state.location.latitude.toFixed(6)}, ${state.location.longitude.toFixed(6)}`,
+    location_source:"browser_gps",device_type:DEVICE.type,device_name:DEVICE.type,operating_system:DEVICE.os,
+    browser_name:DEVICE.browser,user_agent:DEVICE.ua.slice(0,1000),notes:$("stationNote").value.trim()||null,recorded_by:state.user.id
+  };
+  try{
+    const q=await state.sb.from(T.attendance).insert(payload).select("*").single();
+    if(q.error){
+      if(q.error.code==="23505")await loadHistory();throw q.error;
+    }
+    await logEvent("attendance_created",true,{attendance_id:q.data.id});
+    $("stationAttendMessage").textContent="Today's attendance was recorded successfully.";
+    $("stationAttendMessage").className="message ok";$("stationNote").value="";
+    toast("Attendance recorded successfully.");await Promise.all([loadHistory(),loadToday()]);
+  }catch(e){
+    console.error(e);$("stationAttendMessage").textContent=e.message||"Attendance could not be recorded.";
+    $("stationAttendMessage").className="message bad";await logEvent("attendance_rejected",false,{reason:e.message||"insert_failed"});
+  }finally{state.submitting=false;$("stationAttendBtn").classList.remove("loading");updateStationAttendButton()}
+}
+function resetStation(){
+  state.selectedRole="";state.selectedStaff=null;state.unlocked=false;state.location=null;state.locationName="";
+  $("stationRole").value=state.profile?.role||"";$("stationPass").value="";$("stationPassMessage").textContent="";
+  $("stationAttendMessage").textContent="";$("stationAttendMessage").className="message";
+  stationStep(1);setLocationUI(null,"Live GPS verification is required.","");renderStationStaff();
+}
+
+async function loadReport(){
+  const role=$("reportRole").value,date=$("reportDate").value||nigeriaDate();
+  if(!role){$("reportMessage").textContent="Select a role first.";return}
+  $("reportMessage").textContent="Loading today's role attendance…";
+  const q=await state.sb.from(T.attendance).select("*").eq("selected_role",role).eq("attendance_date",date).order("attendance_time",{ascending:true});
+  if(q.error){$("reportMessage").textContent=q.error.message;return}
+  const rows=q.data||[];
+  const ids=[...new Set(rows.map(x=>x.staff_id))];
+  let profiles=[];
+  if(ids.length){
+    const p=await state.sb.from(T.profiles).select("id,full_name,first_name,middle_name,last_name,staff_number,role,department,photo_url,email").in("id",ids);
+    if(!p.error)profiles=p.data||[];
+  }
+  const map=new Map(profiles.map(p=>[p.id,p]));
+  state.reportRows=rows.map((x,i)=>({...x,profile:map.get(x.staff_id)||null,no:i+1}));
+  state.reportDate=date;
+  $("reportRoleName").textContent=pretty(role);$("reportTotal").textContent=rows.length;$("reportPresent").textContent=rows.filter(x=>x.status==="present").length;$("reportLate").textContent=rows.filter(x=>x.status==="late").length;
+  $("reportSubtitle").textContent=`${pretty(role)} • ${formatDate(date)} • ${rows.length} attendance record(s)`;
+  $("reportBody").innerHTML=state.reportRows.length?state.reportRows.map(x=>`<tr><td>${x.no}</td><td>${esc(staffName(x.profile)||x.staff_id)}</td><td>${esc(x.profile?.staff_number||"—")}</td><td>${esc(pretty(x.selected_role))}</td><td>${esc(formatDate(x.attendance_date))}</td><td>${esc(formatTime(x.attendance_time))}</td><td>${statusPill(x.status)}</td><td>${esc(x.location_name||"—")}</td><td>${Number(x.latitude).toFixed(6)}, ${Number(x.longitude).toFixed(6)}</td><td>${x.gps_accuracy!=null?esc(x.gps_accuracy)+" m":"—"}</td><td>${esc(x.device_type||"—")}</td><td>${esc(x.operating_system||"—")}</td><td>${esc(x.browser_name||"—")}</td></tr>`).join(""):'<tr><td colspan="13"><div class="empty">No attendance records found for this role and date.</div></td></tr>';
+  $("printReportBtn").disabled=!state.reportRows.length;$("pdfReportBtn").disabled=!state.reportRows.length;$("csvReportBtn").disabled=!state.reportRows.length;
+  renderReportMap();
+  $("reportMessage").textContent="Report loaded from the existing attendance source.";
+}
+async function loadAllRolesToday(){
+  $("reportRole").value="";$("reportMessage").textContent="Loading all roles for the selected date…";
+  const date=$("reportDate").value||nigeriaDate();
+  const q=await state.sb.from(T.attendance).select("*").eq("attendance_date",date).order("selected_role").order("attendance_time");
+  if(q.error){$("reportMessage").textContent=q.error.message;return}
+  const ids=[...new Set((q.data||[]).map(x=>x.staff_id))];let profiles=[];
+  if(ids.length){const p=await state.sb.from(T.profiles).select("id,full_name,first_name,middle_name,last_name,staff_number,role,department,photo_url,email").in("id",ids);if(!p.error)profiles=p.data||[]}
+  const map=new Map(profiles.map(p=>[p.id,p]));
+  state.reportRows=(q.data||[]).map((x,i)=>({...x,profile:map.get(x.staff_id)||null,no:i+1}));state.reportDate=date;
+  $("reportRoleName").textContent="ALL ROLES";$("reportTotal").textContent=state.reportRows.length;$("reportPresent").textContent=state.reportRows.filter(x=>x.status==="present").length;$("reportLate").textContent=state.reportRows.filter(x=>x.status==="late").length;
+  $("reportSubtitle").textContent=`All active role records • ${formatDate(date)} • ${state.reportRows.length} attendance record(s)`;
+  $("reportBody").innerHTML=state.reportRows.length?state.reportRows.map(x=>`<tr><td>${x.no}</td><td>${esc(staffName(x.profile)||x.staff_id)}</td><td>${esc(x.profile?.staff_number||"—")}</td><td>${esc(pretty(x.selected_role))}</td><td>${esc(formatDate(x.attendance_date))}</td><td>${esc(formatTime(x.attendance_time))}</td><td>${statusPill(x.status)}</td><td>${esc(x.location_name||"—")}</td><td>${Number(x.latitude).toFixed(6)}, ${Number(x.longitude).toFixed(6)}</td><td>${x.gps_accuracy!=null?esc(x.gps_accuracy)+" m":"—"}</td><td>${esc(x.device_type||"—")}</td><td>${esc(x.operating_system||"—")}</td><td>${esc(x.browser_name||"—")}</td></tr>`).join(""):'<tr><td colspan="13"><div class="empty">No attendance records found.</div></td></tr>';
+  $("printReportBtn").disabled=!state.reportRows.length;$("pdfReportBtn").disabled=!state.reportRows.length;$("csvReportBtn").disabled=!state.reportRows.length;renderReportMap();
+  $("reportMessage").textContent="All-role report loaded.";
+}
+function renderReportMap(){
+  if(!state.reportMap)return;
+  if(state.reportMap._misMarkers){state.reportMap._misMarkers.forEach(m=>state.reportMap.removeLayer(m))}
+  state.reportMap._misMarkers=[];
+  const pts=state.reportRows.filter(x=>Number.isFinite(Number(x.latitude))&&Number.isFinite(Number(x.longitude)));
+  if(!pts.length){state.reportMap.setView([9.0765,7.3986],12);return}
+  const bounds=[];
+  pts.forEach(x=>{const m=L.marker([x.latitude,x.longitude]).addTo(state.reportMap).bindPopup(`${esc(staffName(x.profile))}<br>${esc(x.location_name||"GPS")}`);state.reportMap._misMarkers.push(m);bounds.push([x.latitude,x.longitude])});
+  state.reportMap.fitBounds(bounds,{padding:[20,20],maxZoom:16});
+}
+function reportRowsForPdf(){
+  return state.reportRows.map(x=>[
+    x.no,staffName(x.profile)||x.staff_id,x.profile?.staff_number||"—",pretty(x.selected_role),
+    formatDate(x.attendance_date),formatTime(x.attendance_time),pretty(x.status),
+    x.location_name||"—",`${Number(x.latitude).toFixed(6)}, ${Number(x.longitude).toFixed(6)}`,
+    x.gps_accuracy!=null?`${x.gps_accuracy} m`:"—",x.device_type||"—",x.operating_system||"—",x.browser_name||"—"
+  ]);
+}
+function makeReportPreview(){
+  const role=$("reportRole").value||"ALL ROLES",date=state.reportDate||nigeriaDate();
+  const rows=state.reportRows.map(x=>`<tr><td>${x.no}</td><td>${esc(staffName(x.profile)||x.staff_id)}</td><td>${esc(x.profile?.staff_number||"—")}</td><td>${esc(pretty(x.selected_role))}</td><td>${esc(formatTime(x.attendance_time))}</td><td>${esc(pretty(x.status))}</td><td>${esc(x.location_name||"—")}</td><td>${Number(x.latitude).toFixed(6)}, ${Number(x.longitude).toFixed(6)}</td><td>${x.gps_accuracy!=null?esc(x.gps_accuracy)+" m":"—"}</td><td>${esc(x.device_type||"—")}</tr>`).join("");
+  $("reportPreview").innerHTML=`<div class="report-head"><img class="report-logo" src="logo.png" alt=""><div><h1>MISBAHUL 'ILM SCHOOLS ABUJA</h1><div style="margin-top:4px">MIS-NEXUS™ Staff Attendance Report</div><div style="font-size:9px;margin-top:4px">${esc(pretty(role))} • ${esc(formatDate(date))}</div></div></div>
+  <div style="display:flex;justify-content:space-between;gap:15px;margin:15px 0;font-size:9px"><div><b>Generated:</b> ${esc(formatDateTime(new Date().toISOString()))}<br><b>Total:</b> ${state.reportRows.length}<br><b>Present:</b> ${state.reportRows.filter(x=>x.status==="present").length}<br><b>Late:</b> ${state.reportRows.filter(x=>x.status==="late").length}</div><div class="seal">MIS-NEXUS<br>OFFICIAL<br>RECORD</div></div>
+  <table><thead><tr><th>#</th><th>Staff Name</th><th>Staff No.</th><th>Role</th><th>Time</th><th>Status</th><th>Where attendance was taken</th><th>Coordinates</th><th>Accuracy</th><th>Device</th></tr></thead><tbody>${rows||'<tr><td colspan="10">No records.</td></tr>'}</tbody></table>
+  <p style="font-size:8px;margin-top:13px">This report identifies the recorded attendance place using the live geographical location supplied by the attendance device. MIS-NEXUS™ • MISBAHUL 'ILM SCHOOLS ABUJA.</p>
+  <div class="signature-row"><div class="signature-line">Attendance Coordinator</div><div class="signature-line">School Administrator</div><div class="signature-line">Official Stamp / Seal</div></div>`;
+}
+function printReport(){
+  if(!state.reportRows.length)return;
+  makeReportPreview();
+  const content=$("reportPreview").innerHTML;
+  const w=window.open("","_blank","width=1200,height=850");
+  if(!w){toast("Printing window was blocked by the browser.");return}
+  w.document.write(`<!doctype html><html><head><title>MIS-NEXUS Staff Attendance Report</title><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;color:#111;margin:0;padding:25px} .report-head{display:flex;gap:12px;align-items:center;border-bottom:2px solid #222;padding-bottom:10px}.report-logo{width:64px;height:64px;object-fit:contain}table{width:100%;border-collapse:collapse;font-size:8px;margin-top:14px}th,td{border:1px solid #bbb;padding:6px;text-align:left}th{background:#eee}.seal{width:78px;height:78px;border:2px double #222;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:8px;font-weight:bold}.signature-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:25px;margin-top:35px}.signature-line{border-top:1px solid #222;padding-top:5px;font-size:8px}@media print{body{padding:10mm}}</style></head><body>${content}<script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+function downloadPdf(){
+  if(!state.reportRows.length)return;
+  if(!window.jspdf?.jsPDF){toast("PDF engine is unavailable. Use PRINT instead.");return}
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
+  const role=$("reportRole").value||"ALL ROLES",date=state.reportDate||nigeriaDate();
+  try{
+    doc.addImage("logo.png","PNG",12,9,18,18);
+  }catch{}
+  doc.setFont("helvetica","bold");doc.setFontSize(15);doc.text("MISBAHUL 'ILM SCHOOLS ABUJA",34,15);
+  doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text("MIS-NEXUS™ Staff Attendance Report",34,21);doc.text(`${pretty(role)} • ${formatDate(date)}`,34,26);
+  doc.setFontSize(8);doc.text(`Generated: ${formatDateTime(new Date().toISOString())}`,200,15);doc.text(`Total: ${state.reportRows.length}   Present: ${state.reportRows.filter(x=>x.status==="present").length}   Late: ${state.reportRows.filter(x=>x.status==="late").length}`,200,21);
+  doc.autoTable({startY:31,head:[["#","Staff Name","Staff No.","Role","Date","Time","Status","Where attendance was taken","Coordinates","Accuracy","Device","OS","Browser"]],body:reportRowsForPdf().map(r=>[r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7],r[8],r[9],r[10],r[11],r[12]]),styles:{fontSize:6,cellPadding:2,overflow:"linebreak"},headStyles:{fontStyle:"bold"},margin:{left:8,right:8}});
+  let y=(doc.lastAutoTable?.finalY||190)+10;
+  if(y>185){doc.addPage();y=15}
+  doc.setFontSize(7);doc.text("Attendance location is recorded from the live geographical coordinates supplied by the device.",10,y);
+  doc.text("Attendance Coordinator",25,y+20);doc.text("School Administrator",125,y+20);doc.text("Official Stamp / Seal",225,y+20);
+  doc.line(20,y+16,75,y+16);doc.line(120,y+16,175,y+16);doc.line(220,y+16,275,y+16);
+  doc.setFontSize(6);doc.text("MIS-NEXUS™ • MISBAHUL 'ILM SCHOOLS ABUJA",10,200);
+  doc.save(`MIS-NEXUS-Staff-Attendance-${role.replace(/\s+/g,"-")}-${date}.pdf`);
+  toast("PDF downloaded successfully.");
+}
+function downloadReportCsv(){
+  if(!state.reportRows.length)return;
+  const h=["#","Staff Name","Staff Number","Role","Date","Time","Status","Where attendance was taken","Latitude","Longitude","Accuracy","Device","Operating System","Browser"];
+  const lines=[h,...state.reportRows.map(x=>[x.no,staffName(x.profile),x.profile?.staff_number||"",x.selected_role,x.attendance_date,formatTime(x.attendance_time),x.status,x.location_name||"",x.latitude,x.longitude,x.gps_accuracy??"",x.device_type||"",x.operating_system||"",x.browser_name||""])].map(r=>r.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");
+  const a=document.createElement("a"),u=URL.createObjectURL(new Blob(["\ufeff"+lines],{type:"text/csv"}));a.href=u;a.download=`MIS-NEXUS-Staff-Report-${state.reportDate}.csv`;a.click();URL.revokeObjectURL(u);
+}
+function printProfile(){
+  const p=state.profile,w=window.open("","_blank","width=900,height=800");if(!w){toast("Printing window was blocked.");return}
+  w.document.write(`<!doctype html><html><head><title>MIS-NEXUS Staff Profile</title><style>body{font-family:Arial;padding:35px;color:#111}img{width:95px;height:95px;object-fit:cover;border-radius:12px}table{width:100%;border-collapse:collapse;margin-top:20px}td{padding:9px;border-bottom:1px solid #ddd}td:first-child{font-weight:bold;width:32%}</style></head><body><h1>MISBAHUL 'ILM SCHOOLS ABUJA</h1><p>MIS-NEXUS™ Staff Profile</p><img src="${esc(p.photo_url||"logo.png")}"><table>${[["Full name",staffName(p)],["Staff number",p.staff_number||"—"],["Email",p.email||"—"],["Role",pretty(p.role)],["Department",p.department||"—"],["Phone",p.phone||"—"],["Employment type",p.employment_type||"—"],["Employment status",pretty(p.employment_status)],["Date joined",p.date_joined||"—"]].map(x=>`<tr><td>${esc(x[0])}</td><td>${esc(x[1])}</td></tr>`).join("")}</table><script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+}
+function csvHistory(){
+  const h=["Date","Time","Status","Role","Location","Latitude","Longitude","Accuracy","Device","OS","Browser"];
+  const lines=[h,...state.history.map(x=>[x.attendance_date,formatTime(x.attendance_time),x.status,x.selected_role,x.location_name||"",x.latitude,x.longitude,x.gps_accuracy??"",x.device_type||"",x.operating_system||"",x.browser_name||""])].map(r=>r.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");
+  const a=document.createElement("a"),u=URL.createObjectURL(new Blob(["\ufeff"+lines],{type:"text/csv"}));a.href=u;a.download=`MIS-NEXUS-My-Attendance-${nigeriaDate()}.csv`;a.click();URL.revokeObjectURL(u);toast("CSV downloaded.");
+}
+
+function page(name){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  $(`page-${name}`).classList.add("active");
+  document.querySelectorAll(".nav button[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===name));
+  $("sidebar").classList.remove("open");
+  if(name==="reports" && state.reportMap)setTimeout(()=>state.reportMap.invalidateSize(),100);
+  if(name==="home" && state.map)setTimeout(()=>state.map.invalidateSize(),100);
+  if(name==="station" && state.stationMap)setTimeout(()=>state.stationMap.invalidateSize(),100);
+  if(name==="analytics")setTimeout(drawChart,80);
+}
+function openModal(id){$(id).classList.add("open")}
+function closeModal(id){$(id).classList.remove("open")}
+
+async function refreshAll(){
+  try{
+    $("refreshBtn").disabled=true;
+    await Promise.all([loadHistory(),loadToday(),loadNotifications(),loadAllStaff()]);
+    toast("MIS-NEXUS live data synchronized.");
+  }catch(e){console.error(e);toast("Some live information could not be refreshed.")}finally{$("refreshBtn").disabled=false}
+}
+
+async function boot(){
+  try{
+    await initSupabase();
+    const ok=await requireSession();if(!ok)return;
+    await loadProfile();
+    await loadRoles();
+    await loadAllStaff();
+    await Promise.all([loadHistory(),loadToday(),loadNotifications()]);
+    initMap();
+    renderStationStaff();
+    $("reportDate").value=nigeriaDate();
+    $("loader").classList.add("hide");
+  }catch(e){
+    console.error("MIS-NEXUS boot",e);$("loader").classList.add("hide");
+    toast(e.message||"Staff dashboard initialization failed.");
+    setTimeout(()=>location.replace("staffs.html"),2200);
+  }
+}
+
+$("menuBtn").onclick=()=>$("sidebar").classList.toggle("open");
+$("themeBtn").onclick=()=>setTheme(state.theme==="dark"?"light":"dark");
+$("refreshBtn").onclick=refreshAll;
+$("homeGpsBtn").onclick=()=>requestLocation("home");
+$("openLocationHome").onclick=()=>{page("home");requestLocation("home")};
+$("openStationHome").onclick=()=>page("station");
+$("openReportsHome").onclick=()=>page("reports");
+$("openHistoryHome").onclick=()=>page("history");
+$("homeHistoryRefresh").onclick=loadHistory;
+$("homeNotifBtn").onclick=()=>openModal("notificationModal");
+$("historyRefresh").onclick=loadHistory;
+$("historyCsv").onclick=csvHistory;
+$("historySearch").oninput=renderHistory;
+$("notifRefresh").onclick=loadNotifications;
+$("profileBtn").onclick=()=>openModal("profileModal");
+$("notificationBtn").onclick=()=>openModal("notificationModal");
+$("printProfileBtn").onclick=printProfile;
+$("modalPrintProfile").onclick=printProfile;
+$("securitySignout").onclick=signOut;
+$("signOutBtn").onclick=signOut;
+
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>page(b.dataset.page)));
+document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)closeModal(m.id)}));
+
+$("stationRole").onchange=renderStationStaff;
+$("stationRoleNext").onclick=()=>{if(!$("stationRole").value){toast("Select a role first.");return}renderStationStaff();stationStep(2)};
+$("stationBack1").onclick=()=>stationStep(1);
+$("stationStaffNext").onclick=()=>{if(!state.selectedStaff)return;stationStep(3);$("stationPass").focus()};
+$("stationBack2").onclick=()=>stationStep(2);
+$("stationVerify").onclick=verifyStation;
+$("stationPass").addEventListener("input",()=>{$("stationPass").value=$("stationPass").value.replace(/\D/g,"").slice(0,6)});
+$("stationGpsBtn").onclick=()=>requestLocation("station");
+$("stationAttendBtn").onclick=createStationAttendance;
+$("stationReset").onclick=resetStation;
+$("stationMyHistory").onclick=()=>page("history");
+
+$("loadReportBtn").onclick=loadReport;
+$("reportAllTodayBtn").onclick=loadAllRolesToday;
+$("printReportBtn").onclick=()=>{makeReportPreview();openModal("reportPreviewModal")};
+$("previewPrintBtn").onclick=printReport;
+$("pdfReportBtn").onclick=downloadPdf;
+$("csvReportBtn").onclick=downloadReportCsv;
+
+$("mapOpen").onclick=()=>{if(state.location)window.open(`https://www.openstreetmap.org/?mlat=${state.location.latitude}&mlon=${state.location.longitude}#map=18/${state.location.latitude}/${state.location.longitude}`,"_blank","noopener,noreferrer")};
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")document.querySelectorAll(".modal.open").forEach(m=>m.classList.remove("open"));
+  if(e.key==="Enter" && document.activeElement===$("stationPass"))verifyStation();
+});
+window.addEventListener("online",renderDevice);window.addEventListener("offline",renderDevice);
+window.addEventListener("resize",()=>{if($("page-analytics").classList.contains("active"))drawChart()});
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.install=e});
+$("installBtn").onclick=async()=>{if(state.install){state.install.prompt();await state.install.userChoice;state.install=null}else toast("Install is not currently offered by this browser.")};
+
+state.sb?.auth?.onAuthStateChange?.((_event,s)=>{if(!s)location.replace("staffs.html")});
+
+async function signOut(){
+  try{if(state.sb)await state.sb.auth.signOut()}finally{location.replace("staffs.html")}
+}
+
+boot();
+</script>
+</body>
+</html>
