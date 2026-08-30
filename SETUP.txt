@@ -1,0 +1,20 @@
+MIS-NEXUS STAFF REGISTRATION — FINAL SETUP
+
+1. Keep your existing mis_nexus_staff_* database tables and dashboard.
+2. Do NOT run another CREATE TABLE script for staff profiles.
+3. In Supabase Dashboard -> Edge Functions -> Create function, create:
+   staff-register
+4. Paste staff-register-edge-function.ts into the function editor and deploy it.
+5. The Edge Function must have the standard Supabase environment variables:
+   SUPABASE_URL
+   SUPABASE_SERVICE_ROLE_KEY
+   Do NOT put the service-role key in HTML/JavaScript.
+6. Put these files beside staff-dashboard.html and logo.png:
+   staff-register.html
+   staff-login.html
+7. Registration creates a separate Supabase Auth user automatically, inserts one permanent row into mis_nexus_staff_profiles, and calls the existing mis_nexus_staff_set_passcode RPC.
+8. No manual Auth-user creation is required.
+9. The existing staffs@gmail.com account is not replaced because registration rejects an email that already has a staff profile.
+10. After registration the new staff session is returned and the dashboard can be opened immediately.
+11. Existing attendance uses the existing mis_nexus_staff_record_attendance RPC and six-digit passcode flow.
+12. No student or class table is referenced.
