@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b2d50">
+<meta name="color-scheme" content="light">
+<title>MISBAHUL 'ILM SCHOOLS ABUJA PRO — Staff Photo Link Generator</title>
+
+<style>
+:root{
+  --navy:#0b2d50;
+  --blue:#1769aa;
+  --blue2:#2387d9;
+  --ink:#102033;
+  --muted:#64748b;
+  --bg:#f3f7fb;
+  --card:#ffffff;
+  --line:#dbe5ef;
+  --success:#0f8a57;
+  --danger:#c53030;
+  --shadow:0 22px 70px rgba(11,45,80,.13);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(35,135,217,.10),transparent 32rem),
+    linear-gradient(180deg,#eef5fb 0%,var(--bg) 45%,#f8fafc 100%);
+  color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.page{width:100%;padding:14px}
+.wrap{width:min(820px,100%);margin:auto}
+
+/* Header */
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  padding:24px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(255,255,255,.15),transparent 18rem),
+    linear-gradient(135deg,#071e36,#0b2d50 58%,#145f96);
+  box-shadow:var(--shadow);
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  width:220px;height:220px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;
+  right:-75px;bottom:-100px;
+}
+.brand{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  gap:17px;
+}
+.logo{
+  width:78px;height:78px;flex:0 0 78px;
+  border-radius:20px;
+  background:#fff;
+  padding:7px;
+  display:grid;
+  place-items:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.20);
+  overflow:hidden;
+}
+.logo img{
+  width:100%;height:100%;
+  object-fit:contain;
+  display:block;
+}
+.logo-fallback{
+  color:var(--navy);
+  font-size:18px;
+  font-weight:950;
+}
+.school{
+  margin:0;
+  font-size:clamp(20px,5vw,32px);
+  line-height:1.08;
+  letter-spacing:-.5px;
+  font-weight:950;
+}
+.platform{
+  margin:8px 0 0;
+  font-size:13px;
+  line-height:1.5;
+  opacity:.86;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-top:15px;
+  padding:8px 11px;
+  border:1px solid rgba(255,255,255,.20);
+  border-radius:999px;
+  background:rgba(255,255,255,.09);
+  font-size:11px;
+  font-weight:850;
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#62e6aa;
+  box-shadow:0 0 0 4px rgba(98,230,170,.13);
+}
+
+/* Intro */
+.intro{padding:24px 4px 17px}
+.intro h2{margin:0 0 8px;font-size:25px;letter-spacing:-.3px}
+.intro p{margin:0;color:var(--muted);line-height:1.7;font-size:14px}
+
+/* Main card */
+.card{
+  background:rgba(255,255,255,.94);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+}
+.section-title{
+  display:flex;align-items:center;gap:10px;
+  margin:0 0 15px;
+  font-size:16px;font-weight:950;
+}
+.section-number{
+  width:28px;height:28px;border-radius:9px;
+  display:grid;place-items:center;
+  background:#e9f3fc;color:var(--blue);
+  font-size:12px;font-weight:950;
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{min-width:0}
+label{
+  display:block;
+  margin:0 0 7px;
+  font-size:12px;
+  font-weight:900;
+}
+input{
+  width:100%;
+  height:48px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:0 13px;
+  color:var(--ink);
+  background:#f9fbfd;
+  outline:none;
+  transition:.18s ease;
+}
+input:focus{
+  border-color:var(--blue2);
+  box-shadow:0 0 0 4px rgba(35,135,217,.10);
+  background:#fff;
+}
+input[readonly]{background:#f1f5f9}
+.help{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.45;
+}
+
+/* Upload */
+.upload{
+  margin-top:3px;
+  border:2px dashed #cbd8e5;
+  border-radius:20px;
+  padding:25px 18px;
+  text-align:center;
+  background:linear-gradient(180deg,#fbfdff,#f5f9fd);
+  transition:.18s ease;
+}
+.upload.drag{
+  border-color:var(--blue2);
+  background:#eef7ff;
+  transform:translateY(-1px);
+}
+.upload-icon{
+  width:54px;height:54px;margin:0 auto 10px;
+  display:grid;place-items:center;
+  border-radius:17px;
+  background:#e9f3fc;
+  color:var(--blue);
+  font-size:25px;
+}
+.upload strong{display:block;font-size:14px}
+.upload p{margin:6px 0 14px;color:var(--muted);font-size:12px}
+.choose{
+  border:0;
+  color:#fff;
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  padding:13px 18px;
+  border-radius:12px;
+  font-weight:900;
+  box-shadow:0 8px 20px rgba(23,105,170,.20);
+}
+.choose:active,.primary:active,.copy:active{transform:scale(.98)}
+#file{display:none}
+
+.preview-wrap{
+  display:none;
+  margin:19px auto 0;
+  width:170px;
+  text-align:center;
+}
+.preview{
+  width:154px;height:154px;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  margin:auto;
+  border:7px solid #fff;
+  box-shadow:0 12px 35px rgba(0,0,0,.17);
+}
+.preview-name{
+  margin-top:9px;
+  color:var(--muted);
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Buttons/status */
+.primary{
+  width:100%;
+  margin-top:15px;
+  border:0;
+  border-radius:14px;
+  min-height:52px;
+  color:#fff;
+  background:linear-gradient(135deg,#0b2d50,#1769aa);
+  font-weight:950;
+  box-shadow:0 10px 26px rgba(11,45,80,.20);
+}
+.primary:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.loading{
+  display:none;
+  margin-top:14px;
+  height:7px;
+  border-radius:99px;
+  overflow:hidden;
+  background:#e8eef5;
+}
+.loading span{
+  display:block;
+  width:34%;
+  height:100%;
+  border-radius:99px;
+  background:linear-gradient(90deg,var(--blue),#57a9e8);
+  animation:slide 1s ease-in-out infinite alternate;
+}
+@keyframes slide{from{transform:translateX(-5%)}to{transform:translateX(205%)}}
+.status{
+  margin-top:13px;
+  min-height:20px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+}
+.status.success{color:var(--success);font-weight:850}
+.status.error{color:var(--danger);font-weight:850}
+
+/* Result */
+.result{
+  display:none;
+  margin-top:18px;
+  padding:17px;
+  border:1px solid #cfe6db;
+  border-radius:18px;
+  background:#f4fbf7;
+}
+.result.show{display:block}
+.result h3{margin:0 0 5px;font-size:15px}
+.result p{margin:0 0 11px;color:var(--muted);font-size:11px;line-height:1.5}
+.urlrow{display:flex;gap:8px}
+.url{
+  min-width:0;
+  height:48px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:0 12px;
+  background:#fff;
+  color:var(--ink);
+  font-size:11px;
+}
+.copy{
+  flex:0 0 auto;
+  border:0;
+  min-width:88px;
+  border-radius:12px;
+  color:#fff;
+  background:var(--success);
+  font-weight:900;
+}
+.test{
+  display:block;
+  margin-top:11px;
+  color:var(--blue);
+  text-align:center;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:850;
+}
+
+/* Notes */
+.note{
+  margin-top:15px;
+  padding:12px 13px;
+  border-radius:13px;
+  background:#f1f6fa;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.55;
+}
+.note b{color:var(--ink)}
+footer{text-align:center;padding:20px 5px 8px;color:var(--muted);font-size:10px}
+
+/* Mobile */
+@media(max-width:620px){
+  .page{padding:9px}
+  .hero{padding:18px;border-radius:21px}
+  .logo{width:64px;height:64px;flex-basis:64px;border-radius:17px}
+  .brand{gap:12px}
+  .platform{font-size:11px}
+  .intro{padding:20px 3px 14px}
+  .intro h2{font-size:21px}
+  .card{padding:15px;border-radius:20px}
+  .grid{grid-template-columns:1fr}
+  .urlrow{display:grid;grid-template-columns:1fr}
+  .copy{height:47px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+<div class="wrap">
+
+<header class="hero">
+  <div class="brand">
+    <div class="logo">
+      <img src="logo.png" alt="MISBAHUL 'ILM SCHOOLS ABUJA PRO logo"
+           onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'">
+      <span id="logoFallback" class="logo-fallback" style="display:none">MIS</span>
+    </div>
+    <div>
+      <h1 class="school">MISBAHUL 'ILM SCHOOLS ABUJA PRO</h1>
+      <p class="platform">MIS-NEXUS™ Staff Photo Management Platform</p>
+      <span class="badge"><span class="dot"></span> Direct public photo-link generator</span>
+    </div>
+  </div>
+</header>
+
+<section class="intro">
+  <h2>Staff Photograph Link Generator</h2>
+  <p>
+    Upload a staff photograph, prepare it as a clean circular portrait,
+    send it to the existing Supabase Storage service, and receive a direct
+    image link ready to paste into the staff profile.
+  </p>
+</section>
+
+<main class="card">
+
+  <h3 class="section-title">
+    <span class="section-number">1</span>
+    Supabase connection
+  </h3>
+
+  <div class="grid">
+    <div class="field">
+      <label for="project">Supabase Project URL</label>
+      <input id="project" inputmode="url" autocomplete="url"
+             placeholder="https://your-project.supabase.co">
+    </div>
+
+    <div class="field">
+      <label for="key">Supabase anon / public key</label>
+      <input id="key" type="password" autocomplete="off"
+             placeholder="Paste your anon/public key">
+    </div>
+  </div>
+
+  <div class="field" style="margin-top:13px">
+    <label for="bucket">Storage bucket</label>
+    <input id="bucket" value="student-photos" readonly>
+    <div class="help">
+      This is set to the existing <b>student-photos</b> bucket shown in your
+      Supabase Storage. No database table is changed by this page.
+    </div>
+  </div>
+
+  <div style="height:1px;background:var(--line);margin:23px 0"></div>
+
+  <h3 class="section-title">
+    <span class="section-number">2</span>
+    Staff photograph
+  </h3>
+
+  <div class="upload" id="drop">
+    <div class="upload-icon">↑</div>
+    <strong>Choose the staff photograph</strong>
+    <p>JPG, PNG, WEBP and other browser-supported images • Maximum 15 MB</p>
+    <button class="choose" id="choose" type="button">Upload Photo</button>
+    <input id="file" type="file" accept="image/*">
+    <div class="preview-wrap" id="previewWrap">
+      <img id="preview" class="preview" alt="Staff photograph preview">
+      <div id="previewName" class="preview-name"></div>
+    </div>
+  </div>
+
+  <button class="primary" id="generate" type="button" disabled>
+    Generate Direct Photo Link
+  </button>
+
+  <div class="loading" id="loading"><span></span></div>
+  <div class="status" id="status">Select a photograph to begin.</div>
+
+  <section class="result" id="result">
+    <h3>Photo link generated successfully</h3>
+    <p>Copy this complete URL and paste it into the staff registration/profile photo field.</p>
+    <div class="urlrow">
+      <input class="url" id="resultUrl" readonly>
+      <button class="copy" id="copy" type="button">Copy</button>
+    </div>
+    <a class="test" id="test" target="_blank" rel="noopener noreferrer">
+      Open / Test Photo
+    </a>
+  </section>
+
+  <div class="note">
+    <b>Important:</b> This page only uploads a photograph to Supabase Storage
+    and returns its public URL. It does not insert, update, delete, alter,
+    migrate, or recreate any of your attendance/database tables.
+  </div>
+
+</main>
+
+<footer>
+  MISBAHUL 'ILM SCHOOLS ABUJA PRO • MIS-NEXUS™
+</footer>
+
+</div>
+</div>
+
+<script>
+"use strict";
+
+/*
+  MIS-NEXUS™ STAFF PHOTO LINK GENERATOR
+  FINAL STORAGE CONFIGURATION
+
+  Existing bucket used:
+      student-photos
+
+  Database:
+      NO DATABASE TABLE IS TOUCHED BY THIS PAGE.
+
+  The generated URL is stored in the staff profile's photo_url field
+  only when you paste/use it in your existing staff registration system.
+*/
+
+const $ = id => document.getElementById(id);
+
+const CONFIG = Object.freeze({
+  bucket: "student-photos",
+  folder: "staff",
+  maxFileBytes: 15 * 1024 * 1024,
+  maxSide: 1400,
+  jpegQuality: 0.90
+});
+
+let originalFile = null;
+let processedBlob = null;
+let previewUrl = null;
+
+function setStatus(message, type = "") {
+  const el = $("status");
+  el.textContent = message;
+  el.className = "status" + (type ? " " + type : "");
+}
+
+function setLoading(on) {
+  $("loading").style.display = on ? "block" : "none";
+}
+
+function setGenerateEnabled(enabled) {
+  $("generate").disabled = !enabled;
+}
+
+function cleanProjectUrl(value) {
+  return String(value || "").trim().replace(/\/+$/, "");
+}
+
+function isValidSupabaseUrl(url) {
+  return /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url);
+}
+
+function safeFileName(name) {
+  return String(name || "staff-photo")
+    .toLowerCase()
+    .replace(/\.[^.]+$/, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 50) || "staff-photo";
+}
+
+function makeUniquePath(file) {
+  const randomPart =
+    (globalThis.crypto && typeof crypto.randomUUID === "function")
+      ? crypto.randomUUID()
+      : Date.now() + "-" + Math.random().toString(36).slice(2);
+
+  return `${CONFIG.folder}/${Date.now()}-${randomPart}-${safeFileName(file.name)}.jpg`;
+}
+
+async function loadSupabaseLibrary() {
+  if (window.supabase && typeof window.supabase.createClient === "function") {
+    return window.supabase;
+  }
+
+  await new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = () => reject(
+      new Error("Supabase library could not be loaded. Check your internet connection.")
+    );
+    document.head.appendChild(script);
+  });
+
+  if (!window.supabase || typeof window.supabase.createClient !== "function") {
+    throw new Error("Supabase library is unavailable.");
+  }
+
+  return window.supabase;
+}
+
+function canvasToBlob(canvas) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      blob => blob ? resolve(blob) : reject(new Error("Browser could not create the processed image.")),
+      "image/jpeg",
+      CONFIG.jpegQuality
+    );
+  });
+}
+
+async function preparePhoto(file) {
+  if (!file) return;
+
+  if (!file.type || !file.type.startsWith("image/")) {
+    throw new Error("Please choose a valid image file.");
+  }
+
+  if (file.size > CONFIG.maxFileBytes) {
+    throw new Error("Please choose an image below 15 MB.");
+  }
+
+  originalFile = file;
+
+  setStatus("Preparing photograph…");
+  $("previewWrap").style.display = "none";
+
+  let image;
+
+  if ("createImageBitmap" in window) {
+    image = await createImageBitmap(file);
+  } else {
+    image = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error("The photograph could not be opened."));
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  const sourceWidth = image.width;
+  const sourceHeight = image.height;
+  const side = Math.min(CONFIG.maxSide, sourceWidth, sourceHeight);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = side;
+  canvas.height = side;
+
+  const ctx = canvas.getContext("2d", { alpha: false });
+  if (!ctx) throw new Error("Your browser does not support image processing.");
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, side, side);
+
+  /*
+    Center crop:
+    The stored file remains a normal JPEG, while the preview is circular.
+    This keeps the URL compatible with the existing photo_url field.
+  */
+  const scale = Math.max(side / sourceWidth, side / sourceHeight);
+  const drawWidth = sourceWidth * scale;
+  const drawHeight = sourceHeight * scale;
+  const offsetX = (side - drawWidth) / 2;
+  const offsetY = (side - drawHeight) / 2;
+
+  ctx.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+
+  if (typeof image.close === "function") image.close();
+
+  processedBlob = await canvasToBlob(canvas);
+
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = URL.createObjectURL(processedBlob);
+
+  $("preview").src = previewUrl;
+  $("previewName").textContent = file.name;
+  $("previewWrap").style.display = "block";
+
+  setGenerateEnabled(true);
+  setStatus("Photograph ready. Click Generate Direct Photo Link.", "success");
+}
+
+async function generateLink() {
+  if (!processedBlob || !originalFile) {
+    setStatus("Please select a photograph first.", "error");
+    return;
+  }
+
+  const project = cleanProjectUrl($("project").value);
+  const key = $("key").value.trim();
+
+  if (!project || !key) {
+    setStatus("Enter your Supabase Project URL and anon/public key.", "error");
+    return;
+  }
+
+  if (!isValidSupabaseUrl(project)) {
+    setStatus("Enter the correct Supabase Project URL, for example https://your-project.supabase.co", "error");
+    return;
+  }
+
+  setLoading(true);
+  setGenerateEnabled(false);
+  $("result").classList.remove("show");
+  setStatus("Connecting securely to Supabase Storage…");
+
+  try {
+    const api = await loadSupabaseLibrary();
+
+    /*
+      Anonymous client:
+      This uses the anon/public key only.
+      It does not use a service-role key and does not expose one.
+    */
+    const client = api.createClient(project, key, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false
+      }
+    });
+
+    const path = makeUniquePath(originalFile);
+
+    setStatus("Uploading photograph…");
+
+    const { error: uploadError } = await client.storage
+      .from(CONFIG.bucket)
+      .upload(path, processedBlob, {
+        contentType: "image/jpeg",
+        cacheControl: "31536000",
+        upsert: false
+      });
+
+    if (uploadError) {
+      const message = String(uploadError.message || uploadError);
+
+      if (/bucket.*not found/i.test(message)) {
+        throw new Error(
+          `The Storage bucket "${CONFIG.bucket}" was not found. `
+          + `The page is already configured for the existing bucket shown in your project.`
+        );
+      }
+
+      if (/row-level security|not authorized|permission|policy/i.test(message)) {
+        throw new Error(
+          "Supabase Storage rejected the upload. The bucket exists, but its Storage upload policy does not permit this browser upload."
+        );
+      }
+
+      throw new Error(message);
+    }
+
+    setStatus("Creating direct public photo link…");
+
+    const { data: publicData } = client.storage
+      .from(CONFIG.bucket)
+      .getPublicUrl(path);
+
+    const publicUrl = publicData?.publicUrl;
+
+    if (!publicUrl) {
+      throw new Error(
+        "Supabase did not return a public URL. The Storage bucket must be public for a direct image link."
+      );
+    }
+
+    $("resultUrl").value = publicUrl;
+    $("test").href = publicUrl;
+    $("result").classList.add("show");
+
+    setStatus(
+      "Done. Copy the link and paste it into the existing staff photo field.",
+      "success"
+    );
+
+    $("result").scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+
+  } catch (error) {
+    console.error("MIS-NEXUS photo generator:", error);
+    setStatus(
+      "Could not generate the link: " + (error?.message || "Unknown error."),
+      "error"
+    );
+  } finally {
+    setLoading(false);
+    setGenerateEnabled(!!processedBlob);
+  }
+}
+
+async function copyResult() {
+  const value = $("resultUrl").value.trim();
+  if (!value) return;
+
+  try {
+    await navigator.clipboard.writeText(value);
+  } catch {
+    $("resultUrl").focus();
+    $("resultUrl").select();
+    document.execCommand("copy");
+  }
+
+  const oldText = $("copy").textContent;
+  $("copy").textContent = "Copied ✓";
+
+  setStatus("Photo link copied successfully. Paste it into the staff profile.", "success");
+
+  setTimeout(() => {
+    $("copy").textContent = oldText;
+  }, 1800);
+}
+
+/* File picker */
+$("choose").addEventListener("click", () => $("file").click());
+
+$("file").addEventListener("change", event => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  preparePhoto(file).catch(error => {
+    console.error(error);
+    setGenerateEnabled(false);
+    setStatus(error.message || "Could not prepare the photograph.", "error");
+  });
+});
+
+/* Drag and drop */
+$("drop").addEventListener("dragover", event => {
+  event.preventDefault();
+  $("drop").classList.add("drag");
+});
+
+$("drop").addEventListener("dragleave", () => {
+  $("drop").classList.remove("drag");
+});
+
+$("drop").addEventListener("drop", event => {
+  event.preventDefault();
+  $("drop").classList.remove("drag");
+
+  const file = event.dataTransfer.files?.[0];
+  if (!file) return;
+
+  preparePhoto(file).catch(error => {
+    console.error(error);
+    setGenerateEnabled(false);
+    setStatus(error.message || "Could not prepare the photograph.", "error");
+  });
+});
+
+/* Generate / copy */
+$("generate").addEventListener("click", generateLink);
+$("copy").addEventListener("click", copyResult);
+
+/* Keyboard convenience */
+$("file").addEventListener("cancel", () => {
+  if (!originalFile) setStatus("No photograph selected.");
+});
+
+/* Release object URL when page leaves */
+window.addEventListener("beforeunload", () => {
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+});
+</script>
+</body>
+</html>
