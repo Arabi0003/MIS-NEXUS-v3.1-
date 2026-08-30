@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="MIS-NEXUS Staff Registration">
+<title>Staff Registration | MISBAHUL 'ILM SCHOOLS ABUJA</title>
+
+<style>
+:root{
+    --white:#ffffff;
+    --bg:#f4f8fc;
+    --surface:#ffffff;
+    --surface-soft:#f8fbff;
+    --primary:#087f6b;
+    --primary-dark:#056653;
+    --primary-light:#e7f8f3;
+    --blue:#1677d2;
+    --blue-light:#eaf4ff;
+    --text:#142033;
+    --muted:#65748b;
+    --border:#dfe8f1;
+    --danger:#c9344d;
+    --danger-bg:#fff1f3;
+    --success:#087f6b;
+    --success-bg:#e9faf5;
+    --shadow:0 20px 55px rgba(25,62,94,.10);
+    --shadow-soft:0 8px 28px rgba(25,62,94,.07);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(
+            circle at 8% 0%,
+            rgba(8,127,107,.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 100% 10%,
+            rgba(22,119,210,.08),
+            transparent 28%
+        ),
+        var(--bg);
+    overflow-x:hidden;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    -webkit-tap-highlight-color:transparent;
+}
+
+.page{
+    width:min(1180px,100%);
+    margin:0 auto;
+    padding:22px;
+}
+
+/* =========================================================
+   TOP BRAND
+========================================================= */
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    min-width:0;
+}
+
+.logo-wrap{
+    width:68px;
+    height:68px;
+    flex:0 0 68px;
+    display:grid;
+    place-items:center;
+    border-radius:20px;
+    background:#fff;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-soft);
+    overflow:hidden;
+}
+
+.logo{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    padding:7px;
+}
+
+.brand-text{
+    min-width:0;
+}
+
+.school-name{
+    color:var(--text);
+    font-size:clamp(17px,2.6vw,27px);
+    font-weight:950;
+    line-height:1.1;
+    letter-spacing:-.7px;
+}
+
+.platform-name{
+    margin-top:5px;
+    color:var(--primary);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+}
+
+.connection{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border:1px solid #cfe8e1;
+    background:#f4fffc;
+    color:var(--primary-dark);
+    border-radius:999px;
+    font-size:12px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.connection-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#12ad87;
+    box-shadow:0 0 0 4px rgba(18,173,135,.10);
+}
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.main-card{
+    overflow:hidden;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    position:relative;
+    padding:38px;
+    background:
+        linear-gradient(
+            135deg,
+            #f0fcf9 0%,
+            #ffffff 52%,
+            #f1f8ff 100%
+        );
+    border-bottom:1px solid var(--border);
+    overflow:hidden;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    right:-80px;
+    top:-110px;
+    background:rgba(8,127,107,.07);
+    pointer-events:none;
+}
+
+.hero-content{
+    position:relative;
+    z-index:1;
+    max-width:850px;
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 11px;
+    border-radius:999px;
+    color:var(--primary-dark);
+    background:var(--primary-light);
+    border:1px solid #cdeee5;
+    font-size:11px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    margin-bottom:14px;
+}
+
+.hero h1{
+    font-size:clamp(28px,5vw,45px);
+    line-height:1.04;
+    letter-spacing:-1.7px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    max-width:800px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.75;
+}
+
+/* =========================================================
+   FORM AREA
+========================================================= */
+
+.form-area{
+    padding:34px;
+}
+
+.section{
+    margin-bottom:30px;
+}
+
+.section:last-child{
+    margin-bottom:0;
+}
+
+.section-heading{
+    display:flex;
+    align-items:flex-start;
+    gap:13px;
+    margin-bottom:17px;
+}
+
+.section-number{
+    width:32px;
+    height:32px;
+    flex:0 0 32px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    font-size:12px;
+    font-weight:950;
+}
+
+.section-title{
+    font-size:16px;
+    font-weight:900;
+    letter-spacing:-.25px;
+}
+
+.section-description{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:17px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.field{
+    min-width:0;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    color:#25344a;
+    font-size:12px;
+    font-weight:850;
+}
+
+.required{
+    color:#d6324c;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#fff;
+    color:var(--text);
+    outline:none;
+    padding:13px 14px;
+    font-size:14px;
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+}
+
+input{
+    min-height:48px;
+}
+
+select{
+    min-height:48px;
+    cursor:pointer;
+}
+
+textarea{
+    min-height:105px;
+    resize:vertical;
+    line-height:1.5;
+}
+
+input::placeholder,
+textarea::placeholder{
+    color:#9aa8b9;
+}
+
+input:hover,
+select:hover,
+textarea:hover{
+    border-color:#c9d7e4;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#36a993;
+    box-shadow:
+        0 0 0 4px rgba(8,127,107,.09);
+    background:#fcfffe;
+}
+
+.help{
+    margin-top:7px;
+    color:#7c899a;
+    font-size:11px;
+    line-height:1.5;
+}
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
+.password-container{
+    position:relative;
+}
+
+.password-container input{
+    padding-right:78px;
+}
+
+.password-toggle{
+    position:absolute;
+    right:7px;
+    top:7px;
+    height:34px;
+    padding:0 11px;
+    border:0;
+    border-radius:9px;
+    background:#f0f5f9;
+    color:#526277;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:850;
+}
+
+.password-toggle:hover{
+    background:#e6eef5;
+}
+
+.strength{
+    height:5px;
+    margin-top:8px;
+    overflow:hidden;
+    border-radius:99px;
+    background:#edf2f6;
+}
+
+.strength span{
+    display:block;
+    width:0;
+    height:100%;
+    border-radius:99px;
+    transition:width .25s ease;
+}
+
+/* =========================================================
+   PASSCODE PANEL
+========================================================= */
+
+.passcode-panel{
+    padding:20px;
+    border-radius:18px;
+    border:1px solid #cfece4;
+    background:
+        linear-gradient(
+            135deg,
+            #f0fcf9,
+            #f8fcff
+        );
+}
+
+.passcode-head{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.passcode-icon{
+    width:38px;
+    height:38px;
+    flex:0 0 38px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    color:var(--primary-dark);
+    background:#dff7ef;
+    font-weight:950;
+}
+
+.passcode-title{
+    font-size:14px;
+    font-weight:900;
+}
+
+.passcode-description{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.55;
+}
+
+.passcode-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+.notice{
+    display:none;
+    margin-bottom:22px;
+    padding:14px 16px;
+    border-radius:14px;
+    font-size:13px;
+    line-height:1.55;
+}
+
+.notice.error{
+    display:block;
+    color:#9f2037;
+    background:var(--danger-bg);
+    border:1px solid #f4c8d0;
+}
+
+.notice.success{
+    display:block;
+    color:#066b59;
+    background:var(--success-bg);
+    border:1px solid #bfe9dc;
+}
+
+/* =========================================================
+   ACTION BAR
+========================================================= */
+
+.action-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-top:32px;
+    padding-top:25px;
+    border-top:1px solid var(--border);
+}
+
+.action-info{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.5;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    min-height:50px;
+    padding:0 20px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    font-weight:900;
+    font-size:13px;
+    cursor:pointer;
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        background .15s ease;
+}
+
+.btn:active{
+    transform:scale(.98);
+}
+
+.btn-secondary{
+    color:#4d5d72;
+    background:#fff;
+}
+
+.btn-secondary:hover{
+    background:#f6f9fc;
+}
+
+.btn-primary{
+    min-width:220px;
+    border-color:var(--primary);
+    color:#fff;
+    background:linear-gradient(
+        135deg,
+        #099078,
+        #06725f
+    );
+    box-shadow:
+        0 10px 24px rgba(8,127,107,.18);
+}
+
+.btn-primary:hover{
+    transform:translateY(-1px);
+    box-shadow:
+        0 13px 28px rgba(8,127,107,.23);
+}
+
+.btn-primary:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+    transform:none;
+}
+
+/* =========================================================
+   BUTTON LOADING
+========================================================= */
+
+.button-content{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+}
+
+.spinner{
+    display:none;
+    width:17px;
+    height:17px;
+    border:2px solid rgba(255,255,255,.35);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin .65s linear infinite;
+}
+
+.loading .button-label{
+    display:none;
+}
+
+.loading .spinner{
+    display:block;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+    padding:21px 30px;
+    text-align:center;
+    border-top:1px solid var(--border);
+    background:#fbfdff;
+    color:#8190a2;
+    font-size:11px;
+}
+
+.footer strong{
+    color:#53647a;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:800px){
+
+    .page{
+        padding:14px;
+    }
+
+    .topbar{
+        align-items:flex-start;
+    }
+
+    .connection{
+        display:none;
+    }
+
+    .hero{
+        padding:28px 23px;
+    }
+
+    .form-area{
+        padding:25px 20px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .passcode-grid{
+        grid-template-columns:1fr;
+    }
+
+    .action-bar{
+        align-items:stretch;
+        flex-direction:column;
+    }
+
+    .actions{
+        width:100%;
+        flex-direction:column-reverse;
+    }
+
+    .btn,
+    .btn-primary{
+        width:100%;
+    }
+}
+
+@media(max-width:520px){
+
+    .page{
+        padding:9px;
+    }
+
+    .topbar{
+        margin-bottom:12px;
+    }
+
+    .logo-wrap{
+        width:54px;
+        height:54px;
+        flex-basis:54px;
+        border-radius:15px;
+    }
+
+    .brand{
+        gap:10px;
+    }
+
+    .school-name{
+        font-size:16px;
+        letter-spacing:-.4px;
+    }
+
+    .platform-name{
+        font-size:9px;
+    }
+
+    .main-card{
+        border-radius:20px;
+    }
+
+    .hero{
+        padding:23px 17px;
+    }
+
+    .hero h1{
+        font-size:29px;
+    }
+
+    .hero p{
+        font-size:13px;
+    }
+
+    .form-area{
+        padding:22px 15px;
+    }
+
+    .section{
+        margin-bottom:26px;
+    }
+
+    .passcode-panel{
+        padding:16px;
+    }
+
+    .footer{
+        padding:18px 14px;
+        font-size:10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =====================================================
+         BRAND
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="logo-wrap">
+
+                <img
+                    class="logo"
+                    src="logo.png"
+                    alt="MISBAHUL 'ILM SCHOOLS ABUJA Logo"
+                    onerror="this.style.display='none'"
+                >
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="school-name">
+                    MISBAHUL 'ILM SCHOOLS ABUJA
+                </div>
+
+                <div class="platform-name">
+                    MIS-NEXUS • Staff Management Platform
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="connection">
+
+            <span class="connection-dot"></span>
+
+            Secure Staff Registration
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main-card">
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    ● STAFF MANAGEMENT
+                </div>
+
+                <h1>
+                    Register a New Staff Member
+                </h1>
+
+                <p>
+                    Create an independent staff account for
+                    MIS-NEXUS. Every registered staff member
+                    keeps a separate profile, login password,
+                    school role and personal six-digit
+                    attendance passcode.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORM -->
+
+        <form
+            id="registrationForm"
+            class="form-area"
+            autocomplete="off"
+            novalidate
+        >
+
+            <div
+                id="notice"
+                class="notice"
+                role="alert"
+                aria-live="polite"
+            ></div>
+
+
+            <!-- =================================================
+                 PERSONAL INFORMATION
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        01
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            Personal Information
+                        </div>
+
+                        <div class="section-description">
+                            Enter the staff member's official
+                            school information.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid">
+
+
+                    <div class="field">
+
+                        <label for="firstName">
+                            First Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="firstName"
+                            name="first_name"
+                            type="text"
+                            required
+                            maxlength="80"
+                            autocomplete="given-name"
+                            placeholder="Enter first name"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="middleName">
+                            Middle Name
+                        </label>
+
+                        <input
+                            id="middleName"
+                            name="middle_name"
+                            type="text"
+                            maxlength="80"
+                            autocomplete="additional-name"
+                            placeholder="Enter middle name"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="lastName">
+                            Last Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="lastName"
+                            name="last_name"
+                            type="text"
+                            required
+                            maxlength="80"
+                            autocomplete="family-name"
+                            placeholder="Enter last name"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="gender">
+                            Gender
+                        </label>
+
+                        <select
+                            id="gender"
+                            name="gender"
+                        >
+
+                            <option value="">
+                                Select gender
+                            </option>
+
+                            <option value="male">
+                                Male
+                            </option>
+
+                            <option value="female">
+                                Female
+                            </option>
+
+                            <option value="other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="phone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            id="phone"
+                            name="phone"
+                            type="tel"
+                            maxlength="30"
+                            autocomplete="tel"
+                            placeholder="Enter phone number"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="staffNumber">
+                            Staff Number
+                        </label>
+
+                        <input
+                            id="staffNumber"
+                            name="staff_number"
+                            type="text"
+                            maxlength="50"
+                            placeholder="Optional staff number"
+                        >
+
+                        <div class="help">
+                            Leave empty if the school has not
+                            assigned a staff number.
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SCHOOL ROLE
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        02
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            School Assignment
+                        </div>
+
+                        <div class="section-description">
+                            Select the staff member's active
+                            school role.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid">
+
+
+                    <div class="field">
+
+                        <label for="role">
+                            School Role
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="role"
+                            name="role"
+                            required
+                        >
+
+                            <option value="">
+                                Loading school roles...
+                            </option>
+
+                        </select>
+
+                        <div
+                            class="help"
+                            id="roleStatus"
+                        >
+                            Connecting to the school role system...
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="department">
+                            Department
+                        </label>
+
+                        <input
+                            id="department"
+                            name="department"
+                            type="text"
+                            maxlength="100"
+                            placeholder="e.g. Academic, Finance"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="employmentType">
+                            Employment Type
+                        </label>
+
+                        <select
+                            id="employmentType"
+                            name="employment_type"
+                        >
+
+                            <option value="">
+                                Select employment type
+                            </option>
+
+                            <option value="full_time">
+                                Full time
+                            </option>
+
+                            <option value="part_time">
+                                Part time
+                            </option>
+
+                            <option value="contract">
+                                Contract
+                            </option>
+
+                            <option value="temporary">
+                                Temporary
+                            </option>
+
+                            <option value="intern">
+                                Intern
+                            </option>
+
+                            <option value="volunteer">
+                                Volunteer
+                            </option>
+
+                            <option value="other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="dateJoined">
+                            Date Joined
+                        </label>
+
+                        <input
+                            id="dateJoined"
+                            name="date_joined"
+                            type="date"
+                        >
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LOGIN SECURITY
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        03
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            Login Security
+                        </div>
+
+                        <div class="section-description">
+                            These credentials belong only to this
+                            staff member.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid">
+
+
+                    <div class="field full">
+
+                        <label for="email">
+                            Email / Gmail
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            required
+                            maxlength="254"
+                            autocomplete="email"
+                            placeholder="staff@gmail.com"
+                        >
+
+                        <div class="help">
+                            This email becomes the staff member's
+                            login identity.
+                        </div>
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label for="password">
+                            Login Password
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="password-container">
+
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                required
+                                minlength="8"
+                                maxlength="128"
+                                autocomplete="new-password"
+                                placeholder="Create a secure login password"
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+
+                        <div class="strength">
+                            <span id="strengthBar"></span>
+                        </div>
+
+
+                        <div class="help">
+                            Minimum 8 characters. This password is
+                            used on the Staff Login page.
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ATTENDANCE PASSCODE
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        04
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            Attendance Passcode
+                        </div>
+
+                        <div class="section-description">
+                            Personal code used to authorize attendance.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="passcode-panel">
+
+                    <div class="passcode-head">
+
+                        <div class="passcode-icon">
+                            #
+                        </div>
+
+                        <div>
+
+                            <div class="passcode-title">
+                                Create a Six-Digit Attendance Code
+                            </div>
+
+                            <div class="passcode-description">
+                                This code is different from the
+                                login password. After selecting a
+                                role and staff name in the attendance
+                                dashboard, the staff member enters
+                                this six-digit code to access their
+                                own attendance.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="passcode-grid">
+
+
+                        <div class="field">
+
+                            <label for="passcode">
+                                Six-Digit Passcode
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                id="passcode"
+                                name="attendance_passcode"
+                                type="password"
+                                inputmode="numeric"
+                                pattern="[0-9]{6}"
+                                minlength="6"
+                                maxlength="6"
+                                required
+                                autocomplete="off"
+                                placeholder="000000"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="passcodeConfirm">
+                                Confirm Passcode
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                id="passcodeConfirm"
+                                type="password"
+                                inputmode="numeric"
+                                pattern="[0-9]{6}"
+                                minlength="6"
+                                maxlength="6"
+                                required
+                                autocomplete="off"
+                                placeholder="Confirm six digits"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ADDITIONAL INFORMATION
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        05
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            Additional Information
+                        </div>
+
+                        <div class="section-description">
+                            Optional information for the staff profile.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid">
+
+
+                    <div class="field full">
+
+                        <label for="address">
+                            Address
+                        </label>
+
+                        <textarea
+                            id="address"
+                            name="address"
+                            maxlength="500"
+                            placeholder="Enter staff address"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label for="biography">
+                            Biography / Notes
+                        </label>
+
+                        <textarea
+                            id="biography"
+                            name="biography"
+                            maxlength="1000"
+                            placeholder="Optional staff information or administrative notes"
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ACTIONS
+            ================================================== -->
+
+            <div class="action-bar">
+
+                <div class="action-info">
+                    Each registration creates a separate staff
+                    account. Existing staff members are not replaced.
+                </div>
+
+
+                <div class="actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="resetButton"
+                    >
+                        Clear Form
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="submitButton"
+                        disabled
+                    >
+
+                        <span class="button-content">
+
+                            <span
+                                class="spinner"
+                                aria-hidden="true"
+                            ></span>
+
+                            <span class="button-label">
+                                Create Staff Account
+                            </span>
+
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer class="footer">
+
+            <strong>
+                MISBAHUL 'ILM SCHOOLS ABUJA
+            </strong>
+
+            &nbsp;•&nbsp;
+
+            MIS-NEXUS Staff Attendance Management
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script>
+"use strict";
+
+/*
+============================================================
+ MIS-NEXUS STAFF REGISTRATION
+============================================================
+
+This JavaScript is connected to:
+
+    mis-nexus-staff-registration
+
+The browser NEVER receives a service-role/secret key.
+
+The Edge Function performs:
+
+    - role loading
+    - Auth account creation
+    - staff profile creation
+    - attendance passcode hashing
+============================================================
+*/
+
+
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
+
+const SUPABASE_URL =
+    "https://ysjugqdcnbpzrqnvowpl.supabase.co";
+
+
+const EDGE_FUNCTION_URL =
+    SUPABASE_URL.replace(/\/$/, "") +
+    "/functions/v1/mis-nexus-staff-registration";
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const form =
+    document.getElementById(
+        "registrationForm"
+    );
+
+const notice =
+    document.getElementById(
+        "notice"
+    );
+
+const roleSelect =
+    document.getElementById(
+        "role"
+    );
+
+const roleStatus =
+    document.getElementById(
+        "roleStatus"
+    );
+
+const submitButton =
+    document.getElementById(
+        "submitButton"
+    );
+
+const resetButton =
+    document.getElementById(
+        "resetButton"
+    );
+
+const passwordInput =
+    document.getElementById(
+        "password"
+    );
+
+const passcodeInput =
+    document.getElementById(
+        "passcode"
+    );
+
+const passcodeConfirm =
+    document.getElementById(
+        "passcodeConfirm"
+    );
+
+const strengthBar =
+    document.getElementById(
+        "strengthBar"
+    );
+
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+function showNotice(
+    message,
+    type = "error"
+){
+
+    notice.textContent =
+        message;
+
+    notice.className =
+        "notice " + type;
+
+    notice.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+    });
+}
+
+
+function clearNotice(){
+
+    notice.textContent = "";
+
+    notice.className =
+        "notice";
+}
+
+
+/* =========================================================
+   CLEAN TEXT
+========================================================= */
+
+function clean(value){
+
+    return String(
+        value ?? ""
+    )
+    .trim()
+    .replace(/\s+/g," ");
+}
+
+
+/* =========================================================
+   PASSWORD STRENGTH
+========================================================= */
+
+function updatePasswordStrength(){
+
+    const password =
+        passwordInput.value;
+
+    let score = 0;
+
+    if(password.length >= 8)
+        score++;
+
+    if(password.length >= 12)
+        score++;
+
+    if(/[A-Z]/.test(password))
+        score++;
+
+    if(/[a-z]/.test(password))
+        score++;
+
+    if(/[0-9]/.test(password))
+        score++;
+
+    if(/[^A-Za-z0-9]/.test(password))
+        score++;
+
+
+    const width =
+        Math.min(
+            100,
+            score * 16.67
+        );
+
+    strengthBar.style.width =
+        width + "%";
+}
+
+
+/* =========================================================
+   FORM VALIDATION
+========================================================= */
+
+function validateForm(){
+
+    const firstName =
+        clean(
+            document.getElementById(
+                "firstName"
+            ).value
+        );
+
+    const lastName =
+        clean(
+            document.getElementById(
+                "lastName"
+            ).value
+        );
+
+    const email =
+        clean(
+            document.getElementById(
+                "email"
+            ).value
+        );
+
+    const role =
+        roleSelect.value;
+
+    const password =
+        passwordInput.value;
+
+    const passcode =
+        passcodeInput.value;
+
+    const confirmation =
+        passcodeConfirm.value;
+
+
+    const emailOK =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(email);
+
+    const passwordOK =
+        password.length >= 8;
+
+    const passcodeOK =
+        /^\d{6}$/.test(passcode);
+
+    const confirmationOK =
+        passcode === confirmation;
+
+
+    submitButton.disabled = !(
+        firstName &&
+        lastName &&
+        emailOK &&
+        role &&
+        passwordOK &&
+        passcodeOK &&
+        confirmationOK
+    );
+}
+
+
+/* =========================================================
+   LOADING STATE
+========================================================= */
+
+function setLoading(
+    loading
+){
+
+    submitButton.classList.toggle(
+        "loading",
+        loading
+    );
+
+    if(loading){
+
+        submitButton.disabled =
+            true;
+
+    }else{
+
+        validateForm();
+
+    }
+}
+
+
+/* =========================================================
+   LOAD ROLES
+========================================================= */
+
+async function loadRoles(){
+
+    roleSelect.innerHTML =
+        `
+        <option value="">
+            Loading school roles...
+        </option>
+        `;
+
+    roleStatus.textContent =
+        "Connecting to the school role system...";
+
+    submitButton.disabled =
+        true;
+
+
+    try{
+
+        const response =
+            await fetch(
+                EDGE_FUNCTION_URL +
+                "?action=roles",
+                {
+                    method:"GET",
+
+                    headers:{
+                        "Accept":
+                            "application/json"
+                    },
+
+                    cache:"no-store"
+                }
+            );
+
+
+        const data =
+            await response
+                .json()
+                .catch(
+                    () => ({})
+                );
+
+
+        if(!response.ok){
+
+            const details =
+                data.details
+                    ? " " + data.details
+                    : "";
+
+            throw new Error(
+                (
+                    data.error ||
+                    "Unable to load school roles."
+                ) +
+                details
+            );
+        }
+
+
+        const roles =
+            Array.isArray(
+                data.roles
+            )
+            ? data.roles
+            : [];
+
+
+        if(!roles.length){
+
+            roleSelect.innerHTML =
+                `
+                <option value="">
+                    No active roles available
+                </option>
+                `;
+
+            roleStatus.textContent =
+                "No active school roles were found.";
+
+            return;
+        }
+
+
+        roleSelect.innerHTML =
+            `
+            <option value="">
+                Select school role
+            </option>
+            `;
+
+
+        roles.forEach(
+            role => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    role.role_name;
+
+                option.textContent =
+                    role.role_name
+                        .replace(
+                            /\b\w/g,
+                            char =>
+                                char.toUpperCase()
+                        );
+
+                if(
+                    role.role_description
+                ){
+
+                    option.title =
+                        role.role_description;
+
+                }
+
+                roleSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        roleStatus.textContent =
+            `${roles.length} active school roles available.`;
+
+
+        validateForm();
+
+
+    }catch(error){
+
+        console.error(
+            "MIS-NEXUS ROLE ERROR:",
+            error
+        );
+
+
+        roleSelect.innerHTML =
+            `
+            <option value="">
+                Unable to load roles
+            </option>
+            `;
+
+
+        roleStatus.textContent =
+            "The role service could not be reached.";
+
+
+        showNotice(
+            error.message ||
+            "Unable to load school roles. Please verify that the MIS-NEXUS staff registration Edge Function is deployed and that your Supabase URL is correct.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PASSWORD SHOW/HIDE
+========================================================= */
+
+document
+    .getElementById(
+        "togglePassword"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            const show =
+                passwordInput.type ===
+                "password";
+
+
+            passwordInput.type =
+                show
+                    ? "text"
+                    : "password";
+
+
+            document
+                .getElementById(
+                    "togglePassword"
+                )
+                .textContent =
+                    show
+                        ? "Hide"
+                        : "Show";
+
+        }
+    );
+
+
+/* =========================================================
+   INPUT EVENTS
+========================================================= */
+
+const watchedFields = [
+
+    "firstName",
+    "middleName",
+    "lastName",
+    "staffNumber",
+    "email",
+    "phone",
+    "department",
+    "gender",
+    "employmentType",
+    "dateJoined",
+    "password",
+    "passcode",
+    "passcodeConfirm",
+    "address",
+    "biography"
+
+];
+
+
+watchedFields.forEach(
+    id => {
+
+        const element =
+            document.getElementById(
+                id
+            );
+
+
+        if(!element)
+            return;
+
+
+        element.addEventListener(
+            "input",
+            () => {
+
+                clearNotice();
+
+                if(
+                    id === "password"
+                ){
+
+                    updatePasswordStrength();
+
+                }
+
+                validateForm();
+
+            }
+        );
+
+
+        element.addEventListener(
+            "change",
+            validateForm
+        );
+
+    }
+);
+
+
+roleSelect.addEventListener(
+    "change",
+    () => {
+
+        clearNotice();
+
+        validateForm();
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+resetButton.addEventListener(
+    "click",
+    () => {
+
+        form.reset();
+
+        clearNotice();
+
+        updatePasswordStrength();
+
+        validateForm();
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }
+);
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
+form.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+        clearNotice();
+
+
+        const firstName =
+            clean(
+                document.getElementById(
+                    "firstName"
+                ).value
+            );
+
+        const middleName =
+            clean(
+                document.getElementById(
+                    "middleName"
+                ).value
+            );
+
+        const lastName =
+            clean(
+                document.getElementById(
+                    "lastName"
+                ).value
+            );
+
+        const staffNumber =
+            clean(
+                document.getElementById(
+                    "staffNumber"
+                ).value
+            );
+
+        const email =
+            clean(
+                document.getElementById(
+                    "email"
+                ).value
+            ).toLowerCase();
+
+        const phone =
+            clean(
+                document.getElementById(
+                    "phone"
+                ).value
+            );
+
+        const role =
+            roleSelect.value;
+
+        const department =
+            clean(
+                document.getElementById(
+                    "department"
+                ).value
+            );
+
+        const gender =
+            document.getElementById(
+                "gender"
+            ).value || null;
+
+        const employmentType =
+            document.getElementById(
+                "employmentType"
+            ).value || null;
+
+        const dateJoined =
+            document.getElementById(
+                "dateJoined"
+            ).value || null;
+
+        const password =
+            passwordInput.value;
+
+        const passcode =
+            passcodeInput.value;
+
+        const confirmation =
+            passcodeConfirm.value;
+
+        const address =
+            clean(
+                document.getElementById(
+                    "address"
+                ).value
+            );
+
+        const biography =
+            clean(
+                document.getElementById(
+                    "biography"
+                ).value
+            );
+
+
+        /* -----------------------------------------------
+           VALIDATION
+        ------------------------------------------------ */
+
+        if(!firstName){
+
+            showNotice(
+                "Please enter the staff member's first name."
+            );
+
+            return;
+        }
+
+
+        if(!lastName){
+
+            showNotice(
+                "Please enter the staff member's last name."
+            );
+
+            return;
+        }
+
+
+        if(!role){
+
+            showNotice(
+                "Please select the staff member's school role."
+            );
+
+            return;
+        }
+
+
+        if(
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                .test(email)
+        ){
+
+            showNotice(
+                "Please enter a valid Gmail or email address."
+            );
+
+            return;
+        }
+
+
+        if(
+            password.length < 8
+        ){
+
+            showNotice(
+                "The login password must contain at least 8 characters."
+            );
+
+            return;
+        }
+
+
+        if(
+            !/^\d{6}$/.test(passcode)
+        ){
+
+            showNotice(
+                "The attendance passcode must contain exactly six digits."
+            );
+
+            return;
+        }
+
+
+        if(
+            passcode !== confirmation
+        ){
+
+            showNotice(
+                "The two attendance passcodes do not match."
+            );
+
+            return;
+        }
+
+
+        /* -----------------------------------------------
+           SEND TO EDGE FUNCTION
+        ------------------------------------------------ */
+
+        setLoading(true);
+
+
+        try{
+
+            const response =
+                await fetch(
+                    EDGE_FUNCTION_URL,
+                    {
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                first_name:
+                                    firstName,
+
+                                middle_name:
+                                    middleName ||
+                                    null,
+
+                                last_name:
+                                    lastName,
+
+                                staff_number:
+                                    staffNumber ||
+                                    null,
+
+                                email,
+
+                                phone:
+                                    phone ||
+                                    null,
+
+                                role,
+
+                                department:
+                                    department ||
+                                    null,
+
+                                gender,
+
+                                employment_type:
+                                    employmentType,
+
+                                date_joined:
+                                    dateJoined,
+
+                                password,
+
+                                attendance_passcode:
+                                    passcode,
+
+                                address:
+                                    address ||
+                                    null,
+
+                                biography:
+                                    biography ||
+                                    null
+
+                            })
+                    }
+                );
+
+
+            const data =
+                await response
+                    .json()
+                    .catch(
+                        () => ({})
+                    );
+
+
+            if(!response.ok){
+
+                throw new Error(
+                    data.error ||
+                    "Staff registration failed."
+                );
+            }
+
+
+            showNotice(
+                data.message ||
+                "Staff account created successfully.",
+                "success"
+            );
+
+
+            form.reset();
+
+            updatePasswordStrength();
+
+            validateForm();
+
+
+            window.scrollTo({
+                top:0,
+                behavior:"smooth"
+            });
+
+
+        }catch(error){
+
+            console.error(
+                "MIS-NEXUS REGISTRATION ERROR:",
+                error
+            );
+
+
+            showNotice(
+                error.message ||
+                "Unable to complete staff registration.",
+                "error"
+            );
+
+
+        }finally{
+
+            setLoading(false);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updatePasswordStrength();
+
+loadRoles();
+
+</script>
+
+</body>
+</html>
