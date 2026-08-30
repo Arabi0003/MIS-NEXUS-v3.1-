@@ -269,9 +269,7 @@ input:focus,select:focus{
       <span class="eyebrow">● Secure staff onboarding</span>
       <h1>Register your staff profile.</h1>
       <p>
-        Complete your official MIS-NEXUS staff profile once. Your selected school role,
-        profile information and six-digit attendance passcode will be connected to the
-        existing staff attendance dashboard automatically.
+        Create a separate authenticated account and official MIS-NEXUS staff profile. Each staff member keeps a unique identity, role, profile and six-digit attendance passcode without replacing another staff member.
       </p>
     </section>
 
@@ -311,6 +309,21 @@ input:focus,select:focus{
                 <div class="field">
                   <label class="label" for="staffNumber">Staff number</label>
                   <input id="staffNumber" autocomplete="off" placeholder="Optional staff number">
+                </div>
+
+                <div class="field full">
+                  <label class="label" for="staffEmail">Staff login email <span class="required">*</span></label>
+                  <input id="staffEmail" type="email" autocomplete="email" placeholder="staff@example.com" required>
+                  <div class="help">Each staff member must have a unique Supabase Auth email. This prevents one registration from replacing another staff profile.</div>
+                </div>
+
+                <div class="field full">
+                  <label class="label" for="staffPassword">Staff login password <span class="required">*</span></label>
+                  <div class="pass-wrap">
+                    <input id="staffPassword" type="password" autocomplete="new-password" placeholder="Create a secure login password" required>
+                    <button class="pass-toggle" id="toggleAccountPassword" type="button" aria-label="Show password">◉</button>
+                  </div>
+                  <div class="help">This password belongs to the staff member's Supabase Auth account and is separate from the six-digit attendance passcode.</div>
                 </div>
 
                 <div class="field">
@@ -447,7 +460,7 @@ input:focus,select:focus{
           <div class="card-head">
             <div>
               <h2>Account connection</h2>
-              <p>Your current authenticated login is used.</p>
+              <p>The registration page temporarily creates the new staff identity, then restores the current session.</p>
             </div>
           </div>
           <div class="secure">
@@ -462,7 +475,7 @@ input:focus,select:focus{
     </div>
 
     <footer class="footer">
-      MIS-NEXUS™ Staff Management Platform • Existing authenticated account • Existing database structure preserved
+      MIS-NEXUS™ Staff Management Platform • Separate authenticated staff account • Existing database structure preserved
     </footer>
   </main>
 </div>
@@ -504,6 +517,7 @@ input:focus,select:focus{
     profile: null,
     roles: [],
     saving: false,
+    originalSession: null,
     photoTimer: null,
     theme: localStorage.getItem("MIS_NEXUS_STAFF_THEME") || "light"
   };
@@ -733,6 +747,12 @@ input:focus,select:focus{
 
     if (state.profile) {
       fillExistingProfile(state.profile);
+    } else {
+      setStatus(
+        "formStatus",
+        "info",
+        "Ready to register a new staff identity. Enter that staff member's unique login email and password."
+      );
     }
   }
 
@@ -742,6 +762,18 @@ input:focus,select:focus{
     const role = $("role").value;
     const code = $("passcode").value.trim();
     const photo = $("photoUrl").value.trim();
+    const email = $("staffEmail").value.trim().toLowerCase();
+    const password = $("staffPassword").value;
+
+    if (!email || !/^\\S+@\\S+\\.\\S+$/.test(email)) {
+      $("staffEmail").focus();
+      throw new Error("Enter a valid staff login email.");
+    }
+
+    if (password.length < 8) {
+      $("staffPassword").focus();
+      throw new Error("Staff login password must contain at least 8 characters.");
+    }
 
     if (!first) {
       $("firstName").focus();
@@ -773,7 +805,9 @@ input:focus,select:focus{
       last,
       role,
       code,
-      photo
+      photo,
+      email,
+      password
     };
   }
 
@@ -782,22 +816,76 @@ input:focus,select:focus{
 
     if (state.saving) return;
 
+    let createdUserId = null;
+    let newUserSession = null;
+
     try {
       const v = validate();
 
       state.saving = true;
       $("saveBtn").disabled = true;
-      $("saveBtn").textContent = "SAVING SECURELY…";
+      $("saveBtn").textContent = "CREATING STAFF ACCOUNT…";
 
       setStatus(
         "formStatus",
         "info",
-        "Saving your staff profile to the existing MIS-NEXUS staff system…"
+        "Creating a separate authenticated identity for this staff member…"
+      );
+
+      /*
+       * IMPORTANT:
+       * The existing database has auth_user_id UNIQUE.
+       * Therefore every staff member must have a different Supabase Auth user.
+       * This page creates that Auth identity first, then inserts exactly one
+       * profile for the new identity. No CREATE/ALTER/DROP SQL is executed.
+       *
+       * The current session is saved and restored after registration.
+       */
+      const current = await sb.auth.getSession();
+      if (current.error) throw current.error;
+      if (!current.data.session?.user) {
+        throw new Error("The current registration operator is not authenticated.");
+      }
+
+      state.originalSession = current.data.session;
+
+      const signup = await sb.auth.signUp({
+        email: v.email,
+        password: v.password,
+        options: {
+          data: {
+            full_name: [v.first, $("middleName").value.trim(), v.last].filter(Boolean).join(" "),
+            role: v.role,
+            source: "MIS-NEXUS staff registration"
+          }
+        }
+      });
+
+      if (signup.error) throw signup.error;
+
+      createdUserId = signup.data.user?.id || null;
+      newUserSession = signup.data.session || null;
+
+      if (!createdUserId) {
+        throw new Error(
+          "Supabase did not return the new staff user ID. If email confirmation is enabled, complete the email confirmation flow before creating the staff profile."
+        );
+      }
+
+      /*
+       * If signUp returned a session, that new Auth user is now the
+       * authenticated browser user. The existing INSERT policy permits
+       * that user to create its own profile.
+       */
+      setStatus(
+        "formStatus",
+        "info",
+        "New staff identity created. Saving the staff profile…"
       );
 
       const payload = {
-        auth_user_id: state.user.id,
-        email: String(state.user.email || "").toLowerCase(),
+        auth_user_id: createdUserId,
+        email: v.email,
         first_name: v.first,
         middle_name: $("middleName").value.trim() || null,
         last_name: v.last,
@@ -813,13 +901,11 @@ input:focus,select:focus{
 
       const profileResult = await sb
         .from(TABLES.profiles)
-        .upsert(payload, { onConflict: "auth_user_id" })
+        .insert(payload)
         .select("*")
         .single();
 
-      if (profileResult.error) {
-        throw profileResult.error;
-      }
+      if (profileResult.error) throw profileResult.error;
 
       state.profile = profileResult.data;
 
@@ -829,10 +915,6 @@ input:focus,select:focus{
         "Profile saved. Securing the six-digit attendance passcode…"
       );
 
-      /*
-        This is the same existing server-side RPC used by the
-        current MIS-NEXUS staff dashboard. No new table is created.
-      */
       const passResult = await sb.rpc(
         "mis_nexus_staff_set_passcode",
         {
@@ -841,12 +923,10 @@ input:focus,select:focus{
         }
       );
 
-      if (passResult.error) {
-        throw passResult.error;
-      }
+      if (passResult.error) throw passResult.error;
 
       $("successText").textContent =
-        `${profileName(state.profile) || "Your staff profile"} is now connected to the MIS-NEXUS attendance dashboard as ${pretty(state.profile.role)}.`;
+        `${profileName(state.profile)} has been registered as ${pretty(state.profile.role)} with a separate login identity. The existing staff profiles remain untouched.`;
 
       $("formPanel").style.display = "none";
       $("successPanel").classList.add("show");
@@ -854,24 +934,73 @@ input:focus,select:focus{
       setStatus(
         "formStatus",
         "ok",
-        "Staff profile and attendance passcode saved successfully."
+        "New staff account, profile and attendance passcode saved successfully."
       );
 
-      toast("Staff registration completed successfully.");
+      toast("New staff registered without replacing another staff profile.");
+
+      /*
+       * Restore the original operator session.
+       * The dashboard can now see the new profile after refresh.
+       */
+      try {
+        await sb.auth.signOut();
+      } catch (_) {}
+
+      if (state.originalSession?.access_token && state.originalSession?.refresh_token) {
+        const restored = await sb.auth.setSession({
+          access_token: state.originalSession.access_token,
+          refresh_token: state.originalSession.refresh_token
+        });
+        if (restored.error) {
+          console.warn("Original session restoration:", restored.error);
+          setStatus(
+            "sessionStatus",
+            "info",
+            "Staff registration completed. Please sign in again as the registration operator."
+          );
+        } else {
+          state.user = restored.data.session?.user || state.user;
+          $("accountEmail").textContent = state.user?.email || "Authenticated user";
+          $("accountSession").textContent = "Authenticated";
+        }
+      }
+
     } catch (error) {
       console.error("Staff registration:", error);
 
-      setStatus(
-        "formStatus",
-        "bad",
-        error?.message || "Registration could not be completed."
-      );
+      /*
+       * Best-effort restoration if the new account was created but
+       * profile creation subsequently failed.
+       */
+      try {
+        await sb.auth.signOut();
+      } catch (_) {}
 
-      toast(error?.message || "Registration failed.");
+      if (state.originalSession?.access_token && state.originalSession?.refresh_token) {
+        try {
+          await sb.auth.setSession({
+            access_token: state.originalSession.access_token,
+            refresh_token: state.originalSession.refresh_token
+          });
+        } catch (restoreError) {
+          console.warn("Session restore failed:", restoreError);
+        }
+      }
+
+      let message = error?.message || "Registration could not be completed.";
+
+      if (/already registered|already exists|user already/i.test(message)) {
+        message = "That login email already belongs to a Supabase Auth account. Use a different unique staff email.";
+      }
+
+      setStatus("formStatus", "bad", message);
+      toast(message);
+
     } finally {
       state.saving = false;
       $("saveBtn").disabled = false;
-      $("saveBtn").textContent = "SAVE STAFF PROFILE";
+      $("saveBtn").textContent = "REGISTER NEW STAFF";
     }
   }
 
@@ -879,6 +1008,8 @@ input:focus,select:focus{
     if (!confirm("Clear the information currently entered on this page?")) return;
 
     $("staffForm").reset();
+    $("staffEmail").value = "";
+    $("staffPassword").value = "";
     $("passcode").value = "";
     updatePassStrength();
     $("photoPreview").style.display = "none";
@@ -925,7 +1056,7 @@ input:focus,select:focus{
       $("loadingText").textContent = "Loading active school roles…";
       await loadRoles();
 
-      $("loadingText").textContent = "Checking existing staff profile…";
+      $("loadingText").textContent = "Preparing new staff registration…";
       await loadExistingProfile();
 
       $("dbStatus").textContent = "Connected";
@@ -952,6 +1083,20 @@ input:focus,select:focus{
   $("editAgain").addEventListener("click", editAgain);
   $("clearBtn").addEventListener("click", clearForm);
   $("togglePass").addEventListener("click", togglePasscode);
+
+  $("toggleAccountPassword").addEventListener("click", () => {
+    const input = $("staffPassword");
+    const button = $("toggleAccountPassword");
+    if (input.type === "password") {
+      input.type = "text";
+      button.textContent = "◌";
+      button.setAttribute("aria-label","Hide password");
+    } else {
+      input.type = "password";
+      button.textContent = "◉";
+      button.setAttribute("aria-label","Show password");
+    }
+  });
 
   $("staffForm").addEventListener("submit", saveProfile);
 
